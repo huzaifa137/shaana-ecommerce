@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <title>Organic - Grocery Store HTML Website Template</title>
+    <title>Shanana Beauty Products</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -474,10 +474,14 @@
                     </button>
                     <div class="collapse" id="beverages-collapse">
                         <ul class="btn-toggle-nav list-unstyled fw-normal ps-5 pb-1">
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} " class="dropdown-item">Water</a></li>
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} " class="dropdown-item">Juice</a></li>
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} " class="dropdown-item">Soda</a></li>
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} " class="dropdown-item">Tea</a></li>
+                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
+                                    class="dropdown-item">Water</a></li>
+                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
+                                    class="dropdown-item">Juice</a></li>
+                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
+                                    class="dropdown-item">Soda</a></li>
+                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
+                                    class="dropdown-item">Tea</a></li>
                         </ul>
                     </div>
                 </li>
@@ -534,108 +538,79 @@
         </div>
 
     </div>
+<header>
+    <div class="container-fluid">
+        <div class="row py-3 border-bottom">
 
-    <header>
-        <div class="container-fluid">
-            <div class="row py-3 border-bottom">
-
-                <div
-                    class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
-                    <div class="d-flex align-items-center my-3 my-sm-0">
-                        <a href="{{ url('/') }} ">
-                            <img src="/assets1/images/logo.svg" alt="logo" class="img-fluid">
-                        </a>
-                    </div>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+            <div class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
+                <div class="d-flex align-items-center my-3 my-sm-0">
+                    <a href="{{ url('/') }}">
+                        <img src="/assets1/images/logo.svg" alt="logo" class="img-fluid">
+                    </a>
+                </div>
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#menu"></use>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="col-sm-6 offset-sm-2 offset-md-0 col-lg-4">
-                    <div class="search-bar row bg-light p-2 rounded-4">
-                        <div class="col-md-4 d-none d-md-block">
-                            <select class="form-select border-0 bg-transparent">
-                                <option>All Categories</option>
-                                <option>Groceries</option>
-                                <option>Drinks</option>
-                                <option>Chocolates</option>
-                            </select>
-                        </div>
-                        <div class="col-11 col-md-7">
-                            <form id="search-form" class="text-center" action="index.html" method="post">
-                                <input type="text" class="form-control border-0 bg-transparent"
-                                    placeholder="Search for more than 20,000 products">
-                            </form>
-                        </div>
-                        <div class="col-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                viewBox="0 0 24 24">
-                                <path fill="currentColor"
-                                    d="M21.71 20.29L18 16.61A9 9 0 1 0 16.61 18l3.68 3.68a1 1 0 0 0 1.42 0a1 1 0 0 0 0-1.39ZM11 18a7 7 0 1 1 7-7a7 7 0 0 1-7 7Z" />
-                            </svg>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-lg-4">
-                    <ul
-                        class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
-                        <li class="nav-item active">
-                            <a href="{{ url('/') }} " class="nav-link">Home</a>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle pe-3" role="button" id="pages"
-                                data-bs-toggle="dropdown" aria-expanded="false">Pages</a>
-                            <ul class="dropdown-menu border-0 p-3 rounded-0 shadow" aria-labelledby="pages">
-                               <li><a href="{{ url('/item-shop') }} " class="dropdown-item">Shop </a></li>
-                               <li><a href="{{ url('/item-cart') }} " class="dropdown-item">Cart </a></li>
-                               <li><a href="{{ url('/item-checkout') }} " class="dropdown-item">Checkout </a></li>
-                               <li><a href="{{ url('/contact-us') }} " class="dropdown-item">Contact Us </a></li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-
-                <div
-                    class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
-                    <ul class="d-flex justify-content-end list-unstyled m-0">
-                        <li>
-                            <a href="#" class="p-2 mx-1">
-                                <svg width="24" height="24">
-                                    <use xlink:href="#user"></use>
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="p-2 mx-1">
-                                <svg width="24" height="24">
-                                    <use xlink:href="#wishlist"></use>
-                                </svg>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas"
-                                data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                                <svg width="24" height="24">
-                                    <use xlink:href="#shopping-bag"></use>
-                                </svg>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <use xlink:href="#menu"></use>
+                    </svg>
+                </button>
             </div>
-        </div>
-    </header>
 
-    <section style="background-image: url('assets1/images/banner-1.jpg');background-repeat: no-repeat;background-size: cover;">
+            <div class="col-lg-8">
+                <ul class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
+                    <li class="nav-item active">
+                        <a href="{{ url('/') }}" class="nav-link">Home</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{{ url('/item-shop') }}" class="nav-link">Shop</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a href="{{ url('/contact-us') }}" class="nav-link">Contact Us</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
+                <ul class="d-flex justify-content-end list-unstyled m-0">
+                    <li>
+                        <a href="{{ url('user-login') }}" class="p-2 mx-1">
+                            <svg width="24" height="24">
+                                <use xlink:href="#user"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="p-2 mx-1">
+                            <svg width="24" height="24">
+                                <use xlink:href="#wishlist"></use>
+                            </svg>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas"
+                           data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                            <svg width="24" height="24">
+                                <use xlink:href="#shopping-bag"></use>
+                            </svg>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</header>
+
+
+    <section
+        style="background-image: url('assets1/images/banner-1.jpg');background-repeat: no-repeat;background-size: cover;">
         <div class="container-lg">
             <div class="row">
                 <div class="col-lg-6 pt-5 mt-5">
-                    <h2 class="display-1 ls-1"><span class="fw-bold text-primary">Organic</span> Foods at your <span
+                    <h2 class="display-1 ls-1"><span class="fw-bold" style="color: #FF00FF">Organic</span> Foods at your <span
                             class="fw-bold">Doorsteps</span></h2>
                     <p class="fs-4">Dignissim massa diam elementum.</p>
                     <div class="d-flex gap-3">
@@ -3509,15 +3484,22 @@
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-6 copyright">
-                    <p>© 2024 Organic. All rights reserved.</p>
+                    <p>© <span id="year"></span> Shanana Beauty Products. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 credit-link text-start text-md-end">
-                    <p>HTML Template by <a href="https://templatesjungle.com/">TemplatesJungle</a> Distributed By <a
-                            href="https://themewagon.com">ThemeWagon</a> </p>
-                </div>
+                <p>
+                    Designed & Developed by
+                <a href="javascript:void(0);" style="text-decoration: none;"><span style="color: rgb(255, 162, 177);">UgandanProgrammer</span></a>
+                </p>
+                    </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+
     <script src="/assets1/js/jquery-1.11.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"

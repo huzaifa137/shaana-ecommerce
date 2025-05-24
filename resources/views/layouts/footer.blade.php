@@ -88,11 +88,8 @@
                         Site Name</a>, All right reserved.</span>
             </div>
             <div class="col-md-6 my-auto text-center text-md-end text-white">
-                <!--/*** This template is free as long as you keep the below author’s credit link/attribution link/backlink. ***/-->
-                <!--/*** If you'd like to use the template without the below author’s credit link/attribution link/backlink, ***/-->
-                <!--/*** you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". ***/-->
-                Designed By <a class="border-bottom" href="https://htmlcodex.com">HTML Codex</a> Distributed By <a
-                    class="border-bottom" href="https://themewagon.com">ThemeWagon</a>
+                Designed & Developed by
+                <a href="javascript:void(0);" style="text-decoration: none;">UgandanProgrammer</a>
             </div>
         </div>
     </div>
