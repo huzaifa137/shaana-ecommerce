@@ -16,6 +16,7 @@
             <div class="col-lg-8 col-xl-8">
                 <div class="row g-4">
                     <div class="col-lg-12">
+
                         <div class="row">
                             <div class="col-md-12 col-lg-6">
                                 <div class="form-item w-100">
@@ -30,10 +31,12 @@
                                 </div>
                             </div>
                         </div>
+
                         <div class="form-item">
                             <label class="form-label my-3" for="email">Email Address</label>
                             <input type="email" class="form-control" id="email">
                         </div>
+
                         <div class="form-item">
                             <label class="form-label my-3" for="companyName">Company Name</label>
                             <input type="text" class="form-control" id="companyName">
@@ -60,17 +63,42 @@
                             <input type="tel" class="form-control" id="mobile">
                         </div>
 
+                        <div class="row">
+                            <div class="col-md-12 col-lg-6">
+                                <label class="form-label my-3" for="mobile">Password</label>
+                                <div class="mb-3 position-relative">
+                                    <input type="password" id="passwordInput" class="form-control">
+                                    <i class="fa-solid fa-eye position-absolute" id="togglePassword"
+                                        style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 col-lg-6">
+                                <label class="form-label my-3" for="mobile">Confirm Password</label>
+                                <div class="mb-3 position-relative">
+                                    <input type="password" id="confirmpasswordInput" class="form-control">
+                                    <i class="fa-solid fa-eye position-absolute" id="togglePasswordConfirm"
+                                        style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="form-check my-3">
                             <input class="form-check-input" type="checkbox" id="Address-1" name="Address"
                                 value="Address">
                             <label class="form-check-label" for="Address-1">Set as default shipping address ?</label>
                         </div>
 
-                        <div class="my-3">
+                        <div class="my-3 d-flex gap-2">
                             <button type="submit" id="submitBtn" class="btn btn-primary text-white">
                                 <i class="fas fa-user-plus"></i> Create Account
                             </button>
+
+                            <a href="{{ url('user-login') }}" class="btn btn-success">
+                                <i class="fas fa-sign-in-alt"></i> Have an account? Login
+                            </a>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -81,7 +109,8 @@
                     <div class="col-lg-12">
                         <div class="position-relative">
                             <img src="assets/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                            <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                            <div class="position-absolute"
+                                style="top: 50%; right: 10px; transform: translateY(-50%);">
                                 <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
                             </div>
                         </div>
@@ -90,7 +119,8 @@
                     <div class="col-lg-12">
                         <div class="position-relative">
                             <img src="assets/img/best-product-7.jpg" class="img-fluid w-100 rounded" alt="">
-                            <div class="position-absolute" style="top: 50%; right: 10px; transform: translateY(-50%);">
+                            <div class="position-absolute"
+                                style="top: 50%; right: 10px; transform: translateY(-50%);">
                                 <h3 class="text-white fw-bold">Fresh <br> Fruits <br> Banner</h3>
                             </div>
                         </div>
@@ -108,6 +138,25 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+<script>
+    const togglePassword = document.getElementById('togglePassword');
+    const togglePasswordConfirm = document.getElementById('togglePasswordConfirm');
+    const passwordInput = document.getElementById('passwordInput');
+
+    togglePassword.addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+
+    togglePasswordConfirm.addEventListener('click', function() {
+        const type = confirmpasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmpasswordInput.setAttribute('type', type);
+        this.classList.toggle('fa-eye');
+        this.classList.toggle('fa-eye-slash');
+    });
+</script>
 
 <script>
     $(document).ready(function() {
@@ -156,6 +205,14 @@
                 {
                     id: 'mobile',
                     name: 'Mobile'
+                },
+                {
+                    id: 'passwordInput',
+                    name: 'Password'
+                },
+                {
+                    id: 'confirmpasswordInput',
+                    name: 'Confirm Password'
                 }
             ];
 
@@ -169,6 +226,58 @@
                     missingFields.push(field.name);
                 }
             });
+
+            const email = $('#email').val().trim();
+            let emailError = '';
+
+            if (email) {
+                if (!email.includes('@')) {
+                    emailError = 'Email must include "@" symbol';
+                } else if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
+                    emailError = 'Email must have a valid domain (e.g. example@domain.com)';
+                }
+            }
+
+            if (emailError) {
+                isValid = false;
+                $('#email').addClass('is-invalid');
+                missingFields.push(emailError);
+            }
+
+            const password = $('#passwordInput').val().trim();
+            const confirmPassword = $('#confirmpasswordInput').val().trim();
+
+            const passwordPattern = {
+                length: /.{8,}/,
+                lowercase: /[a-z]/,
+                uppercase: /[A-Z]/,
+                digit: /\d/,
+                specialChar: /[\W_]/,
+            };
+
+            if (password && confirmPassword && password !== confirmPassword) {
+                isValid = false;
+                $('#passwordInput, #confirmpasswordInput').addClass('is-invalid');
+                missingFields.push('Passwords do not match');
+            } else if (password && confirmPassword) {
+                let patternErrors = [];
+
+                if (!passwordPattern.length.test(password)) patternErrors.push(
+                    '• Minimum 8 characters');
+                if (!passwordPattern.lowercase.test(password)) patternErrors.push(
+                    '• At least one lowercase letter');
+                if (!passwordPattern.uppercase.test(password)) patternErrors.push(
+                    '• At least one uppercase letter');
+                if (!passwordPattern.digit.test(password)) patternErrors.push('• At least one number');
+                if (!passwordPattern.specialChar.test(password)) patternErrors.push(
+                    '• At least one special character');
+
+                if (patternErrors.length > 0) {
+                    isValid = false;
+                    $('#passwordInput').addClass('is-invalid');
+                    missingFields.push('Password must include:<br>' + patternErrors.join('<br>'));
+                }
+            }
 
             if (!isValid) {
                 submitBtn.prop('disabled', false);
@@ -208,10 +317,15 @@
                     Swal.fire({
                         icon: 'success',
                         title: 'Success!',
-                        text: 'User Account created successfully!',
+                        text: data.message || 'User Account created successfully!',
                     }).then(() => {
-                        location
-                            .reload(); 
+                        sessionStorage.setItem('showWelcome', 'true');
+                        if (data.redirect_url) {
+                            window.location.href = data
+                                .redirect_url;
+                        } else {
+                            location.reload();
+                        }
                     });
                     submitBtn.prop('disabled', false);
                     submitBtn.html('Create Account');
@@ -232,16 +346,15 @@
                         title: 'Validation Error',
                         text: errorMessage,
                     });
-
                     console.error(xhr);
                 }
+                // error: function(data) {
+                //     $('body').html(data.responseText);
+                // }
             });
             ``
         });
     });
 </script>
-
-
-
 
 @include('layouts.footer')

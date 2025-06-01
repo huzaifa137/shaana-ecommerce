@@ -538,81 +538,101 @@
         </div>
 
     </div>
-<header>
-    <div class="container-fluid">
-        <div class="row py-3 border-bottom">
+    <header>
+        <div class="container-fluid">
+            <div class="row py-3 border-bottom">
 
-            <div class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
-                <div class="d-flex align-items-center my-3 my-sm-0">
-                    <a href="{{ url('/') }}">
-                        <img src="/assets1/images/logo.svg" alt="logo" class="img-fluid">
-                    </a>
-                </div>
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
+                <div
+                    class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
+                    <div class="d-flex align-items-center my-3 my-sm-0">
+                        <a href="{{ url('/') }}">
+                            <img src="/assets1/images/logo.svg" alt="logo" class="img-fluid">
+                        </a>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
                         data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                    <svg width="24" height="24" viewBox="0 0 24 24">
-                        <use xlink:href="#menu"></use>
-                    </svg>
-                </button>
-            </div>
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <use xlink:href="#menu"></use>
+                        </svg>
+                    </button>
+                </div>
 
-            <div class="col-lg-8">
-                <ul class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
-                    <li class="nav-item active">
-                        <a href="{{ url('/') }}" class="nav-link">Home</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="{{ url('/item-shop') }}" class="nav-link">Shop</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
-                    </li>
-                    <li class="nav-item active">
-                        <a href="{{ url('/contact-us') }}" class="nav-link">Contact Us</a>
-                    </li>
-                </ul>
-            </div>
+                <div class="col-lg-8">
+                    <ul
+                        class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
+                        <li class="nav-item active">
+                            <a href="{{ url('/') }}" class="nav-link">Home</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="{{ url('/item-shop') }}" class="nav-link">Shop</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
+                        </li>
+                        <li class="nav-item active">
+                            <a href="{{ url('/contact-us') }}" class="nav-link">Contact Us</a>
+                        </li>
 
-            <div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
-                <ul class="d-flex justify-content-end list-unstyled m-0">
-                    <li>
-                        <a href="{{ url('user-login') }}" class="p-2 mx-1">
-                            <svg width="24" height="24">
-                                <use xlink:href="#user"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="p-2 mx-1">
-                            <svg width="24" height="24">
-                                <use xlink:href="#wishlist"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas"
-                           data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
-                            <svg width="24" height="24">
-                                <use xlink:href="#shopping-bag"></use>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+                        @if (!Session('LoggedCustomer'))
+                            <li class="nav-item active">
+                                <a href="{{ url('/user-login') }}" class="nav-link">Login</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a href="{{ url('user-register') }}" class="nav-item nav-link">Create Account</a>
 
+                            </li>
+                        @else
+                            <li class="nav-item active">
+                                <a href="{{ url('/customer/dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                            </li>
+                        @endif
+                        
+                    </ul>
+                </div>
+
+                <div
+                    class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
+                    <ul class="d-flex justify-content-end list-unstyled m-0">
+                        <li>
+                            <a href="{{ url('user-login') }}" class="p-2 mx-1">
+                                <svg width="24" height="24">
+                                    <use xlink:href="#user"></use>
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="p-2 mx-1">
+                                <svg width="24" height="24">
+                                    <use xlink:href="#wishlist"></use>
+                                </svg>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas"
+                                data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
+                                <svg width="24" height="24">
+                                    <use xlink:href="#shopping-bag"></use>
+                                </svg>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
-    </div>
-</header>
+    </header>
 
 
     <section
-        style="background-image: url('assets1/images/banner-1.jpg');background-repeat: no-repeat;background-size: cover;">
+        style="background-image: url('assets1/images/banner-12.png');background-repeat: no-repeat;background-size: cover;">
         <div class="container-lg">
             <div class="row">
                 <div class="col-lg-6 pt-5 mt-5">
-                    <h2 class="display-1 ls-1"><span class="fw-bold" style="color: #FF00FF">Organic</span> Foods at your <span
-                            class="fw-bold">Doorsteps</span></h2>
-                    <p class="fs-4">Dignissim massa diam elementum.</p>
+                    <h2 class="display-1 ls-1"><span class="fw-bold" style="color: #FF00FF">Shanana</span> Beauty
+                        products</h2>
+                    <p class="text-white" style="font-size: 1.4rem;">Beauty and bedroom must-haves, all in one place.
+                    </p>
+
                     <div class="d-flex gap-3">
                         <a href="#"
                             class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
@@ -623,7 +643,7 @@
                         <div class="col">
                             <div class="row text-dark">
                                 <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">14k+</p>
+                                    <p class="fs-1 fw-bold lh-sm mb-0">200+</p>
                                 </div>
                                 <div class="col">
                                     <p class="text-uppercase lh-sm mb-0">Product Varieties</p>
@@ -633,7 +653,7 @@
                         <div class="col">
                             <div class="row text-dark">
                                 <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">50k+</p>
+                                    <p class="fs-1 fw-bold lh-sm mb-0">20k+</p>
                                 </div>
                                 <div class="col">
                                     <p class="text-uppercase lh-sm mb-0">Happy Customers</p>
@@ -643,7 +663,7 @@
                         <div class="col">
                             <div class="row text-dark">
                                 <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">10+</p>
+                                    <p class="fs-1 fw-bold lh-sm mb-0">20+</p>
                                 </div>
                                 <div class="col">
                                     <p class="text-uppercase lh-sm mb-0">Store Locations</p>
@@ -656,24 +676,25 @@
 
             <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
                 <div class="col">
-                    <div class="card border-0 bg-primary rounded-0 p-4 text-light">
+                    <div class="card border-0 bg-success rounded-0 p-4 text-light">
                         <div class="row">
                             <div class="col-md-3 text-center">
-                                <svg width="60" height="60">
+                                <svg width="60" height="60">mg
                                     <use xlink:href="#fresh"></use>
                                 </svg>
                             </div>
                             <div class="col-md-9">
                                 <div class="card-body p-0">
-                                    <h5 class="text-light">Fresh from farm</h5>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                                    <h5 class="text-light">Freshly Made</h5>
+                                    <p class="card-text">Handcrafted in small batches to ensure top quality and lasting
+                                        freshness.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col">
-                    <div class="card border-0 bg-secondary rounded-0 p-4 text-light">
+                    <div class="card border-0 bg-dark rounded-0 p-4 text-light">
                         <div class="row">
                             <div class="col-md-3 text-center">
                                 <svg width="60" height="60">
@@ -683,7 +704,8 @@
                             <div class="col-md-9">
                                 <div class="card-body p-0">
                                     <h5 class="text-light">100% Organic</h5>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                                    <p class="card-text">Made with natural and organic ingredients, gentle for all skin
+                                        types.</p>
                                 </div>
                             </div>
                         </div>
@@ -699,8 +721,9 @@
                             </div>
                             <div class="col-md-9">
                                 <div class="card-body p-0">
-                                    <h5 class="text-light">Free delivery</h5>
-                                    <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                                    <h5 class="text-light">Fast Shipping</h5>
+                                    <p class="card-text">Fast, best delivery on all orders. Your beauty essentials,
+                                        delivered quick.</p>
                                 </div>
                             </div>
                         </div>
@@ -708,10 +731,12 @@
                 </div>
             </div>
 
+
+
         </div>
     </section>
 
-    <section class="py-5 overflow-hidden">
+    {{-- <section class="py-5 overflow-hidden">
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-12">
@@ -802,7 +827,7 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="pb-5">
         <div class="container-lg">
@@ -831,8 +856,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-1.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana111') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -889,8 +914,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-2.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana122') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana122.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -947,8 +972,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-3.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana126') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana126.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1005,8 +1030,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-4.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana131') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana131.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1063,8 +1088,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-5.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana125') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana125.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1121,8 +1146,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-6.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana123') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana123.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1179,8 +1204,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-7.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana127') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana127.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1237,8 +1262,8 @@
                         <div class="col">
                             <div class="product-item">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-8.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana128') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana128.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1292,121 +1317,6 @@
                             </div>
                         </div>
 
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-9.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Organic 2% Reduced Fat Milk </h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-10.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Greek Style Plain Yogurt</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <!-- / product-grid -->
                 </div>
@@ -1425,9 +1335,9 @@
                             style="background: url('assets1/images/banner-ad-1.jpg') no-repeat; background-size: cover;">
                             <div class="banner-content p-5">
                                 <div class="content-wrapper text-light">
-                                    <h3 class="banner-title text-light">Items on SALE</h3>
-                                    <p>Discounts up to 30%</p>
-                                    <a href="#" class="btn-link text-white">Shop Now</a>
+                                    <h3 class="banner-title text-white">Items on SALE</h3>
+                                    <p class="text-white">Discounts up to 30%</p>
+                                    <a href="#" class="btn-link">Shop Now</a>
                                 </div>
                             </div>
                         </div>
@@ -1490,8 +1400,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-10.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana129') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana129.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1546,8 +1456,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-11.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana130') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana130.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1602,8 +1512,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-12.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana131') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana131.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1658,8 +1568,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-13.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana132') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana132.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -1714,8 +1624,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-14.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana124') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana124.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2071,8 +1981,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-15.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana111') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2127,8 +2037,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-16.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana131') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana131.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2183,8 +2093,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-17.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana130') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana130.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2239,8 +2149,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-18.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana126') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana126.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2295,8 +2205,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-19.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana123') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana123.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2351,8 +2261,8 @@
 
                             <div class="product-item swiper-slide">
                                 <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-10.png" alt="Product Thumbnail"
+                                    <a href="{{ url('/product-item/shanana124') }} " title="Product Title">
+                                        <img src="/assets1/images/shanana124.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2612,7 +2522,7 @@
                             <div class="product-item swiper-slide">
                                 <figure>
                                     <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-20.png" alt="Product Thumbnail"
+                                        <img src="/assets1/images/shanana127.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2668,7 +2578,7 @@
                             <div class="product-item swiper-slide">
                                 <figure>
                                     <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-1.png" alt="Product Thumbnail"
+                                        <img src="/assets1/images/shanana128.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2724,7 +2634,7 @@
                             <div class="product-item swiper-slide">
                                 <figure>
                                     <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-21.png" alt="Product Thumbnail"
+                                        <img src="/assets1/images/shanana124.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2780,7 +2690,7 @@
                             <div class="product-item swiper-slide">
                                 <figure>
                                     <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-22.png" alt="Product Thumbnail"
+                                        <img src="/assets1/images/shanana132.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -2836,7 +2746,7 @@
                             <div class="product-item swiper-slide">
                                 <figure>
                                     <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-23.png" alt="Product Thumbnail"
+                                        <img src="/assets1/images/shanana130.png" alt="Product Thumbnail"
                                             class="tab-image">
                                     </a>
                                 </figure>
@@ -3122,7 +3032,7 @@
         </div>
     </section>
 
-    <section id="latest-blog" class="pb-4">
+    {{-- <section id="latest-blog" class="pb-4">
         <div class="container-lg">
             <div class="row">
                 <div class="section-header d-flex align-items-center justify-content-between my-4">
@@ -3217,17 +3127,17 @@
                 </div>
             </div>
         </div>
-    </section>
+    </section> --}}
 
     <section class="pb-4 my-4">
         <div class="container-lg">
 
-            <div class="bg-warning pt-5 rounded-5">
+            <div class="pt-5 rounded-5" style="background-color: #d561d5">
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-md-4">
-                            <h2 class="mt-5">Download Organic App</h2>
-                            <p>Online Orders made easy, fast and reliable</p>
+                            <h2 class="mt-5 text-white">Download Shanana App</h2>
+                            <p class="text-white">Online Orders made easy, fast and reliable</p>
                             <div class="d-flex gap-2 flex-wrap mb-5">
                                 <a href="#" title="App store"><img src="/assets1/images/img-app-store.png"
                                         alt="app-store"></a>
@@ -3248,30 +3158,33 @@
     <section class="py-4">
         <div class="container-lg">
             <h2 class="my-4">People are also looking for</h2>
-            <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Angie’s Boomchickapop Corn</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Sweet Vanilla Yogurt</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Foster Farms Takeout Crispy wings</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Warrior Blend Organic</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chao Cheese Creamy</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Organic Face Serum</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Hydrating Lip Balm</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Vitamin C Moisturizer</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Natural Body Butter</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Herbal Hair Oil</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Aloe Vera Gel</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Rosewater Toner</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Clay Face Mask</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Organic Shampoo Bar</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Exfoliating Scrub</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Lavender Face Mist</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Charcoal Cleanser</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Coconut Hair Mask</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Eye Brightening Cream</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Green Tea Toner</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Shea Butter Lotion</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Nourishing Night Cream</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Tinted Lip Oil</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Bamboo Face Pads</a>
+            <a href="#" class="btn btn-warning me-2 mb-2">Caffeine Eye Serum</a>
         </div>
+
     </section>
 
     <section class="py-5">
         <div class="container-lg">
-            <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-5">
+            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
                 <div class="col">
                     <div class="card mb-3 border border-dark-subtle p-3">
                         <div class="text-dark mb-3">
@@ -3280,8 +3193,10 @@
                             </svg>
                         </div>
                         <div class="card-body p-0">
-                            <h5>Free delivery</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                            <h5>Fast Delivery</h5>
+                            <p class="card-text">Your orders are packed carefully and shipped fast so your beauty care
+                                arrives
+                                right on time.</p>
                         </div>
                     </div>
                 </div>
@@ -3293,24 +3208,13 @@
                             </svg>
                         </div>
                         <div class="card-body p-0">
-                            <h5>100% secure payment</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                            <h5>Secure Payment</h5>
+                            <p class="card-text">All transactions are encrypted to ensure your personal details remain
+                                safe and private.</p>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card mb-3 border border-dark-subtle p-3">
-                        <div class="text-dark mb-3">
-                            <svg width="32" height="32">
-                                <use xlink:href="#quality"></use>
-                            </svg>
-                        </div>
-                        <div class="card-body p-0">
-                            <h5>Quality guarantee</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
-                        </div>
-                    </div>
-                </div>
+
                 <div class="col">
                     <div class="card mb-3 border border-dark-subtle p-3">
                         <div class="text-dark mb-3">
@@ -3319,11 +3223,13 @@
                             </svg>
                         </div>
                         <div class="card-body p-0">
-                            <h5>guaranteed savings</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                            <h5>Top Products</h5>
+                            <p class="card-text">We carefully select the best beauty essentials trusted by customers
+                                and skincare experts.</p>
                         </div>
                     </div>
                 </div>
+
                 <div class="col">
                     <div class="card mb-3 border border-dark-subtle p-3">
                         <div class="text-dark mb-3">
@@ -3332,19 +3238,23 @@
                             </svg>
                         </div>
                         <div class="card-body p-0">
-                            <h5>Daily offers</h5>
-                            <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipi elit.</p>
+                            <h5>Daily Deals</h5>
+                            <p class="card-text">Shop limited-time beauty offers and save more while treating your
+                                skin to something new.</p>
                         </div>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
+
 
     <footer class="py-5">
         <div class="container-lg">
             <div class="row">
 
+                <!-- Logo & Social Media -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer-menu">
                         <img src="/assets1/images/logo.svg" width="240" height="70" alt="logo">
@@ -3390,85 +3300,57 @@
                     </div>
                 </div>
 
+                <!-- About / Company -->
                 <div class="col-md-2 col-sm-6">
                     <div class="footer-menu">
-                        <h5 class="widget-title">Organic</h5>
+                        <h5 class="widget-title">Our Company</h5>
                         <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">About us</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Conditions </a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Our Journals</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Careers</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Affiliate Programme</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Ultras Press</a>
-                            </li>
+                            <li class="menu-item"><a href="#" class="nav-link">About Us</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Our Story</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Sustainability</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Careers</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Press & Media</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Affiliate Program</a></li>
                         </ul>
                     </div>
                 </div>
+
+                <!-- Quick Access Links -->
                 <div class="col-md-2 col-sm-6">
                     <div class="footer-menu">
                         <h5 class="widget-title">Quick Links</h5>
                         <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Offers</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Discount Coupons</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Stores</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Track Order</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Shop</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Info</a>
-                            </li>
+                            <li class="menu-item"><a href="#" class="nav-link">Shop All</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Best Sellers</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">New Arrivals</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Gift Sets</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Track Order</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Store Locator</a></li>
                         </ul>
                     </div>
                 </div>
+
+                <!-- Customer Support -->
                 <div class="col-md-2 col-sm-6">
                     <div class="footer-menu">
-                        <h5 class="widget-title">Customer Service</h5>
+                        <h5 class="widget-title">Support</h5>
                         <ul class="menu-list list-unstyled">
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">FAQ</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Contact</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Privacy Policy</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Returns & Refunds</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Cookie Guidelines</a>
-                            </li>
-                            <li class="menu-item">
-                                <a href="#" class="nav-link">Delivery Information</a>
-                            </li>
+                            <li class="menu-item"><a href="#" class="nav-link">FAQs</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Contact Us</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Returns & Refunds</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Shipping Info</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Privacy Policy</a></li>
+                            <li class="menu-item"><a href="#" class="nav-link">Terms & Conditions</a></li>
                         </ul>
                     </div>
                 </div>
+
+                <!-- Newsletter Subscription -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer-menu">
-                        <h5 class="widget-title">Subscribe Us</h5>
-                        <p>Subscribe to our newsletter to get updates about our grand offers.</p>
+                        <h5 class="widget-title">Subscribe to Us</h5>
+                        <p>Get the latest on new arrivals, exclusive offers, and beauty tips — straight to your inbox.
+                        </p>
                         <form class="d-flex mt-3 gap-0" action="index.html">
                             <input class="form-control rounded-start rounded-0 bg-light" type="email"
                                 placeholder="Email Address" aria-label="Email Address">
@@ -3480,6 +3362,8 @@
             </div>
         </div>
     </footer>
+
+
     <div id="footer-bottom">
         <div class="container-lg">
             <div class="row">
@@ -3487,11 +3371,12 @@
                     <p>© <span id="year"></span> Shanana Beauty Products. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 credit-link text-start text-md-end">
-                <p>
-                    Designed & Developed by
-                <a href="javascript:void(0);" style="text-decoration: none;"><span style="color: rgb(255, 162, 177);">UgandanProgrammer</span></a>
-                </p>
-                    </div>
+                    <p>
+                        Designed & Developed by
+                        <a href="javascript:void(0);" style="text-decoration: none;"><span
+                                style="color: rgb(255, 162, 177);">UgandanProgrammer</span></a>
+                    </p>
+                </div>
             </div>
         </div>
     </div>

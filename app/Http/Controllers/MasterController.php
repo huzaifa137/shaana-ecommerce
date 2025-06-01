@@ -1,9 +1,16 @@
 <?php
-
 namespace App\Http\Controllers;
+
+use DB;
 use App\Models\User;
+use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
+use App\Models\password_reset_table;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+
 
 class MasterController extends Controller
 {
@@ -29,6 +36,7 @@ class MasterController extends Controller
 
     public function itemDetails()
     {
+
         return view('Ecommerce.item-detail');
     }
 
@@ -47,37 +55,296 @@ class MasterController extends Controller
         return view('Ecommerce.user-register');
     }
 
+    public function productItem($id)
+    {
+        return view('Ecommerce.product-item', compact('id'));
+    }
+
+    public function userProfile()
+    {
+        $customer = User::where('id', Session('LoggedCustomer'))->first();
+
+        return view('Ecommerce.user-profile', compact(['customer']));
+    }
+
+    public function userForgotPassword()
+    {
+
+        return view('Ecommerce.user-forgot-password');
+    }
+
     public function storeUserInformation(Request $request)
     {
+
         $validator = Validator::make($request->all(), [
-            'firstName'     => 'required|string|max:255',
-            'lastName'      => 'required|string|max:255',
-            'email'         => 'required|email|unique:users,email',
-            'companyName'   => 'required|string|max:255',
-            'address'       => 'required|string|max:255',
-            'city'          => 'required|string|max:255',
-            'country'       => 'required|string|max:255',
-            'postcode'      => 'required|string|max:20',
-            'mobile'        => 'required|string|max:20',
+            'firstName'            => 'required|string|max:255',
+            'lastName'             => 'required|string|max:255',
+            'companyName'          => 'required|string|max:255',
+            'address'              => 'required|string|max:255',
+            'city'                 => 'required|string|max:255',
+            'country'              => 'required|string|max:255',
+            'postcode'             => 'required|string|max:20',
+            'mobile'               => 'required|string|max:20',
+            'email'                => [
+                'required',
+                'email',
+                'unique:users,email',
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+            ],
+            'passwordInput'        => [
+                'required',
+                'string',
+                'min:8',
+                'regex:/[a-z]/',
+                'regex:/[A-Z]/',
+                'regex:/\d/',
+                'regex:/[\W_]/',
+            ],
+            'confirmpasswordInput' => 'required|same:passwordInput',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
-    
+
+        $password = trim($request->passwordInput);
+
         $user = User::create([
-            'first_name'                => $request->input('firstName'),
-            'last_name'                 => $request->input('lastName'),
-            'email'                     => $request->input('email'),
+            'first_name'               => $request->input('firstName'),
+            'last_name'                => $request->input('lastName'),
+            'email'                    => $request->input('email'),
             'company_name'             => $request->input('companyName'),
-            'address'                   => $request->input('address'),
-            'city'                      => $request->input('city'),
-            'country'                   => $request->input('country'),
-            'postcode'                  => $request->input('postcode'),
-            'mobile'                    => $request->input('mobile'),
-            'default_shipping_address'  => $request->isDefaultAddress,
+            'address'                  => $request->input('address'),
+            'city'                     => $request->input('city'),
+            'country'                  => $request->input('country'),
+            'postcode'                 => $request->input('postcode'),
+            'mobile'                   => $request->input('mobile'),
+            'password'                 => Hash::make($password),
+            'default_shipping_address' => $request->isDefaultAddress,
         ]);
 
-        return response()->json(['message' => 'User Account created successfully']);
+        $user     = DB::table('users')->where('email', $request->email)->first();
+        $userRole = $user->user_role;
+        $userId   = $user->id;
+
+        if ($userRole != 1) {
+            $request->session()->put('LoggedAdmin', $userId);
+        } else {
+            $request->session()->put('LoggedCustomer', $userId);
+        }
+
+        $url  = '/';
+        $url2 = session()->get('url.intended');
+        $url3 = '/customer/dashboard';
+
+        if ($userRole != 1) {
+
+            if ($url2 != null) {
+                return response()->json([
+                    'status'       => true,
+                    'message'      => 'User Account created successfully,proceeding to dashboard',
+                    'redirect_url' => $url2,
+                ]);
+            }
+
+            return response()->json([
+                'status'       => true,
+                'message'      => 'User Account created successfully,proceeding to dashboard',
+                'redirect_url' => $url,
+            ]);
+
+        } else {
+
+            return response()->json([
+                'status'       => true,
+                'message'      => 'User Account created successfully,proceeding to dashboard',
+                'redirect_url' => $url3,
+            ]);
+        }
     }
+
+    public function userloginCredentials(Request $request)
+    {
+
+        $validator = Validator::make($request->all(), [
+            'email'    => [
+                'required',
+                'email',
+                'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
+            ],
+            'password' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $userInfo = User::where('email', '=', $request->email)->first();
+
+        if (! $userInfo) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Incorrect password or Email being entered',
+            ], 401);
+
+        } else {
+            if (Hash::check($request->password, $userInfo->password)) {
+
+                $user     = DB::table('users')->where('email', $request->email)->first();
+                $userRole = $user->user_role;
+                $userId   = $user->id;
+
+                if ($userRole != 1) {
+                    $request->session()->put('LoggedAdmin', $userId);
+                } else {
+                    $request->session()->put('LoggedCustomer', $userId);
+                }
+
+                $url  = '/';
+                $url2 = session()->get('url.intended');
+                $url3 = '/customer/dashboard';
+
+                if ($userRole != 1) {
+
+                    if ($url2 != null) {
+                        return response()->json([
+                            'status'       => true,
+                            'message'      => 'Login successfully',
+                            'redirect_url' => $url2,
+                        ]);
+                    }
+
+                    return response()->json([
+                        'status'       => true,
+                        'message'      => 'Login successfully',
+                        'redirect_url' => $url,
+                    ]);
+
+                } else {
+
+                    return response()->json([
+                        'status'       => true,
+                        'message'      => 'Login successfully',
+                        'redirect_url' => $url3,
+                    ]);
+                }
+            } else {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Incorrect password or Email being entered',
+                ], 401);
+            }
+        }
+    }
+
+    public function updateProfile(Request $request)
+    {
+
+        $request->validate([
+            'firstName'   => 'required|string|max:255',
+            'lastName'    => 'required|string|max:255',
+            'email'       => 'required|email',
+            'companyName' => 'required|string',
+            'address'     => 'required|string',
+            'city'        => 'required|string',
+            'country'     => 'required|string',
+            'postcode'    => 'required|string',
+            'mobile'      => 'required|string',
+            'password'    => 'nullable|confirmed|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[\W_]/',
+        ]);
+
+        $user = User::find(Session('LoggedCustomer'));
+
+        $user->first_name               = $request->firstName;
+        $user->last_name                = $request->lastName;
+        $user->email                    = $request->email;
+        $user->company_name             = $request->companyName;
+        $user->address                  = $request->address;
+        $user->city                     = $request->city;
+        $user->country                  = $request->country;
+        $user->postcode                 = $request->postcode;
+        $user->mobile                   = $request->mobile;
+        $user->default_shipping_address = $request->default_shipping_address;
+
+        if ($request->filled('password')) {
+            $user->password = Hash::make($request->password);
+        }
+
+        $user->save();
+
+        return response()->json(['message' => 'Profile updated successfully!']);
+    }
+
+    public function createNewPassword($id)
+    {
+        $generated_id = url('password/reset/' . $id);
+        $resetEntry   = DB::table('password_reset_tables')->where('token', $generated_id)->first();
+
+        if ($resetEntry) {
+            if ($resetEntry->link_status == 0) {
+                if (now()->diffInMinutes($resetEntry->created_at) <= 30) {
+                    return view('Ecommerce.reset-password-2', compact(['generated_id']));
+                } else {
+                    return ('Ecommerce.user-forgot-password')->with('fail', 'This reset password link has expired');
+                }
+            } else {
+                return redirect()->route('Ecommerce.user-forgot-password')->with('fail', 'This link has already been used, request for a new link');
+            }
+        } else {
+            return redirect()->route('Ecommerce.user-forgot-password')->with('fail', 'Invalid Link');
+        }
+    }
+
+    public function generateForgotPasswordLink(Request $request)
+    {
+        $email = $request->email;
+
+        $user = User::where('email', $email)->first();
+
+        if (! $user) {
+            if ($request->ajax()) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'The email provided is not registered in the system.',
+                ], 401);
+            }
+
+            return back()->withInput()->with('fail', 'The email provided is not registered in the system.');
+        }
+
+        $username = DB::table('users')
+            ->where('email', $email)
+            ->value(DB::raw("CONCAT(first_name, ' ', last_name) AS fullname"));
+
+        $token    = Str::random(60);
+        $resetUrl = url('password/reset', $token);
+
+        $post = new password_reset_table();
+
+        $post->email      = $email;
+        $post->token      = $resetUrl;
+        $post->created_at = now();
+        $post->save();
+
+        $data = [
+            'email'    => $email,
+            'username' => $username,
+            'resetUrl' => $resetUrl,
+            'title'    => 'SHANANA BEAUTY AND BED PRODUCSTS : Reset Password Link',
+        ];
+
+        Mail::send('emails.reset_email', $data, function ($message) use ($data) {
+            $message->to($data['email'], $data['email'])->subject($data['title']);
+        });
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status'  => true,
+                'message' => 'Reset link sent successfully to: ' . $email,
+            ]);
+        }
+
+        return back()->with('success', 'Link has been sent to your email: ' . $email);
+    }
+
 }

@@ -13,32 +13,27 @@
     <div class="container ">
         <div class="row justify-content-center">
             <div class="col-md-6 col-lg-8">
-                <h1 class="text-center">Welcome Back</h1>
-                <p class="text-center">Please login to your account</p>
+                <h1 class="text-center">Reset Password</h1>
+                <p class="text-center">Please enter your new password for your account</p>
                 <form id="loginForm" action="#" class="p-4 rounded shadow bg-white">
                     <div class="mb-3">
-                        <input type="email" id="loginEmail" class="form-control" placeholder="Enter email">
+                        <input type="email" id="loginEmail" class="form-control" placeholder="Enter password">
                     </div>
                     <div class="mb-3 position-relative">
-                        <input type="password" id="loginPassword" class="form-control" placeholder="Enter password">
+                        <input type="password" id="loginPassword" class="form-control" placeholder="Confirm password">
                         <i class="fa-solid fa-eye position-absolute" id="togglePassword"
                             style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
                     </div>
-                    <div class="mb-3 text-center">
-                        <p class="fw-bold text-success">
-                            New here?
-                            <a href="{{ url('user-register') }}" class="text-primary text-decoration-underline">
-                                Create your free account now →
-                            </a>
-                        </p>
-                    </div>
+
                     <div class="d-grid">
                         <button type="submit" id="loginBtn" class="btn btn-primary text-white"><i
-                                class="bi bi-check-circle"></i> Login</button>
+                                class="bi bi-check-circle"></i> Reset</button>
                     </div>
-                    <div class="col-12 mt-2">
-                        <a href="{{ url('/user-forgot-password') }}">Forgot
-                            password?</a>
+                    <div class="col-12 mt-3">
+                        <p class="fw-bold text-success">
+                            <a href="{{ url('user-login') }}" class="text-primary text-decoration-none">Return to Login
+                                →</a>
+                        </p>
                     </div>
                 </form>
 
@@ -52,7 +47,6 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
 
 <script>
     const togglePassword = document.getElementById('togglePassword');

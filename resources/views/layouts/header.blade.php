@@ -20,18 +20,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="assets/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
-    <link href="assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="/assets/lib/lightbox/css/lightbox.min.css" rel="stylesheet">
+    <link href="/assets/lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
 
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/assets/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Template Stylesheet -->
-    <link href="assets/css/style.css" rel="stylesheet">
+    <link href="/assets/css/style.css" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
 </head>
@@ -78,23 +78,63 @@
                         <a href="{{ url('item-shop') }}" class="nav-item nav-link">Shop</a>
                         <a href="{{ url('item-cart') }}" class="nav-item nav-link">Cart</a>
                         <a href="{{ url('contact-us') }}" class="nav-item nav-link">Contact Us</a>
+                        @if (!Session('LoggedCustomer'))
+                            <li class="nav-item active">
+                                <a href="{{ url('/user-login') }}" class="nav-link">Login</a>
+                            </li>
+                            <li class="nav-item active">
+                                <a href="{{ url('user-register') }}" class="nav-item nav-link">Create Account</a>
+
+                            </li>
+                        @else
+                            <li class="nav-item active">
+                                <a href="{{ url('/customer/dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                            </li>
+                        @endif
                     </div>
                     <div class="d-flex m-3 me-0">
-                        <button
-                            class="btn-search btn border border-secondary btn-md-square rounded-circle bg-white me-4"
-                            data-bs-toggle="modal" data-bs-target="#searchModal" disabled>
-                            <i class="fas fa-search text-primary"></i>
-                        </button>
+
 
                         <a href="{{ url('item-cart') }}" class="position-relative me-4 my-auto">
                             <i class="fa fa-shopping-bag fa-2x"></i>
                             <span
                                 class="position-absolute bg-secondary rounded-circle d-flex align-items-center justify-content-center text-dark px-1"
-                                style="top: -5px; left: 15px; height: 20px; min-width: 20px;">3</span>
+                                style="top: -5px; left: 15px; height: 20px; min-width: 20px;">31</span>
                         </a>
-                        <a href="{{ url('user-login') }}" class="my-auto">
-                            <i class="fas fa-user fa-2x"></i>
-                        </a>
+
+                        @if (Session('LoggedCustomer'))
+                            <div class="dropdown">
+                                <button class="btn btn-primary text-white dropdown-toggle" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user fa-1x"></i>
+                                </button>
+
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('user.profile') }}">
+                                            <i class="fas fa-user me-2"></i> Profile
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('customer.dashboard') }}">
+                                            <i class="fas fa-tachometer-alt me-2"></i> Dashboard
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('customer.logout') }}">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Logout
+                                        </a>
+                                    </li>
+                                </ul>
+
+                            </div>
+                        @else
+                            <a href="{{ url('user-login') }}" class="my-auto">
+                                <i class="fas fa-user fa-2x"></i>
+                            </a>
+                        @endif
+
+
                     </div>
                 </div>
             </nav>

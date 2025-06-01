@@ -11,17 +11,21 @@ return new class extends Migration
      */
     public function up(): void
     {
-       Schema::create('users', function (Blueprint $table) {
+        Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->string('email')->unique(); // usually unique for user identification
+            $table->string('email')->unique();
             $table->string('company_name')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('postcode')->nullable();
             $table->string('mobile')->nullable();
+            $table->string('password');
+            $table->integer('user_role')->default(1);
+            $table->integer('is_verified')->default(1);
+            $table->integer('is_active')->default(1);
             $table->boolean('default_shipping_address')->default(false);
             $table->timestamps();
         });

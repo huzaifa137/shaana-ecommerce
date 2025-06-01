@@ -636,3 +636,8 @@ $currencies = collect($currencyIds)
         });
     });
 </script>
+
+
+ $username = DB::table('users')
+            ->where('email', $email)
+            ->value(DB::raw("CONCAT(first_name, ' ', last_name) AS fullname"));

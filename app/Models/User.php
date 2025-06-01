@@ -27,6 +27,7 @@ class User extends Authenticatable
         'country',
         'postcode',
         'mobile',
+        'password',
         'default_shipping_address',
     ];
 
