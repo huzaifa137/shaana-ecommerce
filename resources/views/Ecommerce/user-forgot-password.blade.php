@@ -98,7 +98,9 @@
                 if (result.isConfirmed) {
                     const btn = $('#loginBtn');
                     btn.prop('disabled', true);
-                    btn.html('<i class="fe fe-loader"></i> Sending...<i class="fas fa-spinner fa-spin"></i>');
+                    btn.html(
+                        '<i class="fe fe-loader"></i> Sending...<i class="fas fa-spinner fa-spin"></i>'
+                        );
 
                     $.ajax({
                         type: "POST",
@@ -113,7 +115,12 @@
                                 title: response.status ? 'Success!' :
                                     'Error',
                                 text: response.message
+                            }).then(() => {
+                                if (response.status) {
+                                    location.reload();
+                                }
                             });
+
                             btn.prop('disabled', false);
                             btn.html('<i class="bi bi-check-circle"></i> Send');
                         },
@@ -127,14 +134,12 @@
                                 title: 'Error',
                                 text: message
                             });
+
                             btn.prop('disabled', false);
                             btn.html('<i class="bi bi-check-circle"></i> Send');
                         }
-                        // error: function(data) {
-                        //     $('body').html(data.responseText);
-                        // }
-
                     });
+
                 }
             });
         });

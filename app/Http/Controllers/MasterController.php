@@ -1,16 +1,15 @@
 <?php
 namespace App\Http\Controllers;
 
-use DB;
+use App\Models\password_reset_table;
 use App\Models\User;
-use Illuminate\Support\Str;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use App\Models\password_reset_table;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
-
+use Illuminate\Support\Str;
 
 class MasterController extends Controller
 {
@@ -279,7 +278,7 @@ class MasterController extends Controller
     {
         $generated_id = url('password/reset/' . $id);
         $resetEntry   = DB::table('password_reset_tables')->where('token', $generated_id)->first();
-
+        
         if ($resetEntry) {
             if ($resetEntry->link_status == 0) {
                 if (now()->diffInMinutes($resetEntry->created_at) <= 30) {
@@ -345,6 +344,46 @@ class MasterController extends Controller
         }
 
         return back()->with('success', 'Link has been sent to your email: ' . $email);
+    }
+
+    public function store_new_password(Request $request)
+    {
+        $request->validate(
+            [
+                'password' => ['required', 'string', 'min:6', 'regex:/[A-Z]/', 'regex:/[a-z]/', 'regex:/[0-9]/', 'regex:/[@$!%*?&#]/'],
+            ],
+            [
+                'password.required' => 'The password field is required.',
+                'password.string'   => 'The password must be a string.',
+                'password.min'      => 'The password must be at least 6 characters.',
+                'password.regex'    => 'The password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+            ],
+        );
+
+        $password     = $request->password;
+        $confirm      = $request->confirmPassword;
+        $generated_id = $request->generated_id;
+
+        if ($password !== $confirm) {
+            return response()->json(['message' => 'Passwords do not match.'], 422);
+        }
+
+        $record = DB::table('password_reset_tables')->where('token', $generated_id)->first();
+
+        if (! $record) {
+            return response()->json(['message' => 'Invalid or expired token.'], 404);
+        }
+
+        $user_email   = $record->email;
+        $new_password = Hash::make($password);
+
+        DB::table('users')->where('email', $user_email)->update(['password' => $new_password]);
+
+        DB::table('password_reset_tables')
+            ->where('id', $record->id)
+            ->update(['link_status' => 1]);
+
+        return response()->json(['message' => 'Password has been updated successfully.']);
     }
 
 }

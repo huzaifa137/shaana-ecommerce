@@ -15,20 +15,34 @@
             <div class="col-md-6 col-lg-8">
                 <h1 class="text-center">Reset Password</h1>
                 <p class="text-center">Please enter your new password for your account</p>
-                <form id="loginForm" action="#" class="p-4 rounded shadow bg-white">
+                <form id="loginForm" class="p-4 rounded shadow bg-white">
+                    @csrf
+
+                    @if (Session::get('success'))
+                        <div class="alert alert-success">{{ Session::get('success') }}</div>
+                    @endif
+
+                    @if (Session::get('fail'))
+                        <div class="alert alert-danger">{{ Session::get('fail') }}</div>
+                    @endif
+                    
+                    <input type="hidden" id="generated_id" value="{{ $generated_id }}">
+
                     <div class="mb-3">
-                        <input type="email" id="loginEmail" class="form-control" placeholder="Enter password">
+                        <input type="text" id="password" name="password" class="form-control"
+                            placeholder="Enter new password">
                     </div>
                     <div class="mb-3 position-relative">
-                        <input type="password" id="loginPassword" class="form-control" placeholder="Confirm password">
-                        <i class="fa-solid fa-eye position-absolute" id="togglePassword"
-                            style="top: 50%; right: 15px; transform: translateY(-50%); cursor: pointer;"></i>
+                        <input type="text" id="confirmPassword" name="confirmPassword" class="form-control"
+                            placeholder="Confirm password">
                     </div>
 
                     <div class="d-grid">
-                        <button type="submit" id="loginBtn" class="btn btn-primary text-white"><i
-                                class="bi bi-check-circle"></i> Reset</button>
+                        <button type="submit" id="resetPasswordBtn" class="btn btn-primary text-white">
+                            <i class="bi bi-check-circle"></i> Reset
+                        </button>
                     </div>
+
                     <div class="col-12 mt-3">
                         <p class="fw-bold text-success">
                             <a href="{{ url('user-login') }}" class="text-primary text-decoration-none">Return to Login
@@ -36,6 +50,7 @@
                         </p>
                     </div>
                 </form>
+
 
             </div>
         </div>
@@ -49,101 +64,104 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 
 <script>
-    const togglePassword = document.getElementById('togglePassword');
-    const loginPassword = document.getElementById('loginPassword');
-
-    togglePassword.addEventListener('click', function() {
-        const type = loginPassword.getAttribute('type') === 'password' ? 'text' : 'password';
-        loginPassword.setAttribute('type', type);
-        this.classList.toggle('fa-eye');
-        this.classList.toggle('fa-eye-slash');
-    });
-</script>
-
-
-<script>
     $(document).ready(function() {
-        $('#loginForm').on('submit', function(e) {
+        $('#resetPasswordBtn').on('click', function(e) {
             e.preventDefault();
 
-            const loginBtn = $('#loginBtn');
-            loginBtn.prop('disabled', true).html(
-                'Logging in... <i class="fas fa-spinner fa-spin"></i>');
+            const btn = $(this);
+            btn.prop('disabled', true);
+            btn.html('Resetting... <i class="fas fa-spinner fa-spin"></i>');
 
-            const email = $('#loginEmail').val().trim();
-            const password = $('#loginPassword').val().trim();
-            let errors = [];
+            const password = $('#password').val().trim();
+            const confirmPassword = $('#confirmPassword').val().trim();
+            const token = $('#generated_id').val().trim();
 
-            if (!email) {
-                $('#loginEmail').addClass('is-invalid');
-                errors.push('Email is required.');
-            } else if (!email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
-                $('#loginEmail').addClass('is-invalid');
-                errors.push('Enter a valid email address.');
-            } else {
-                $('#loginEmail').removeClass('is-invalid');
-            }
+            let validationErrors = [];
+
+            const passwordPattern = {
+                length: /.{6,}/,
+                uppercase: /[A-Z]/,
+                lowercase: /[a-z]/,
+                number: /[0-9]/,
+                special: /[@$!%*?&#]/
+            };
 
             if (!password) {
-                $('#loginPassword').addClass('is-invalid');
-                errors.push('Password is required.');
+                validationErrors.push('Password is required.');
             } else {
-                $('#loginPassword').removeClass('is-invalid');
+                if (!passwordPattern.length.test(password)) validationErrors.push(
+                    'Minimum 6 characters.');
+                if (!passwordPattern.uppercase.test(password)) validationErrors.push(
+                    'At least one uppercase letter.');
+                if (!passwordPattern.lowercase.test(password)) validationErrors.push(
+                    'At least one lowercase letter.');
+                if (!passwordPattern.number.test(password)) validationErrors.push(
+                    'At least one number.');
+                if (!passwordPattern.special.test(password)) validationErrors.push(
+                    'At least one special character.');
             }
 
-            if (errors.length > 0) {
-                loginBtn.prop('disabled', false).html('Login');
+            if (password !== confirmPassword) {
+                validationErrors.push('Passwords do not match.');
+            }
+
+            if (validationErrors.length > 0) {
+                btn.prop('disabled', false).html('<i class="bi bi-check-circle"></i> Reset');
                 Swal.fire({
                     icon: 'warning',
                     title: 'Validation Error',
-                    html: errors.map(err => `<p>${err}</p>`).join('')
+                    html: `<ul style="text-align: left;">${validationErrors.map(e => `<li>${e}</li>`).join('')}</ul>`
                 });
                 return;
             }
 
             $.ajax({
-                type: 'POST',
-                url: '/user-login-credentials',
+                type: "POST",
+                url: "{{ route('user-store-new-password') }}",
                 data: {
-                    email: email,
+                    _token: $('input[name="_token"]').val(),
                     password: password,
-                    _token: $('meta[name="csrf-token"]').attr('content')
+                    confirmPassword: confirmPassword,
+                    generated_id: token
                 },
-                success: function(data) {
+                success: function(response) {
                     Swal.fire({
                         icon: 'success',
-                        title: 'Success!',
-                        text: data.message || 'User Login successfully!',
+                        title: 'Success',
+                        text: response.message || 'Password updated successfully!'
                     }).then(() => {
-                        sessionStorage.setItem('showWelcome', 'true');
-                        if (data.redirect_url) {
-                            window.location.href = data
-                                .redirect_url;
-                        }
+                        window.location.href =
+                            "{{ route('user.forgot.password') }}";
                     });
-                    loginBtn.prop('disabled', false);
                 },
-                error: function(xhr) {
-                    loginBtn.prop('disabled', false).html('Login');
+                // error: function(xhr) {
+                //     btn.prop('disabled', false).html(
+                //         '<i class="bi bi-check-circle"></i> Reset');
 
-                    let message = 'Invalid email or password.';
+                //     let errorMsg = 'An error occurred. Please try again.';
 
-                    if (xhr.status === 401) {
-                        message = 'Invalid email or password.';
-                    } else if (xhr.responseJSON?.message) {
-                        message = xhr.responseJSON.message;
-                    }
+                //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
+                //         const errors = xhr.responseJSON.errors;
+                //         errorMsg = Object.values(errors).flat().join('<br>');
+                //     } else if (xhr.responseJSON?.message) {
+                //         errorMsg = xhr.responseJSON.message;
+                //     } else if (xhr.responseText) {
+                //         errorMsg = xhr.responseText;
+                //     }
 
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Login Error',
-                        text: message
-                    });
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Failed',
+                //         html: errorMsg
+                //     });
+                // }
+
+                error: function(data) {
+                    $('body').html(data.responseText);
                 }
             });
         });
     });
 </script>
-
 
 @include('layouts.footer')

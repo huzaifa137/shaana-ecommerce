@@ -21,6 +21,7 @@ Route::controller(MasterController::class)->group(function () {
 
     });
 
+    Route::post('user-store-new-password', 'store_new_password')->name('user-store-new-password');
     Route::post('/store-user-information', 'storeUserInformation')->name('store.user.information');
     Route::post('/user-login-credentials', 'userloginCredentials')->name('user.login.credentials');
     Route::post('/update-user-profile', 'updateProfile')->name('profile.update');
