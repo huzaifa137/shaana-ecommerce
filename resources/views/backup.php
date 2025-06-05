@@ -317,6 +317,8 @@ $finanical_year  = Controller::rgf('master_datas', $year, 'md_id', 'md_code');
 <!-- CKEDITOR BEING IMPELEMENTED IN THE SYSTEM -->
 
 <section>
+
+    </section>
                                     <div class="tab-pane">
                                         <div class="col-md-12">
                                             <div class="editor-container">
@@ -335,7 +337,7 @@ $finanical_year  = Controller::rgf('master_datas', $year, 'md_id', 'md_code');
                                             </script>
                                         </div>
                                     </div>
-                                </section>
+                            
 
 
                                 <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>

@@ -3,6 +3,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Symfony\Component\HttpFoundation\Response;
 
 class AdminAuth
@@ -15,32 +16,9 @@ class AdminAuth
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (! session()->has('LoggedAdmin') &&
-            ($request->path() != 'users/login' &&
-                $request->path() != 'users/register' &&
-                $request->path() != 'users/home-page' &&
-                $request->path() != 'users/user-otp' &&
-                ! $request->routeIs('auth-user-check') &&
-                ! $request->routeIs('auth-user-check') &&
-                ! $request->routeIs('regenerate-otp') &&
-                ! $request->routeIs('password/reset') &&
-                $request->path() != 'users/forgot-password')
-        ) {
+        if (! session()->has('LoggedAdmin')) {
             Session::put('url.intended', $request->url());
-
-            // return redirect('/users/login')->with('fail', 'You must be logged in');
-            return redirect('/users/home-page')->with('fail', 'You must be logged in');
-
-        }
-
-        if (session()->has('LoggedStudent') &&
-            ($request->path() == 'users/login' || $request->path() == 'users/register' || $request->path() == 'users/home-page' || $request->routeIs('auth-user-check'))) {
-            return redirect('/student/dashboard');
-        }
-
-        if (session()->has('LoggedAdmin') &&
-            ($request->path() == 'users/login' || $request->path() == 'users/register' || $request->path() == 'users/home-page' || $request->routeIs('auth-user-check'))) {
-            return redirect('/');
+            return redirect('/user-login')->with('fail', 'You must be logged in');
         }
 
         $response = $next($request);

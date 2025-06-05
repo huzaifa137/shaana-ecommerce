@@ -78,19 +78,19 @@
                         <a href="{{ url('item-shop') }}" class="nav-item nav-link">Shop</a>
                         <a href="{{ url('item-cart') }}" class="nav-item nav-link">Cart</a>
                         <a href="{{ url('contact-us') }}" class="nav-item nav-link">Contact Us</a>
-                        @if (!Session('LoggedCustomer'))
+                        @if (!Session::has('LoggedCustomer') && !Session::has('LoggedAdmin'))
                             <li class="nav-item active">
                                 <a href="{{ url('/user-login') }}" class="nav-link">Login</a>
                             </li>
                             <li class="nav-item active">
-                                <a href="{{ url('user-register') }}" class="nav-item nav-link">Create Account</a>
-
+                                <a href="{{ url('user-register') }}" class="nav-link">Create Account</a>
                             </li>
                         @else
                             <li class="nav-item active">
-                                <a href="{{ url('/customer/dashboard') }}" class="nav-item nav-link">Dashboard</a>
+                                <a href="{{ url('/customer/dashboard') }}" class="nav-link">Dashboard</a>
                             </li>
                         @endif
+
                     </div>
                     <div class="d-flex m-3 me-0">
 

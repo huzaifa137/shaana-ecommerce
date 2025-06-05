@@ -16,30 +16,9 @@ class CustomerAuth
     public function handle(Request $request, Closure $next): Response
     {
 
-        if (! session()->has('LoggedCustomer') &&
-
-            ($request->path() != 'item-shop' &&
-                $request->path() != 'item-cart' &&
-                $request->path() != 'item-details' &&
-                $request->path() != 'item-checkout' &&
-                $request->path() != 'contact-us' &&
-                $request->path() != 'user-login' &&
-                $request->path() != 'user-register' &&
-                ! $request->routeIs('product.item'))) {
-
+        if (! session()->has('LoggedCustomer')) {
             Session::put('url.intended', $request->url());
-
-            return redirect('/')->with('fail', 'You must be logged in');
-        }
-
-        // if (session()->has('LoggedStudent') &&
-        //     ($request->path() == 'users/login' || $request->path() == 'users/register' || $request->path() == 'users/home-page' || $request->routeIs('auth-user-check'))) {
-        //     return redirect('/student/dashboard');
-        // }
-
-        if (session()->has('LoggedCustomer') &&
-            ($request->path() == 'user-login' || $request->path() == 'user-register' || $request->routeIs('home'))) {
-            return redirect('/customer/dashboard');
+            return redirect('/user-login')->with('fail', 'You must be logged in');
         }
 
         $response = $next($request);

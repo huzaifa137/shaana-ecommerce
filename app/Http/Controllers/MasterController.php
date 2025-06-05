@@ -68,7 +68,6 @@ class MasterController extends Controller
 
     public function userForgotPassword()
     {
-
         return view('Ecommerce.user-forgot-password');
     }
 
@@ -126,13 +125,36 @@ class MasterController extends Controller
         $userRole = $user->user_role;
         $userId   = $user->id;
 
+        $data = [
+            'first_name' => $user->first_name,
+            'last_name'  => $user->last_name,
+            'email'      => $user->email,
+            'company'    => $user->company_name,
+            'address'    => $user->address,
+            'city'       => $user->city,
+            'country'    => $user->country,
+            'postcode'   => $user->postcode,
+            'mobile'     => $user->mobile,
+            'password'   => trim($request->passwordInput),
+            'title'      => 'UgandanProgrammer - User Account has been created successfully.',
+        ];
+
+        try {
+            Mail::send('emails.user-account-created', $data, function ($message) use ($data) {
+                $message->to($data['email'])->subject($data['title']);
+            });
+        } catch (Exception $e) {
+            DB::table('users')->where('email', $user->email)->delete();
+            return back()->with('error', 'Email Not, Check Internet or re-register');
+        }
+
         if ($userRole != 1) {
             $request->session()->put('LoggedAdmin', $userId);
         } else {
             $request->session()->put('LoggedCustomer', $userId);
         }
 
-        $url  = '/';
+        $url  = '/shanana/dashboard';
         $url2 = session()->get('url.intended');
         $url3 = '/customer/dashboard';
 
@@ -278,7 +300,7 @@ class MasterController extends Controller
     {
         $generated_id = url('password/reset/' . $id);
         $resetEntry   = DB::table('password_reset_tables')->where('token', $generated_id)->first();
-        
+
         if ($resetEntry) {
             if ($resetEntry->link_status == 0) {
                 if (now()->diffInMinutes($resetEntry->created_at) <= 30) {
@@ -385,5 +407,4 @@ class MasterController extends Controller
 
         return response()->json(['message' => 'Password has been updated successfully.']);
     }
-
 }

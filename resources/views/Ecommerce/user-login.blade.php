@@ -16,6 +16,15 @@
                 <h1 class="text-center">Welcome Back</h1>
                 <p class="text-center">Please login to your account</p>
                 <form id="loginForm" action="#" class="p-4 rounded shadow bg-white">
+                    
+                    @if (Session::get('success'))
+                        <div class="alert alert-success">{{ Session::get('success') }}</div>
+                    @endif
+
+                    @if (Session::get('fail'))
+                        <div class="alert alert-danger">{{ Session::get('fail') }}</div>
+                    @endif
+
                     <div class="mb-3">
                         <input type="email" id="loginEmail" class="form-control" placeholder="Enter email">
                     </div>

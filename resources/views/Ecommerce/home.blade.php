@@ -23,6 +23,10 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        integrity="sha512-Fo3rlrZj/kMVq6MBBSaI6zxjY3V+G5H3p0e1EQP+c5gk4IOfuTPV9z2p5skGm7EwPw63XrJYXs9JkYbM8Bz94g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
 
@@ -573,7 +577,7 @@
                             <a href="{{ url('/contact-us') }}" class="nav-link">Contact Us</a>
                         </li>
 
-                        @if (!Session('LoggedCustomer'))
+                        @if (!Session::has('LoggedCustomer') && !Session::has('LoggedAdmin'))
                             <li class="nav-item active">
                                 <a href="{{ url('/user-login') }}" class="nav-link">Login</a>
                             </li>
@@ -586,7 +590,7 @@
                                 <a href="{{ url('/customer/dashboard') }}" class="nav-item nav-link">Dashboard</a>
                             </li>
                         @endif
-                        
+
                     </ul>
                 </div>
 
@@ -617,1299 +621,1950 @@
                         </li>
                     </ul>
                 </div>
-
             </div>
         </div>
     </header>
 
-
     <section
-        style="background-image: url('assets1/images/banner-12.png');background-repeat: no-repeat;background-size: cover;">
-        <div class="container-lg">
-            <div class="row">
-                <div class="col-lg-6 pt-5 mt-5">
-                    <h2 class="display-1 ls-1"><span class="fw-bold" style="color: #FF00FF">Shanana</span> Beauty
-                        products</h2>
-                    <p class="text-white" style="font-size: 1.4rem;">Beauty and bedroom must-haves, all in one place.
-                    </p>
+        style="background-image: url('assets1/images/banner-12.png'); background-repeat: no-repeat; background-size: cover; background-position: center;"
+        class="stunning-section">
+        <div class="container-lg py-5">
+            <div class="row align-items-center gx-5">
 
-                    <div class="d-flex gap-3">
-                        <a href="#"
-                            class="btn btn-primary text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Start Shopping</a>
-                        <a href="#" class="btn btn-dark text-uppercase fs-6 rounded-pill px-4 py-3 mt-3">Join
-                            Now</a>
-                    </div>
-                    <div class="row my-5">
-                        <div class="col">
-                            <div class="row text-dark">
-                                <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">200+</p>
-                                </div>
-                                <div class="col">
-                                    <p class="text-uppercase lh-sm mb-0">Product Varieties</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col">
-                            <div class="row text-dark">
-                                <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">20k+</p>
-                                </div>
-                                <div class="col">
-                                    <p class="text-uppercase lh-sm mb-0">Happy Customers</p>
+                <div class="col-lg-6 mb-5 mb-lg-0 animate-fade-in-left">
+                    <div class="glass-panel info-panel p-5 rounded-5 shadow-lg">
+                        <h3 class="text-white mb-4 fw-bold text-center">Why Choose Us?</h3>
+                        <div class="row gy-4">
+                            <div class="col-12 col-md-4">
+                                <div class="info-card shadow-lg text-center p-4 rounded-4">
+                                    <div class="info-icon">
+                                        <svg width="48" height="48">
+                                            <use xlink:href="#fresh"></use>
+                                        </svg>
+                                    </div>
+                                    <h5 class="mb-2">Freshly Made</h5>
+                                    <p>Handcrafted in small batches ensuring quality & freshness.</p>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col">
-                            <div class="row text-dark">
-                                <div class="col-auto">
-                                    <p class="fs-1 fw-bold lh-sm mb-0">20+</p>
+                            <div class="col-12 col-md-4">
+                                <div class="info-card shadow-lg text-center p-4 rounded-4">
+                                    <div class="info-icon">
+                                        <svg width="48" height="48">
+                                            <use xlink:href="#organic"></use>
+                                        </svg>
+                                    </div>
+                                    <h5 class="mb-2">100% Organic</h5>
+                                    <p>Natural ingredients, safe for every skin type.</p>
                                 </div>
-                                <div class="col">
-                                    <p class="text-uppercase lh-sm mb-0">Store Locations</p>
+                            </div>
+                            <div class="col-12 col-md-4">
+                                <div class="info-card shadow-lg text-center p-4 rounded-4">
+                                    <div class="info-icon">
+                                        <svg width="48" height="48">
+                                            <use xlink:href="#delivery"></use>
+                                        </svg>
+                                    </div>
+                                    <h5 class="mb-2">Fast Shipping</h5>
+                                    <p>Quick delivery, right to your doorstep.</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+                <div class="col-lg-6 animate-fade-in-right">
+                    <div
+                        class="glass-panel hero-panel p-5 rounded-5 shadow-lg d-flex flex-column justify-content-center text-white">
+                        <h1 class="display-1 fw-extrabold mb-3">
+                            <span class="highlight-pink">Shanana</span> Beauty Products
+                        </h1>
+                        <p class="fs-4 mb-4 text-light">Beauty and bedroom must-haves, all in one place.</p>
+
+                        <div class="d-flex flex-wrap gap-4 mb-5">
+                            <a href="#" class="btn btn-pink btn-lg rounded-pill px-5 py-3 shadow">Start
+                                Shopping</a>
+                            <a href="#" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 shadow">Join
+                                Now</a>
+                        </div>
+
+                        <div class="stats d-flex justify-content-between text-center text-white">
+                            <div>
+                                <h3 class="fw-bold mb-1">200+</h3>
+                                <small class="text-uppercase letter-spacing">Product Varieties</small>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-1">20k+</h3>
+                                <small class="text-uppercase letter-spacing">Happy Customers</small>
+                            </div>
+                            <div>
+                                <h3 class="fw-bold mb-1">20+</h3>
+                                <small class="text-uppercase letter-spacing">Store Locations</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-            <div class="row row-cols-1 row-cols-sm-3 row-cols-lg-3 g-0 justify-content-center">
-                <div class="col">
-                    <div class="card border-0 bg-success rounded-0 p-4 text-light">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <svg width="60" height="60">mg
-                                    <use xlink:href="#fresh"></use>
-                                </svg>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body p-0">
-                                    <h5 class="text-light">Freshly Made</h5>
-                                    <p class="card-text">Handcrafted in small batches to ensure top quality and lasting
-                                        freshness.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border-0 bg-dark rounded-0 p-4 text-light">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <svg width="60" height="60">
-                                    <use xlink:href="#organic"></use>
-                                </svg>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body p-0">
-                                    <h5 class="text-light">100% Organic</h5>
-                                    <p class="card-text">Made with natural and organic ingredients, gentle for all skin
-                                        types.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col">
-                    <div class="card border-0 bg-danger rounded-0 p-4 text-light">
-                        <div class="row">
-                            <div class="col-md-3 text-center">
-                                <svg width="60" height="60">
-                                    <use xlink:href="#delivery"></use>
-                                </svg>
-                            </div>
-                            <div class="col-md-9">
-                                <div class="card-body p-0">
-                                    <h5 class="text-light">Fast Shipping</h5>
-                                    <p class="card-text">Fast, best delivery on all orders. Your beauty essentials,
-                                        delivered quick.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
         </div>
+
+        <style>
+            .stunning-section {
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+            }
+
+            .glass-panel {
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.25);
+                backdrop-filter: blur(20px);
+                box-shadow: 0 8px 32px 0 rgba(255, 105, 180, 0.2);
+                transition: box-shadow 0.3s ease;
+            }
+
+            .glass-panel:hover {
+                box-shadow: 0 12px 40px 0 rgba(255, 105, 180, 0.5);
+            }
+
+            /* Hero Panel */
+            .hero-panel .highlight-pink {
+                color: #ff69b4;
+                text-shadow: 0 0 10px #ff69b4;
+            }
+
+            .hero-panel p {
+                color: #fefefecc;
+            }
+
+            /* Buttons */
+            .btn-pink {
+                background: linear-gradient(135deg, #ff69b4, #ff85c1);
+                border: none;
+                color: #fff;
+                font-weight: 700;
+                box-shadow: 0 6px 15px rgba(255, 105, 180, 0.5);
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .btn-pink:hover {
+                transform: scale(1.1);
+                box-shadow: 0 10px 25px rgba(255, 105, 180, 0.75);
+            }
+
+            .btn-outline-light {
+                border: 2px solid #fff;
+                color: #fff;
+                background: transparent;
+                font-weight: 700;
+                box-shadow: 0 6px 15px rgba(255, 255, 255, 0.3);
+                transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+            }
+
+            .btn-outline-light:hover {
+                background-color: #fff;
+                color: #ff69b4;
+                transform: scale(1.1);
+                box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
+            }
+
+            /* Stats */
+            .stats>div {
+                flex: 1;
+            }
+
+            .stats h3 {
+                font-size: 2.5rem;
+                margin-bottom: 0.25rem;
+            }
+
+            .letter-spacing {
+                letter-spacing: 0.1em;
+                font-weight: 600;
+                font-size: 0.85rem;
+            }
+
+
+            .info-card {
+                background: linear-gradient(135deg, #ff85c1, #ff5ca4);
+                color: #fff;
+                border-radius: 20px;
+                transition: transform 0.4s ease, box-shadow 0.4s ease;
+                cursor: pointer;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                padding: 2rem;
+            }
+
+            .info-card:hover {
+                transform: translateY(-10px) scale(1.05);
+                box-shadow: 0 16px 40px rgba(255, 105, 180, 0.6);
+            }
+
+            .info-icon {
+                width: 70px;
+                height: 70px;
+                background: #fff;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1rem;
+                fill: #ff69b4;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            .info-card:hover .info-icon {
+                box-shadow: 0 0 20px #ff69b4;
+                transform: scale(1.2);
+            }
+
+            .info-card h5 {
+                font-weight: 700;
+                font-size: 1.3rem;
+                margin-bottom: 0.5rem;
+                text-shadow: 0 0 5px rgba(255, 255, 255, 0.7);
+            }
+
+            .info-card p {
+                font-size: 1rem;
+                line-height: 1.4;
+                color: #fefefecc;
+                text-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+            }
+
+
+            .animate-fade-in-left {
+                animation: fadeInLeft 1.2s ease-out forwards;
+                opacity: 0;
+            }
+
+            .animate-fade-in-right {
+                animation: fadeInRight 1.2s ease-out forwards;
+                opacity: 0;
+            }
+
+            @keyframes fadeInLeft {
+                0% {
+                    transform: translateX(-50px);
+                    opacity: 0;
+                }
+
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes fadeInRight {
+                0% {
+                    transform: translateX(50px);
+                    opacity: 0;
+                }
+
+                100% {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+
+
+            @media (max-width: 992px) {
+                .stats {
+                    flex-direction: column;
+                    gap: 1.5rem;
+                }
+
+                .stats>div {
+                    flex: none;
+                }
+            }
+
+            .info-icon {
+                width: 64px;
+                height: 64px;
+                background-color: #ff69b4;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin: 0 auto 1rem;
+            }
+
+            .info-icon svg {
+                fill: #fff;
+            }
+        </style>
     </section>
 
-    {{-- <section class="py-5 overflow-hidden">
+    <section class="pb-5" style="overflow-x: hidden;">
+
         <div class="container-lg">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
+                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
+                        <h2 class="section-title mb-0">Shop by Category</h2>
+                        <div class="d-flex align-items-center gap-3">
+                            <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                            <div class="swiper-buttons d-flex gap-2">
+                                <button
+                                    class="swiper-prev category-carousel-prev btn btn-pink rounded-circle">❮</button>
+                                <button
+                                    class="swiper-next category-carousel-next btn btn-pink rounded-circle">❯</button>
 
-                    <div class="section-header d-flex flex-wrap justify-content-between mb-5">
-                        <h2 class="section-title">Category</h2>
-
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary me-2">View All</a>
-                            <div class="swiper-buttons">
-                                <button class="swiper-prev category-carousel-prev btn btn-yellow">❮</button>
-                                <button class="swiper-next category-carousel-next btn btn-yellow">❯</button>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-            <div class="row">
-                <div class="col-md-12">
+        </div>
 
+        <div class="">
+
+            <div class="row category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+                <div class="col-md-12">
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Fruits & Veges</h4>
+                            <!-- Repeated Category Cards -->
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
+                                        alt="Fruits & Veges">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-2.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Breads & Sweets</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-2.jpg" class="rounded-circle"
+                                        alt="Breads & Sweets">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads & Sweets</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-3.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Fruits & Veges</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-3.jpg" class="rounded-circle"
+                                        alt="Fruits & Veges">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-4.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Beverages</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-4.jpg" class="rounded-circle"
+                                        alt="Beverages">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Beverages</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-5.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Meat Products</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-5.jpg" class="rounded-circle"
+                                        alt="Meat Products">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Meat Products</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-6.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Breads</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-6.jpg" class="rounded-circle"
+                                        alt="Breads">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-7.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Fruits & Veges</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-7.jpg" class="rounded-circle"
+                                        alt="Fruits & Veges">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-8.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Breads & Sweets</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-8.jpg" class="rounded-circle"
+                                        alt="Breads & Sweets">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads & Sweets</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Fruits & Veges</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
+                                        alt="Fruits & Veges">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Beverages</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
+                                        alt="Beverages">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Beverages</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Meat Products</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
+                                        alt="Meat Products">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Meat Products</h4>
                             </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center">
-                                <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
-                                    alt="Category Thumbnail">
-                                <h4 class="fs-6 mt-3 fw-normal category-title">Breads</h4>
+                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
+                                <div class="category-thumb-wrapper">
+                                    <img src="/assets1/images/category-thumb-1.jpg" class="rounded-circle"
+                                        alt="Breads">
+                                </div>
+                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads</h4>
                             </a>
-
                         </div>
                     </div>
-
-                </div>
-            </div>
-        </div>
-    </section> --}}
-
-    <section class="pb-5">
-        <div class="container-lg">
-
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
-
-                        <h2 class="section-title">Best selling products</h2>
-
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary rounded-1">View All</a>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div
-                        class="product-grid row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5">
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana111') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana122') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana122.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Grain Oatmeal</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(41)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$54.00</del>
-                                        <span class="text-dark fw-semibold">$50.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana126') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana126.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sharp Cheddar Cheese Block</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(32)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$14.00</del>
-                                        <span class="text-dark fw-semibold">$12.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana131') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana131.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Organic Baby Spinach</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana125') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana125.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Organic Spinach Leaves (Fresh Produce)</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana123') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana123.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Fresh Salmon</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana127') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana127.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Imported Italian Spaghetti Pasta</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col">
-                            <div class="product-item">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana128') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana128.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Granny Smith Apples</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                    <!-- / product-grid -->
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-3">
+
+    <style>
+        .section-header.bg-white {
+            background-color: #fff !important;
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            /* extra padding for breathing space */
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header.bg-white .section-title {
+            color: #333 !important;
+            /* change text from white to dark for contrast */
+        }
+
+        .section-header.bg-white .btn-outline-dark {
+            border-color: #ccc;
+            color: #555;
+        }
+
+        .section-header.bg-white .btn-outline-dark:hover {
+            background-color: #ff69b4;
+            border-color: #ff69b4;
+            color: #fff;
+        }
+
+        .section-header.bg-white {
+            border-radius: 0;
+            /* remove corners on sides */
+            padding-top: 1.5rem;
+            padding-bottom: 1.5rem;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-header.bg-white {
+            border-radius: 12px 12px 0 0;
+        }
+
+        .category-section {
+            background: linear-gradient(135deg, #ffb6d9 0%, #ffcfe0 100%);
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+        }
+
+        .category-card {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-decoration: none;
+        }
+
+        .category-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            box-shadow: 0 10px 30px rgba(255, 105, 180, 0.4);
+        }
+
+        .category-thumb-wrapper {
+            padding: 6px;
+            background: linear-gradient(145deg, #ff69b4, #ff85c1);
+            border-radius: 50%;
+            display: inline-block;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .category-thumb-wrapper img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 4px solid #fff;
+        }
+
+        .category-thumb-wrapper:hover {
+            box-shadow: 0 0 20px rgba(255, 105, 180, 0.7);
+        }
+
+        .category-title {
+            color: #fff;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.3);
+            font-size: 1rem;
+        }
+
+        .swiper-buttons .btn {
+            width: 44px;
+            height: 44px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            line-height: 1;
+            text-align: center;
+            padding: 0;
+            background-color: transparent;
+            border: 2px solid #fff;
+            color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        .swiper-buttons .btn:hover {
+            background-color: #fff;
+            color: #ff69b4;
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .category-title {
+                font-size: 0.9rem;
+            }
+
+            .category-thumb-wrapper img {
+                width: 90px;
+                height: 90px;
+            }
+        }
+    </style>
+
+
+    <section class="pb-5" style="overflow-x: hidden;">
+
         <div class="container-lg">
             <div class="row">
-                <div class="col-md-12">
-
-                    <div class="banner-blocks">
-
-                        <div class="banner-ad d-flex align-items-center large bg-info block-1"
-                            style="background: url('assets1/images/banner-ad-1.jpg') no-repeat; background-size: cover;">
-                            <div class="banner-content p-5">
-                                <div class="content-wrapper text-light">
-                                    <h3 class="banner-title text-white">Items on SALE</h3>
-                                    <p class="text-white">Discounts up to 30%</p>
-                                    <a href="#" class="btn-link">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="banner-ad bg-success-subtle block-2"
-                            style="background:url('assets1/images/banner-ad-2.jpg') no-repeat;background-size: cover">
-                            <div class="banner-content align-items-center p-5">
-                                <div class="content-wrapper text-light">
-                                    <h3 class="banner-title text-light">Combo offers</h3>
-                                    <p>Discounts up to 50%</p>
-                                    <a href="#" class="btn-link text-white">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="banner-ad bg-danger block-3"
-                            style="background:url('assets1/images/banner-ad-3.jpg') no-repeat;background-size: cover">
-                            <div class="banner-content align-items-center p-5">
-                                <div class="content-wrapper text-light">
-                                    <h3 class="banner-title text-light">Discount Coupons</h3>
-                                    <p>Discounts up to 40%</p>
-                                    <a href="#" class="btn-link text-white">Shop Now</a>
-                                </div>
-                            </div>
-                        </div>
-
+                <div class="col-12">
+                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
+                        <h2 class="section-title mb-0">Best selling products</h2>
+                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
                     </div>
-                    <!-- / Banner Blocks -->
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+            <div class="container-lg">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana112.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana113.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                        <img src="/assets1/images/shanana116.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana117.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana120.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana115.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana119.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana114.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
+
     </section>
 
-    <section id="featured-products" class="products-carousel">
-        <div class="container-lg overflow-hidden py-5">
-            <div class="row">
-                <div class="col-md-12">
+    <style>
+        .category-section {
+            background: linear-gradient(to right, #f9d2e6, #fad0c4);
+            width: 100%;
+            padding: 3rem 0;
+        }
+    </style>
+    </div>
+    </div>
 
-                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
+    </section>
 
-                        <h2 class="section-title">Featured products</h2>
+    <style>
+        .pb-5 {
+            padding-bottom: 3rem !important;
+        }
 
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary me-2">View All</a>
-                            <div class="swiper-buttons">
-                                <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
-                                <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
-                            </div>
-                        </div>
+        .section-header {
+            margin-bottom: 2.5rem !important;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 1rem;
+        }
+
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 0;
+        }
+
+        .btn-primary {
+            background-color: #ff69b4;
+            border-color: #ff69b4;
+            color: #fff;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: #e04b99;
+            border-color: #e04b99;
+            color: #fff;
+            transform: translateY(-2px);
+        }
+
+        .product-grid {
+            gap: 1.5rem 1.5rem;
+        }
+
+        .product-item {
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            padding: 1rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .product-item:hover {
+            border-color: #ff69b4;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .product-item figure {
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            border-radius: 50%;
+            border: 3px solid #fce4ec;
+            width: 180px;
+            /* Increased size */
+            height: 180px;
+            /* Increased size */
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+            /* Added padding inside the circle */
+            box-sizing: border-box;
+            /* Include padding within width/height */
+        }
+
+        .product-item figure img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 50%;
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .product-item figure img:hover {
+            transform: scale(1.05);
+        }
+
+        .product-item h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: #555;
+            flex-grow: 1;
+        }
+
+        .product-item .rating svg {
+            fill: #ffc107;
+            margin-right: 2px;
+        }
+
+        .product-item .rating span {
+            font-size: 0.9rem;
+            color: #777;
+        }
+
+        .product-item del {
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .product-item .text-dark.fw-semibold {
+            color: #333 !important;
+            font-size: 1.2rem;
+            font-weight: 700 !important;
+        }
+
+        .product-item .badge {
+            background-color: #ff69b4;
+            color: #fff;
+            padding: 0.3em 0.6em;
+            font-size: 0.75rem;
+            border-radius: 4px;
+        }
+
+        .product-item .button-area {
+            margin-top: 1rem;
+            padding: 1rem 0;
+        }
+
+        .product-item .input-number {
+            text-align: center;
+            border-radius: 4px;
+            height: 45px;
+        }
+
+        .product-item .btn-cart {
+            background-color: #ff69b4;
+            border-color: #ff69b4;
+            color: #fff;
+            font-size: 0.9rem;
+            padding: 0.75rem 1rem;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .product-item .btn-cart:hover {
+            background-color: #e04b99;
+            border-color: #e04b99;
+            transform: translateY(-2px);
+        }
+
+        .product-item .btn-outline-dark {
+            border-color: #ccc;
+            color: #777;
+            transition: all 0.3s ease;
+            width: 100%;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-item .btn-outline-dark:hover {
+            background-color: #ff69b4;
+            border-color: #ff69b4;
+            color: #fff;
+        }
+    </style>
+
+<section class="py-5" style="background-color: #fce4ec;">
+    <div class="container-lg">
+        <div class="row g-4">
+            <!-- Banner 1 -->
+            <div class="col-md-6">
+                <div class="p-4 shadow-sm h-100 d-flex flex-column align-items-center text-center"
+                     style="background-color: rgba(255, 255, 255, 0.95); border-radius: 1rem;">
+                    
+                    <!-- Image -->
+                    <figure class="mb-4">
+                        <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                            <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                 style="max-width: 180px; height: auto;" class="img-fluid">
+                        </a>
+                    </figure>
+
+                    <!-- Text Content -->
+                    <div class="content-wrapper">
+                        <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
+                        <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
+                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
                     </div>
-
                 </div>
             </div>
+
+            <!-- Banner 2 -->
+            <div class="col-md-6">
+                <div class="p-4 shadow-sm h-100 d-flex flex-column align-items-center text-center"
+                     style="background-color: rgba(255, 255, 255, 0.95); border-radius: 1rem;">
+                    
+                    <!-- Image -->
+                    <figure class="mb-4">
+                        <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                            <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                 style="max-width: 180px; height: auto;" class="img-fluid">
+                        </a>
+                    </figure>
+
+                    <!-- Text Content -->
+                    <div class="content-wrapper">
+                        <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
+                        <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
+                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+    <section id="featured-products" class="pb-5" style="overflow-x: hidden;">
+
+        <div class="container-lg">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-12">
+                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
+                        <h2 class="section-title mb-0">Featured products</h2>
+                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-                    <div class="swiper">
-                        <div class="swiper-wrapper">
+        <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+            <div class="container-lg">
+                <div
+                    class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana129') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana129.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Greek Style Plain Yogurt</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana130') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana130.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Pure Squeezed No Pulp Orange Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana131') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana131.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Fresh Oranges</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana132') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana132.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Gourmet Dark Chocolate Bars</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana124') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana124.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Fresh Green Celery</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-15.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sandwich Bread</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-16.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Honeycrisp Apples</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-17.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-18.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Honeycrisp Apples</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
                         </div>
                     </div>
-                    <!-- / products-carousel -->
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                 </div>
             </div>
         </div>
+
     </section>
 
     <section>
@@ -1953,1186 +2608,1195 @@
         </div>
     </section>
 
-    <section id="popular-products" class="products-carousel">
-        <div class="container-lg overflow-hidden py-5">
-            <div class="row">
-                <div class="col-md-12">
+    <section id="popular-products" class="pb-5" style="overflow-x: hidden;">
 
-                    <div class="section-header d-flex justify-content-between my-4">
-
-                        <h2 class="section-title">Most popular products</h2>
-
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary me-2">View All</a>
-                            <div class="swiper-buttons">
-                                <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
-                                <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="swiper">
-                        <div class="swiper-wrapper">
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana111') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sandwich Bread</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana131') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana131.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Honeycrisp Apples</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana130') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana130.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana126') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana126.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Honeycrisp Apples</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana123') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana123.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sunstar Fresh Melon Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/product-item/shanana124') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana124.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Greek Style Plain Yogurt</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-11.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Pure Squeezed No Pulp Orange Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-12.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Fresh Oranges</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-13.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Gourmet Dark Chocolate Bars</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                        </div>
-                    </div>
-                    <!-- / products-carousel -->
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="latest-products" class="products-carousel">
-        <div class="container-lg overflow-hidden pb-5">
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="section-header d-flex justify-content-between my-4">
-
-                        <h2 class="section-title">Just arrived</h2>
-
-                        <div class="d-flex align-items-center">
-                            <a href="#" class="btn btn-primary me-2">View All</a>
-                            <div class="swiper-buttons">
-                                <button class="swiper-prev products-carousel-prev btn btn-primary">❮</button>
-                                <button class="swiper-next products-carousel-next btn btn-primary">❯</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-
-                    <div class="swiper">
-                        <div class="swiper-wrapper">
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana127.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sunstar Fresh Melon Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana128.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana124.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sunstar Fresh Melon Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana132.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Gourmet Dark Chocolate</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/shanana130.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Sunstar Fresh Melon Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-10.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Greek Style Plain Yogurt</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-11.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Pure Squeezed No Pulp Orange Juice</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-12.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Fresh Oranges</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="product-item swiper-slide">
-                                <figure>
-                                    <a href="{{ url('/') }} " title="Product Title">
-                                        <img src="/assets1/images/product-thumb-13.png" alt="Product Thumbnail"
-                                            class="tab-image">
-                                    </a>
-                                </figure>
-                                <div class="d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Gourmet Dark Chocolate Bars</h3>
-                                    <div>
-                                        <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
-                                        </span>
-                                        <span>(222)</span>
-                                    </div>
-                                    <div class="d-flex justify-content-center align-items-center gap-2">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
-                                        <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
-                                    </div>
-                                    <div class="button-area p-3 pt-0">
-                                        <div class="row g-1 mt-2">
-                                            <div class="col-3"><input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"></div>
-                                            <div class="col-7"><a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 btn-cart"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg> Add to Cart</a></div>
-                                            <div class="col-2"><a href="#"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6"><svg
-                                                        width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg></a></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                    <!-- / products-carousel -->
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    {{-- <section id="latest-blog" class="pb-4">
         <div class="container-lg">
             <div class="row">
-                <div class="section-header d-flex align-items-center justify-content-between my-4">
-                    <h2 class="section-title">Our Recent Blog</h2>
-                    <a href="#" class="btn btn-primary">View All</a>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <article class="post-item card border-0 shadow-sm p-3">
-                        <div class="image-holder zoom-effect">
-                            <a href="#">
-                                <img src="/assets1/images/post-thumbnail-1.jpg" alt="post"
-                                    class="card-img-top">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                                <div class="meta-date"><svg width="16" height="16">
-                                        <use xlink:href="#calendar"></use>
-                                    </svg>22 Aug 2021</div>
-                                <div class="meta-categories"><svg width="16" height="16">
-                                        <use xlink:href="#category"></use>
-                                    </svg>tips & tricks</div>
-                            </div>
-                            <div class="post-header">
-                                <h3 class="post-title">
-                                    <a href="#" class="text-decoration-none">Top 10 casual look ideas to dress
-                                        up your kids</a>
-                                </h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim
-                                    tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-md-4">
-                    <article class="post-item card border-0 shadow-sm p-3">
-                        <div class="image-holder zoom-effect">
-                            <a href="#">
-                                <img src="/assets1/images/post-thumbnail-2.jpg" alt="post"
-                                    class="card-img-top">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                                <div class="meta-date"><svg width="16" height="16">
-                                        <use xlink:href="#calendar"></use>
-                                    </svg>25 Aug 2021</div>
-                                <div class="meta-categories"><svg width="16" height="16">
-                                        <use xlink:href="#category"></use>
-                                    </svg>trending</div>
-                            </div>
-                            <div class="post-header">
-                                <h3 class="post-title">
-                                    <a href="#" class="text-decoration-none">Latest trends of wearing street
-                                        wears supremely</a>
-                                </h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim
-                                    tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                            </div>
-                        </div>
-                    </article>
-                </div>
-                <div class="col-md-4">
-                    <article class="post-item card border-0 shadow-sm p-3">
-                        <div class="image-holder zoom-effect">
-                            <a href="#">
-                                <img src="/assets1/images/post-thumbnail-3.jpg" alt="post"
-                                    class="card-img-top">
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <div class="post-meta d-flex text-uppercase gap-3 my-2 align-items-center">
-                                <div class="meta-date"><svg width="16" height="16">
-                                        <use xlink:href="#calendar"></use>
-                                    </svg>28 Aug 2021</div>
-                                <div class="meta-categories"><svg width="16" height="16">
-                                        <use xlink:href="#category"></use>
-                                    </svg>inspiration</div>
-                            </div>
-                            <div class="post-header">
-                                <h3 class="post-title">
-                                    <a href="#" class="text-decoration-none">10 Different Types of comfortable
-                                        clothes ideas for women</a>
-                                </h3>
-                                <p>Lorem ipsum dolor sit amet, consectetur adipi elit. Aliquet eleifend viverra enim
-                                    tincidunt donec quam. A in arcu, hendrerit neque dolor morbi...</p>
-                            </div>
-                        </div>
-                    </article>
+                <div class="col-12">
+                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
+                        <h2 class="section-title mb-0">Most popular products</h2>
+                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </section> --}}
+
+        <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+            <div class="container-lg">
+                <div
+                    class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+
+    <section id="latest-products" class="pb-5" style="overflow-x: hidden;">
+
+        <div class="container-lg">
+            <div class="row">
+                <div class="col-12">
+                    <div class="section-header d-flex flex-wrap justify-content-between my-4">
+                        <h2 class="section-title mb-0">Just Arrived</h2>
+                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+            <div class="container-lg">
+                <div
+                    class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            style="box-sizing: border-box;">
+                            <figure class="mb-3 text-center">
+                                <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
+                                    <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
+                                        style="max-width: 100%; height: auto;">
+                                </a>
+                            </figure>
+                            <div class="flex-grow-1 d-flex flex-column text-center">
+                                <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                <div class="mb-2">
+                                    <span class="rating">
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-full"></use>
+                                        </svg>
+                                        <svg width="18" height="18" class="text-warning">
+                                            <use xlink:href="#star-half"></use>
+                                        </svg>
+                                    </span>
+                                    <span>(222)</span>
+                                </div>
+                                <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
+                                    <del>$24.00</del>
+                                    <span class="text-dark fw-semibold">$18.00</span>
+                                    <span
+                                        class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
+                                        OFF</span>
+                                </div>
+                                <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
+                                    <div class="row g-2 align-items-center">
+                                        <div class="col-3">
+                                            <input type="number" name="quantity"
+                                                class="form-control border-dark-subtle input-number quantity"
+                                                value="1"
+                                                style="min-width: 100%; height: 40px; text-align: center;">
+                                        </div>
+                                        <div class="col-7">
+                                            <a href="#"
+                                                class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#cart"></use>
+                                                </svg>
+                                                Add to Cart
+                                            </a>
+                                        </div>
+                                        <div class="col-2">
+                                            <a href="#"
+                                                class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
+                                                style="height: 40px;">
+                                                <svg width="18" height="18">
+                                                    <use xlink:href="#heart"></use>
+                                                </svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </section>
 
     <section class="pb-4 my-4">
         <div class="container-lg">
 
-            <div class="pt-5 rounded-5" style="background-color: #d561d5">
+            <div class="pt-5 rounded-5" style="background-color: #f9d2e6">
                 <div class="container">
                     <div class="row justify-content-center align-items-center">
                         <div class="col-md-4">
@@ -3170,84 +3834,76 @@
             <a href="#" class="btn btn-warning me-2 mb-2">Exfoliating Scrub</a>
             <a href="#" class="btn btn-warning me-2 mb-2">Lavender Face Mist</a>
             <a href="#" class="btn btn-warning me-2 mb-2">Charcoal Cleanser</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Coconut Hair Mask</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Eye Brightening Cream</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Green Tea Toner</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Shea Butter Lotion</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Nourishing Night Cream</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Tinted Lip Oil</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Bamboo Face Pads</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Caffeine Eye Serum</a>
         </div>
 
     </section>
 
-    <section class="py-5">
-        <div class="container-lg">
-            <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4">
-                <div class="col">
-                    <div class="card mb-3 border border-dark-subtle p-3">
-                        <div class="text-dark mb-3">
-                            <svg width="32" height="32">
-                                <use xlink:href="#package"></use>
-                            </svg>
-                        </div>
-                        <div class="card-body p-0">
-                            <h5>Fast Delivery</h5>
-                            <p class="card-text">Your orders are packed carefully and shipped fast so your beauty care
-                                arrives
-                                right on time.</p>
-                        </div>
+<section class="py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+    <div class="container-lg">
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+            <!-- Card 1 -->
+            <div class="col">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center">
+                    <div class="mb-3 text-pink">
+                        <svg width="40" height="40">
+                            <use xlink:href="#package"></use>
+                        </svg>
                     </div>
+                    <h5 class="fw-semibold mb-2">Fast Delivery</h5>
+                    <p class="text-secondary fs-7 mb-0">
+                        Your orders are packed carefully and shipped fast so your beauty care arrives right on time.
+                    </p>
                 </div>
-                <div class="col">
-                    <div class="card mb-3 border border-dark-subtle p-3">
-                        <div class="text-dark mb-3">
-                            <svg width="32" height="32">
-                                <use xlink:href="#secure"></use>
-                            </svg>
-                        </div>
-                        <div class="card-body p-0">
-                            <h5>Secure Payment</h5>
-                            <p class="card-text">All transactions are encrypted to ensure your personal details remain
-                                safe and private.</p>
-                        </div>
-                    </div>
-                </div>
+            </div>
 
-                <div class="col">
-                    <div class="card mb-3 border border-dark-subtle p-3">
-                        <div class="text-dark mb-3">
-                            <svg width="32" height="32">
-                                <use xlink:href="#savings"></use>
-                            </svg>
-                        </div>
-                        <div class="card-body p-0">
-                            <h5>Top Products</h5>
-                            <p class="card-text">We carefully select the best beauty essentials trusted by customers
-                                and skincare experts.</p>
-                        </div>
+            <!-- Card 2 -->
+            <div class="col">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center">
+                    <div class="mb-3 text-pink">
+                        <svg width="40" height="40">
+                            <use xlink:href="#secure"></use>
+                        </svg>
                     </div>
+                    <h5 class="fw-semibold mb-2">Secure Payment</h5>
+                    <p class="text-secondary fs-7 mb-0">
+                        All transactions are encrypted to ensure your personal details remain safe and private.
+                    </p>
                 </div>
+            </div>
 
-                <div class="col">
-                    <div class="card mb-3 border border-dark-subtle p-3">
-                        <div class="text-dark mb-3">
-                            <svg width="32" height="32">
-                                <use xlink:href="#offers"></use>
-                            </svg>
-                        </div>
-                        <div class="card-body p-0">
-                            <h5>Daily Deals</h5>
-                            <p class="card-text">Shop limited-time beauty offers and save more while treating your
-                                skin to something new.</p>
-                        </div>
+            <!-- Card 3 -->
+            <div class="col">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center">
+                    <div class="mb-3 text-pink">
+                        <svg width="40" height="40">
+                            <use xlink:href="#savings"></use>
+                        </svg>
                     </div>
+                    <h5 class="fw-semibold mb-2">Top Products</h5>
+                    <p class="text-secondary fs-7 mb-0">
+                        We carefully select the best beauty essentials trusted by customers and skincare experts.
+                    </p>
                 </div>
+            </div>
 
+            <!-- Card 4 -->
+            <div class="col">
+                <div class="p-4 bg-white rounded-3 shadow-sm h-100 text-center">
+                    <div class="mb-3 text-pink">
+                        <svg width="40" height="40">
+                            <use xlink:href="#offers"></use>
+                        </svg>
+                    </div>
+                    <h5 class="fw-semibold mb-2">Daily Deals</h5>
+                    <p class="text-secondary fs-7 mb-0">
+                        Shop limited-time beauty offers and save more while treating your skin to something new.
+                    </p>
+                </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
 
 
     <footer class="py-5">
