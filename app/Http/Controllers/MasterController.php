@@ -2,6 +2,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\password_reset_table;
+use App\Models\Product;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -15,7 +16,20 @@ class MasterController extends Controller
 {
     public function home()
     {
-        return view('Ecommerce.home');
+        $products = Product::all();
+
+        $bestSellingProducts = Product::where('labels->bestSelling', true)->get();
+        $featuredProducts    = Product::where('labels->featured', true)->get();
+        $popularProducts     = Product::where('labels->popular', true)->get();
+        $newProducts         = Product::where('labels->new', true)->get();
+
+        return view('Ecommerce.home', compact(
+            'products',
+            'bestSellingProducts',
+            'featuredProducts',
+            'popularProducts',
+            'newProducts'
+        ));
     }
 
     public function itemShop()
@@ -56,7 +70,9 @@ class MasterController extends Controller
 
     public function productItem($id)
     {
-        return view('Ecommerce.product-item', compact('id'));
+        $product = Product::findOrFail($id);
+
+        return view('Ecommerce.product-item', compact('product'));
     }
 
     public function userProfile()

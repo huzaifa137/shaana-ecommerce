@@ -64,9 +64,13 @@ Route::controller(ProductsController::class)->group(function () {
 
         Route::group(['prefix' => '/shanana'], function () {
             Route::get('/product-categories', 'productCategories')->name('product.categories');
+            Route::get('/add-category', 'addCategory')->name('add.category');
             Route::get('/all-products', 'allProducts')->name('all.products');
             Route::get('/add-product', 'addProduct')->name('add.product');
             Route::get('/edit-product/{id}/', 'editProduct')->name('edit.product');
+
+            Route::get('/delete-categories/{id}/', 'deleteCategories')->name('delete.categories');
+            Route::get('/edit-categories/{id}/', 'editCategories')->name('edit.categories');
         });
 
         Route::post('/store-category', 'storeCategory')->name('store.category');

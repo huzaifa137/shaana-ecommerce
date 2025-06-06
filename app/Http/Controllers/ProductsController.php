@@ -13,6 +13,13 @@ class ProductsController extends Controller
     {
         $categories = Category::all();
 
+        return view('Products.all-categories', compact(['categories']));
+    }
+
+    public function addCategory()
+    {
+        $categories = Category::all();
+
         return view('Products.create-category', compact(['categories']));
     }
 

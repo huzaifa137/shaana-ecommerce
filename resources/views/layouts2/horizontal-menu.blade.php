@@ -34,11 +34,13 @@
                     </a>
                     <ul class="sub-menu">
                         <li aria-haspopup="true"><a href="{{ route('all.products') }}">All Products</a></li>
+                        <li aria-haspopup="true"><a href="{{ route('add.product') }}">Add Product</a></li>
                         <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Product Prices</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Product Inventory</a>
-                        </li>
-                        <li aria-haspopup="true"><a href="{{ route('product.categories') }}">Product Categories</a>
-                        </li>
+                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Product Inventory</a></li>
+                        
+                        <li aria-haspopup="true"><a href="{{ route('add.category') }}">Add Categories</a></li>
+                        <li aria-haspopup="true"><a href="{{ route('product.categories') }}">Product Categories</a></li>
+                        
                         <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Tags</a></li>
                         <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Attributes</a>
                         </li>
