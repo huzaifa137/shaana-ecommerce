@@ -565,6 +565,22 @@
                                 </div>
                             </div>
 
+                            <!-- Styled Section Container -->
+                            <div class="card p-4 mb-4 shadow-sm border rounded">
+                                <h4 class="mb-4">Product Reviews</h4>
+
+                                <!-- Inner grayish container -->
+                                <div class="p-3 border rounded bg-light h-100">
+                                    <div id="review-container"></div>
+
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="addReview()">
+                                            <i class="fas fa-plus me-1"></i> Add Review
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-footer mt-2">
                                 <button id="saveProductBtn" class="btn btn-primary" type="button">
                                     <i class="fas fa-save"></i> Save
@@ -588,6 +604,60 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        let reviewIndex = 0;
+
+        function addReview() {
+            const container = document.getElementById('review-container');
+
+            const row = document.createElement('div');
+            row.className = 'border rounded bg-white p-3 mb-3';
+            row.dataset.index = reviewIndex;
+
+            row.innerHTML = `
+        <div class="form-row">
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="reviews[${reviewIndex}][name]" placeholder="Enter name">
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="reviews[${reviewIndex}][email]" placeholder="Enter email">
+            </div>
+            <div class="col-md-2 mb-3">
+                <label class="form-label">Rating</label>
+                <select class="form-control" name="reviews[${reviewIndex}][rating]">
+                    <option value="">Select rating</option>
+                    <option value="5">5 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="2">2 Stars</option>
+                    <option value="1">1 Star</option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label class="form-label">Review Date</label>
+                <input type="date" class="form-control" name="reviews[${reviewIndex}][date]">
+            </div>
+            <div class="col-md-2 mb-3 d-flex align-items-end">
+                <button type="button" class="btn btn-danger btn-md w-100" onclick="this.closest('.border').remove()">
+                    🗑️ Delete
+                </button>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col-12 mb-3">
+                <label class="form-label">Review Message</label>
+                <textarea class="form-control" name="reviews[${reviewIndex}][message]" rows="3" placeholder="Write your review..."></textarea>
+            </div>
+        </div>
+    `;
+
+            container.appendChild(row);
+            reviewIndex++;
+        }
+    </script>
 
     <script>
         $(document).ready(function() {
@@ -628,8 +698,8 @@
                 // Collect attributes
                 let attributes = [];
                 $('#attribute-container .form-row').each(function() {
-                    const attrSelect = $(this).find('select').eq(0); // Attribute name
-                    const valSelect = $(this).find('select').eq(1); // Attribute value
+                    const attrSelect = $(this).find('select').eq(0);
+                    const valSelect = $(this).find('select').eq(1);
 
                     const attrName = attrSelect.val();
                     const attrValue = valSelect.val();
@@ -642,12 +712,33 @@
                     }
                 });
 
+                // ✅ Collect reviews
+                let reviews = [];
+                $('#review-container .border').each(function() {
+                    const row = $(this);
+
+                    const name = row.find('input[name*="[name]"]').val().trim();
+                    const email = row.find('input[name*="[email]"]').val().trim();
+                    const rating = row.find('select[name*="[rating]"]').val();
+                    const date = row.find('input[name*="[date]"]').val();
+                    const message = row.find('textarea[name*="[message]"]').val().trim();
+
+                    // Optional: Only push reviews that have at least name and message
+                    if (name && message) {
+                        reviews.push({
+                            name,
+                            email,
+                            rating,
+                            date,
+                            message
+                        });
+                    }
+                });
 
                 // Validation
                 let isValid = true;
                 let errorMessages = [];
 
-                // Product Name
                 if (!productName) {
                     $('#product_name').addClass('is-invalid');
                     errorMessages.push('Please enter a product name.');
@@ -656,7 +747,6 @@
                     $('#product_name').removeClass('is-invalid');
                 }
 
-                // Category
                 if (!category) {
                     $('#category_select').addClass('is-invalid');
                     errorMessages.push('Please select a category.');
@@ -665,7 +755,6 @@
                     $('#category_select').removeClass('is-invalid');
                 }
 
-                // Status
                 if (!status) {
                     $('#status_select').addClass('is-invalid');
                     errorMessages.push('Please select a status.');
@@ -674,13 +763,11 @@
                     $('#status_select').removeClass('is-invalid');
                 }
 
-                // Description
                 if (!description) {
                     errorMessages.push('Please enter a description.');
                     isValid = false;
                 }
 
-                // Price
                 if (!price) {
                     $('#price').addClass('is-invalid');
                     errorMessages.push('Please enter a price.');
@@ -689,17 +776,14 @@
                     $('#price').removeClass('is-invalid');
                 }
 
-
-                // salePrice
                 if (!salePrice) {
                     $('#salePrice').addClass('is-invalid');
-                    errorMessages.push('Please sale price.');
+                    errorMessages.push('Please enter a sale price.');
                     isValid = false;
                 } else {
-                    $('#quantity').removeClass('is-invalid');
+                    $('#salePrice').removeClass('is-invalid');
                 }
 
-                // Quantity
                 if (!quantity) {
                     $('#quantity').addClass('is-invalid');
                     errorMessages.push('Please enter a quantity.');
@@ -708,7 +792,6 @@
                     $('#quantity').removeClass('is-invalid');
                 }
 
-                // SKU
                 if (!sku) {
                     $('#sku').addClass('is-invalid');
                     errorMessages.push('Please enter a SKU.');
@@ -717,19 +800,16 @@
                     $('#sku').removeClass('is-invalid');
                 }
 
-                // At least one label selected
                 if (!Object.values(labels).some(Boolean)) {
                     errorMessages.push('Please select at least one product label.');
                     isValid = false;
                 }
 
-                // At least one tax selected
                 if (!Object.values(taxes).some(Boolean)) {
                     errorMessages.push('Please select at least one tax option.');
                     isValid = false;
                 }
 
-                // Images (at least one required)
                 if (!image1 && !image2 && !image3) {
                     errorMessages.push('Please upload at least one product image.');
                     isValid = false;
@@ -772,6 +852,7 @@
                         formData.append('quantity', quantity);
                         formData.append('sku', sku);
                         formData.append('attributes', JSON.stringify(attributes));
+                        formData.append('reviews', JSON.stringify(reviews)); 
 
                         if (image1) formData.append('featured_image_1', image1);
                         if (image2) formData.append('featured_image_2', image2);
@@ -798,7 +879,7 @@
                                     location.reload();
                                 });
                             },
-                            // error: function(xhr) {
+                            //  error: function(xhr) {
                             //     let errorMsg = 'An error occurred.';
                             //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
                             //         errorMsg = Object.values(xhr.responseJSON.errors)

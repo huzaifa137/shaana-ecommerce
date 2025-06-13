@@ -68,15 +68,28 @@ Route::controller(ProductsController::class)->group(function () {
             Route::get('/all-products', 'allProducts')->name('all.products');
             Route::get('/add-product', 'addProduct')->name('add.product');
             Route::get('/edit-product/{id}/', 'editProduct')->name('edit.product');
+            Route::get('/edit-category/{id}/', 'editCategory')->name('edit.category');
 
             Route::get('/delete-categories/{id}/', 'deleteCategories')->name('delete.categories');
             Route::get('/edit-categories/{id}/', 'editCategories')->name('edit.categories');
         });
 
+        Route::post('/update-category/{id}', 'updateCategory')->name('categories.update');
         Route::post('/store-category', 'storeCategory')->name('store.category');
         Route::post('/store-product', 'storeProduct')->name('store.product');
+
         Route::put('/products/{id}', 'updateProduct')->name('products.update');
         Route::delete('/products/{product}', 'deleteProduct')->name('products.destroy');
+        Route::delete('/categories/{category}', 'deleteCategory')->name('category.destroy');
+
+    });
+
+    Route::group(['middleware' => ['AdminOrCustomerAuth']], function () {
+
+        Route::post('/shop/add-to-cart/{id}', 'addToCart')->name('shop.add.cart');
+        Route::get('/shop/cart/remove/{id}', 'removeFromCart')->name('shop.cart.remove');
+        Route::post('/cart/update-quantity', 'updateQuantity')->name('shop.cart.updateQuantity');
+        Route::get('/exchange-rates', 'getExchangeRates')->name('exchange.rates');	
 
     });
 });

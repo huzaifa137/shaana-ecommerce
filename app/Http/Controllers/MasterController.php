@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\password_reset_table;
 use App\Models\Product;
+use App\Models\ProductReview;
 use App\Models\User;
 use DB;
 use Illuminate\Http\Request;
@@ -16,35 +18,49 @@ class MasterController extends Controller
 {
     public function home()
     {
-        $products = Product::all();
-
+        $products            = Product::all();
+        $categories          = Category::all();
         $bestSellingProducts = Product::where('labels->bestSelling', true)->get();
         $featuredProducts    = Product::where('labels->featured', true)->get();
         $popularProducts     = Product::where('labels->popular', true)->get();
         $newProducts         = Product::where('labels->new', true)->get();
 
+        $popupProducts = $featuredProducts->take(15); 
+
         return view('Ecommerce.home', compact(
             'products',
+            'popupProducts',
             'bestSellingProducts',
             'featuredProducts',
             'popularProducts',
-            'newProducts'
+            'newProducts',
+            'categories',
         ));
     }
 
     public function itemShop()
     {
-        return view('Ecommerce.item-shop');
+        $products         = Product::all();
+        $categories       = Category::all();
+        $featuredProducts = Product::where('labels->featured', true)->paginate(5);
+        $popupProducts = $featuredProducts->take(15); 
+
+        return view('Ecommerce.item-shop', compact('products', 'categories', 'featuredProducts', 'popupProducts'));
     }
 
     public function itemCart()
     {
-        return view('Ecommerce.item-cart');
+        $addedProducts = Session::get('cart', []);
+
+        return view('Ecommerce.item-cart', compact('addedProducts'));
     }
 
     public function itemCheckout()
     {
-        return view('Ecommerce.item-checkout');
+        $cart = session()->get('cart', []);
+        $user = User::find(Session('LoggedCustomer'));
+
+        return view('Ecommerce.item-checkout', compact('cart', 'user'));
     }
 
     public function itemDetails()
@@ -70,9 +86,13 @@ class MasterController extends Controller
 
     public function productItem($id)
     {
-        $product = Product::findOrFail($id);
+        $product          = Product::findOrFail($id);
+        $categories       = Category::all();
+        $reviews          = ProductReview::where('product_id', $product->id)->get();
+        $featuredProducts = Product::where('labels->featured', true)->paginate(5);
+        $products         = Product::all();
 
-        return view('Ecommerce.product-item', compact('product'));
+        return view('Ecommerce.product-item', compact('product', 'categories', 'reviews', 'featuredProducts', 'products'));
     }
 
     public function userProfile()
@@ -152,7 +172,7 @@ class MasterController extends Controller
             'postcode'   => $user->postcode,
             'mobile'     => $user->mobile,
             'password'   => trim($request->passwordInput),
-            'title'      => 'UgandanProgrammer - User Account has been created successfully.',
+            'title'      => 'Shanana Beauty Products - User Account has been created successfully.',
         ];
 
         try {

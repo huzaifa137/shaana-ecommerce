@@ -127,4 +127,12 @@ class Helper extends Controller
         return $string;
     }
 
+    public static function product_category_name($category_id)
+    {
+        $category_id  = (int) $category_id;
+        $category = DB::table('categories')->where('id', '=', $category_id)->first();
+
+        return $category_name = @$category->name;
+    }
+
 }

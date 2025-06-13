@@ -130,8 +130,6 @@
 @section('content')
     <div class="row">
 
-
-
         <div class="col-xl-12 col-lg-6">
             <div class="row">
 
@@ -283,7 +281,6 @@
                                 <div class="form-group mt-3">
 
                                     <!-- Styled Container for Image Uploads -->
-                                    <!-- Styled Container for Image Uploads -->
                                     <div class="card p-4 mb-4 shadow-sm border rounded">
                                         <h4 class="mb-4">Product Images</h4>
 
@@ -422,11 +419,76 @@
                                 </div>
                             </div>
 
+                            <!-- Product Reviews Section -->
+                            <div class="card p-4 mb-4 shadow-sm border rounded">
+                                <h4 class="mb-4">Product Reviews</h4>
 
+                                <div class="p-3 border rounded bg-light h-100">
+                                    <div id="review-container">
+                                        @foreach ($reviews as $index => $review)
+                                            <div class="border rounded bg-white p-3 mb-3 position-relative review-item">
+                                                <div class="form-row">
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label">Name</label>
+                                                        <input type="text" class="form-control"
+                                                            name="reviews[{{ $index }}][name]"
+                                                            value="{{ $review->reviewer_name }}">
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label">Email</label>
+                                                        <input type="email" class="form-control"
+                                                            name="reviews[{{ $index }}][email]"
+                                                            value="{{ $review->reviewer_email }}">
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label">Rating</label>
+                                                        <select class="form-control"
+                                                            name="reviews[{{ $index }}][rating]">
+                                                            <option value="">Select rating</option>
+                                                            @for ($i = 5; $i >= 1; $i--)
+                                                                <option value="{{ $i }}"
+                                                                    {{ $review->rating == $i ? 'selected' : '' }}>
+                                                                    {{ $i }} Star{{ $i > 1 ? 's' : '' }}
+                                                                </option>
+                                                            @endfor
+                                                        </select>
+                                                    </div>
+                                                    <div class="col-md-3 mb-3">
+                                                        <label class="form-label">Review Date</label>
+                                                        <input type="date" class="form-control"
+                                                            name="reviews[{{ $index }}][date]"
+                                                            value="{{ \Carbon\Carbon::parse($review->review_date)->format('Y-m-d') }}">
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="col-12 mb-3">
+                                                        <label class="form-label">Review Message</label>
+                                                        <textarea class="form-control" name="reviews[{{ $index }}][message]" rows="3">{{ $review->review_message }}</textarea>
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="btn btn-danger btn-sm review-remove-btn">
+                                                    🗑️
+                                                </button>
+                                            </div>
+                                        @endforeach
+                                    </div>
+
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <button type="button" class="btn btn-primary btn-sm" onclick="addReview()">
+                                            <i class="fas fa-plus me-1"></i> Add Review
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
 
                             <div class="form-footer mt-2">
                                 <button id="saveProductBtn" class="btn btn-primary" type="button">
-                                    <i class="fas fa-save"></i> Save
+                                    <i class="fas fa-save"></i> Save Product Updates
+                                </button>
+
+
+                                <button id="saveReviewBtn" class="btn btn-primary" type="button">
+                                    <i class="fas fa-star"></i> Save Reviews Updates
                                 </button>
                             </div>
                         </div>
@@ -563,7 +625,6 @@
         });
     </script>
 
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             ClassicEditor
@@ -679,6 +740,64 @@
         }
     </script>
 
+    <script>
+        let reviewIndex = {{ count($reviews) }};
+
+        function addReview() {
+            const container = document.getElementById('review-container');
+
+            const row = document.createElement('div');
+            row.className = 'border rounded bg-white p-3 mb-3 position-relative review-item';
+
+            row.innerHTML = `
+            <div class="form-row">
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" name="reviews[${reviewIndex}][name]" placeholder="Enter name">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" name="reviews[${reviewIndex}][email]" placeholder="Enter email">
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Rating</label>
+                    <select class="form-control" name="reviews[${reviewIndex}][rating]">
+                        <option value="">Select rating</option>
+                        <option value="5">5 Stars</option>
+                        <option value="4">4 Stars</option>
+                        <option value="3">3 Stars</option>
+                        <option value="2">2 Stars</option>
+                        <option value="1">1 Star</option>
+                    </select>
+                </div>
+                <div class="col-md-3 mb-3">
+                    <label class="form-label">Review Date</label>
+                    <input type="date" class="form-control" name="reviews[${reviewIndex}][date]">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="col-12 mb-3">
+                    <label class="form-label">Review Message</label>
+                    <textarea class="form-control" name="reviews[${reviewIndex}][message]" rows="3" placeholder="Write your review..."></textarea>
+                </div>
+            </div>
+            <button type="button" class="btn btn-danger btn-sm review-remove-btn">
+                🗑️
+            </button>
+        `;
+
+            container.appendChild(row);
+            reviewIndex++;
+        }
+
+        // Remove review item (existing or new)
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('review-remove-btn')) {
+                e.target.closest('.review-item').remove();
+            }
+        });
+    </script>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
@@ -699,9 +818,8 @@
                 e.preventDefault();
 
                 const btn = $(this);
-                const productId = $('#product_id').val(); // ✅ Add this line
+                const productId = $('#product_id').val();
 
-                // Collect values
                 const productName = $('#product_name').val().trim();
                 const category = $('#category_select').val();
                 const status = $('#status_select').val();
@@ -730,12 +848,11 @@
                     export: $('#tax-export').is(':checked')
                 };
 
-                // Collect attributes
+                // Attributes
                 let attributes = [];
                 $('#attribute-container .form-row').each(function() {
-                    const attrSelect = $(this).find('select').eq(0); // Attribute name
-                    const valSelect = $(this).find('select').eq(1); // Attribute value
-
+                    const attrSelect = $(this).find('select').eq(0);
+                    const valSelect = $(this).find('select').eq(1);
                     const attrName = attrSelect.val();
                     const attrValue = valSelect.val();
 
@@ -747,11 +864,39 @@
                     }
                 });
 
-                // Validation
+                // Reviews
+                let reviews = [];
+                $('#review-container .review-box').each(function() {
+                    const id = $(this).data('id') || null;
+                    const name = $(this).find('.reviewer-name').val()?.trim() || '';
+                    const email = $(this).find('.reviewer-email').val()?.trim() || '';
+                    const rating = $(this).find('.reviewer-rating').val()?.trim() || '';
+                    const message = $(this).find('.reviewer-message').val()?.trim() || '';
+                    const date = $(this).find('.reviewer-date').val()?.trim() || '';
+
+                    if (name && message) { // Only add if required fields are present
+                        reviews.push({
+                            id,
+                            name,
+                            email,
+                            rating,
+                            message,
+                            date
+                        });
+                        console.log('Review added:', {
+                            id,
+                            name,
+                            email,
+                            rating,
+                            message,
+                            date
+                        });
+                    }
+                });
+
                 let isValid = true;
                 let errorMessages = [];
 
-                // Product Name
                 if (!productName) {
                     $('#product_name').addClass('is-invalid');
                     errorMessages.push('Please enter a product name.');
@@ -760,7 +905,6 @@
                     $('#product_name').removeClass('is-invalid');
                 }
 
-                // Category
                 if (!category) {
                     $('#category_select').addClass('is-invalid');
                     errorMessages.push('Please select a category.');
@@ -769,7 +913,6 @@
                     $('#category_select').removeClass('is-invalid');
                 }
 
-                // Status
                 if (!status) {
                     $('#status_select').addClass('is-invalid');
                     errorMessages.push('Please select a status.');
@@ -778,13 +921,11 @@
                     $('#status_select').removeClass('is-invalid');
                 }
 
-                // Description
                 if (!description) {
                     errorMessages.push('Please enter a description.');
                     isValid = false;
                 }
 
-                // Price
                 if (!price) {
                     $('#price').addClass('is-invalid');
                     errorMessages.push('Please enter a price.');
@@ -793,7 +934,6 @@
                     $('#price').removeClass('is-invalid');
                 }
 
-                // Sale Price
                 if (!salePrice) {
                     $('#salePrice').addClass('is-invalid');
                     errorMessages.push('Please enter a sale price.');
@@ -802,7 +942,6 @@
                     $('#salePrice').removeClass('is-invalid');
                 }
 
-                // Quantity
                 if (!quantity) {
                     $('#quantity').addClass('is-invalid');
                     errorMessages.push('Please enter a quantity.');
@@ -811,7 +950,6 @@
                     $('#quantity').removeClass('is-invalid');
                 }
 
-                // SKU
                 if (!sku) {
                     $('#sku').addClass('is-invalid');
                     errorMessages.push('Please enter a SKU.');
@@ -820,22 +958,18 @@
                     $('#sku').removeClass('is-invalid');
                 }
 
-                // At least one label selected
                 if (!Object.values(labels).some(Boolean)) {
                     errorMessages.push('Please select at least one product label.');
                     isValid = false;
                 }
 
-                // At least one tax selected
                 if (!Object.values(taxes).some(Boolean)) {
                     errorMessages.push('Please select at least one tax option.');
                     isValid = false;
                 }
 
-                // Images validation with existing images check
                 const hasExistingImage = existingImages.image1 || existingImages.image2 || existingImages
                     .image3;
-
                 if (!hasExistingImage && !image1 && !image2 && !image3) {
                     errorMessages.push('Please upload at least one product image.');
                     isValid = false;
@@ -869,6 +1003,7 @@
                             'Saving... <i class="fas fa-spinner fa-spin"></i>');
 
                         const formData = new FormData();
+
                         formData.append('product_name', productName);
                         formData.append('category', category);
                         formData.append('status', status);
@@ -878,28 +1013,26 @@
                         formData.append('quantity', quantity);
                         formData.append('sku', sku);
 
-                        // Append attributes array properly
                         attributes.forEach((attr, index) => {
                             formData.append(`attributes[${index}][attribute]`, attr
                                 .attribute);
                             formData.append(`attributes[${index}][value]`, attr.value);
                         });
 
-                        // Append labels object properly
                         Object.entries(labels).forEach(([key, value]) => {
                             formData.append(`labels[${key}]`, value ? 1 : 0);
                         });
 
-                        // Append taxes object properly
                         Object.entries(taxes).forEach(([key, value]) => {
                             formData.append(`taxes[${key}]`, value ? 1 : 0);
                         });
-
 
                         if (image1) formData.append('featured_image_1', image1);
                         if (image2) formData.append('featured_image_2', image2);
                         if (image3) formData.append('featured_image_3', image3);
 
+                        // Reviews as JSON string
+                        formData.append('reviews', JSON.stringify(reviews));
                         formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
                         $.ajax({
@@ -914,27 +1047,13 @@
                             success: function(response) {
                                 Swal.fire({
                                     icon: 'success',
-                                    title: 'Product Saved',
+                                    title: 'Product Updated',
                                     text: response.message ||
-                                        'The product was saved successfully.',
+                                        'The product was updated successfully.',
                                 }).then(() => {
                                     location.reload();
                                 });
                             },
-                            // error: function(xhr) {
-                            //     let errorMsg = 'An error occurred.';
-                            //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
-                            //         errorMsg = Object.values(xhr.responseJSON.errors)
-                            //             .flat().join('<br>');
-                            //     } else if (xhr.responseJSON?.message) {
-                            //         errorMsg = xhr.responseJSON.message;
-                            //     }
-                            //     Swal.fire({
-                            //         icon: 'error',
-                            //         title: 'Error',
-                            //         html: errorMsg,
-                            //     });
-                            // },
                             error: function(data) {
                                 $('body').html(data.responseText);
                             },

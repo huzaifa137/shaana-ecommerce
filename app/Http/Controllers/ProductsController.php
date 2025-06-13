@@ -3,7 +3,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\ProductReview;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -25,7 +27,6 @@ class ProductsController extends Controller
 
     public function storeCategory(Request $request)
     {
-
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
             'parent'         => 'required',
@@ -39,8 +40,8 @@ class ProductsController extends Controller
         if ($request->hasFile('featured_image')) {
             $image     = $request->file('featured_image');
             $imageName = Str::uuid() . '.' . $image->getClientOriginalExtension();
-            $imagePath = $image->storeAs('public/featured_images', $imageName);
-            $imagePath = Storage::url($imagePath);
+            // Store image in storage/app/public/featured_images and get relative path
+            $imagePath = $image->storeAs('featured_images', $imageName, 'public');
         }
 
         $category = Category::create([
@@ -55,6 +56,62 @@ class ProductsController extends Controller
             'message'  => 'Category created successfully!',
             'category' => $category,
         ]);
+    }
+
+    public function editCategory($id)
+    {
+        $category   = Category::findOrFail($id);
+        $categories = Category::all();
+
+        return view('Products.edit-category', compact('category', 'categories'));
+    }
+
+    public function updateCategory(Request $request, $id)
+    {
+        $validated = $request->validate([
+            'name'           => 'required|string|max:255',
+            'parent'         => 'nullable|integer',
+            'status'         => 'required|in:10,0,1',
+            'description'    => 'nullable|string',
+            'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
+        ]);
+
+        $category = Category::findOrFail($id);
+
+        if ($request->hasFile('featured_image')) {
+            $image                    = $request->file('featured_image');
+            $imageName                = Str::uuid() . '.' . $image->getClientOriginalExtension();
+            $imagePath                = $image->storeAs('featured_images', $imageName, 'public');
+            $category->featured_image = $imagePath;
+        }
+
+        $category->name        = $validated['name'];
+        $category->parent_id   = $validated['parent'] ?: null;
+        $category->status      = $validated['status'];
+        $category->description = $validated['description'] ?? null;
+
+        $category->save();
+
+        return response()->json([
+            'message'  => 'Category updated successfully!',
+            'category' => $category,
+        ]);
+    }
+
+    public function deleteCategory(Category $category)
+    {
+        try {
+
+            if ($category->featured_image_1) {
+                Storage::delete($category->featured_image_1);
+            }
+
+            $category->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Delete failed'], 500);
+        }
     }
 
     public function allProducts()
@@ -78,8 +135,9 @@ class ProductsController extends Controller
         $labels = $product->labels ?? [];
         $taxes  = $product->taxes ?? [];
 
-        return view('Products.edit-product', compact('product', 'categories', 'labels', 'taxes'));
+        $reviews = ProductReview::where('product_id', $product->id)->get();
 
+        return view('Products.edit-product', compact('product', 'categories', 'labels', 'taxes', 'reviews'));
     }
 
     public function storeProduct(Request $request)
@@ -99,6 +157,7 @@ class ProductsController extends Controller
             'featured_image_1' => 'nullable|image',
             'featured_image_2' => 'nullable|image',
             'featured_image_3' => 'nullable|image',
+            'reviews'          => 'nullable|string', // reviews come as JSON string
         ]);
 
         $product = new Product($validated);
@@ -117,6 +176,21 @@ class ProductsController extends Controller
 
         $product->save();
 
+        // ✅ Save reviews
+        $reviews = json_decode($request->input('reviews'), true);
+        if (is_array($reviews)) {
+            foreach ($reviews as $review) {
+                ProductReview::create([
+                    'product_id'     => $product->id,
+                    'reviewer_name'  => $review['name'],
+                    'reviewer_email' => $review['email'] ?? null,
+                    'rating'         => $review['rating'] ?? null,
+                    'review_message' => $review['message'],
+                    'review_date'    => $review['date'] ?? null,
+                ]);
+            }
+        }
+
         return response()->json([
             'message'    => 'Product saved successfully.',
             'product_id' => $product->id,
@@ -125,6 +199,7 @@ class ProductsController extends Controller
 
     public function deleteProduct(Product $product)
     {
+        // Check if the product exists
         try {
 
             if ($product->featured_image_1) {
@@ -152,15 +227,18 @@ class ProductsController extends Controller
             'sale_price'       => 'required|numeric',
             'quantity'         => 'required|integer',
             'sku'              => 'required|string|max:255',
-            'attributes'       => 'nullable|array', // Laravel expects array here
+            'attributes'       => 'nullable|array',
             'labels'           => 'nullable|array',
             'taxes'            => 'nullable|array',
             'featured_image_1' => 'nullable|image|max:2048',
             'featured_image_2' => 'nullable|image|max:2048',
             'featured_image_3' => 'nullable|image|max:2048',
+            'reviews'          => 'nullable|string',
+            'deleted_reviews'  => 'nullable|string',
         ]);
 
-        // Update simple fields
+        // Update basic product fields
+
         $product->product_name = $request->product_name;
         $product->category     = $request->category;
         $product->status       = $request->status;
@@ -170,22 +248,17 @@ class ProductsController extends Controller
         $product->quantity     = $request->quantity;
         $product->sku          = $request->sku;
 
-        // Since your model casts these fields to arrays,
-        // just assign the array or null (no need to JSON encode)
         $product->attributes = $request->input('attributes', null);
         $product->labels     = $request->input('labels', []);
         $product->taxes      = $request->input('taxes', []);
 
-        // Handle image uploads
+        // Handle images
         for ($i = 1; $i <= 3; $i++) {
             $fileKey = "featured_image_{$i}";
             if ($request->hasFile($fileKey)) {
-                // Delete old image if exists
                 if ($product->$fileKey) {
                     Storage::disk('public')->delete($product->$fileKey);
                 }
-
-                // Store new image
                 $path              = $request->file($fileKey)->store('products', 'public');
                 $product->$fileKey = $path;
             }
@@ -193,7 +266,126 @@ class ProductsController extends Controller
 
         $product->save();
 
+        // ✅ Delete reviews if needed
+        $deletedReviews = json_decode($request->input('deleted_reviews'), true);
+        if (is_array($deletedReviews)) {
+            ProductReview::whereIn('id', $deletedReviews)
+                ->where('product_id', $product->id)
+                ->delete();
+        }
+
+        // ✅ Handle reviews (create or update)
+        $reviews = json_decode($request->input('reviews'), true);
+        if (is_array($reviews)) {
+            foreach ($reviews as $review) {
+                if (! empty($review['id'])) {
+                    // Update existing review
+                    $existing = ProductReview::where('id', $review['id'])
+                        ->where('product_id', $product->id)
+                        ->first();
+                    if ($existing) {
+                        $existing->update([
+                            'reviewer_name'  => $review['name'],
+                            'reviewer_email' => $review['email'],
+                            'rating'         => $review['rating'],
+                            'review_message' => $review['message'],
+                            'review_date'    => $review['date'],
+                        ]);
+                    }
+                } else {
+                    // Create new review
+                    ProductReview::create([
+                        'product_id'     => $product->id,
+                        'reviewer_name'  => $review['name'],
+                        'reviewer_email' => $review['email'] ?? null,
+                        'rating'         => $review['rating'] ?? null,
+                        'review_message' => $review['message'],
+                        'review_date'    => $review['date'] ?? null,
+                    ]);
+                }
+            }
+        }
+
         return response()->json(['message' => 'Product updated successfully']);
+    }
+
+    public function addToCart($id)
+    {
+        $product = Product::findOrFail($id);
+
+        $cart = Session::get('cart', []);
+
+        $cleanedPrice = (int) str_replace(',', '', $product->sale_price);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity'] += 1;
+        } else {
+            $cart[$id] = [
+                "id"        => $product->id,
+                "name"      => $product->product_name,
+                "thumbnail" => $product->featured_image_1,
+                "price"     => $cleanedPrice,
+                "quantity"  => 1,
+            ];
+        }
+
+        Session::put('cart', $cart);
+
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+    public function removeFromCart($id)
+    {
+        $cart = Session::get('cart', []);
+
+        if (isset($cart[$id])) {
+            unset($cart[$id]);
+            Session::put('cart', $cart);
+            return redirect()->back()->with('success', 'Product removed from cart.');
+        }
+
+        return redirect()->back()->with('error', 'Product not found in cart.');
+    }
+
+    public function updateQuantity(Request $request)
+    {
+        $productId = $request->product_id;
+        $quantity  = $request->quantity;
+
+        $cart = session()->get('cart', []);
+        if (isset($cart[$productId])) {
+            $cart[$productId]['quantity'] = $quantity;
+        }
+
+        session()->put('cart', $cart);
+
+        $product   = Product::find($productId);
+        $itemTotal = $product->sale_price * $quantity;
+
+        $subtotal = 0;
+        foreach ($cart as $id => $item) {
+            $p = Product::find($id);
+            $subtotal += $p->sale_price * $item['quantity'];
+        }
+
+        return response()->json([
+            'success'    => true,
+            'item_total' => $itemTotal,
+            'subtotal'   => $subtotal,
+        ]);
+    }
+
+    public function getExchangeRates()
+    {
+        $base    = 'UGX'; 
+        $symbols = 'USD,EUR,GBP';
+
+        $response = Http::get("https://api.exchangerate.host/latest", [
+            'base'    => $base,
+            'symbols' => $symbols,
+        ]);
+
+        return response()->json($response->json());
     }
 
 }

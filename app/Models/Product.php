@@ -27,4 +27,9 @@ class Product extends Model
         'labels'     => 'array',
         'taxes'      => 'array',
     ];
+
+    public function reviews()
+    {
+        return $this->hasMany(ProductReview::class);
+    }
 }

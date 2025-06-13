@@ -65,7 +65,7 @@
                                                                     <a href="javascript:void(0);"
                                                                         class="btn btn-sm btn-outline-primary me-1 btn-edit"
                                                                         data-id="{{ $category->id }}"
-                                                                        data-edit-url="{{ route('edit.product', $category->id) }}"
+                                                                        data-edit-url="{{ route('edit.category', $category->id) }}"
                                                                         title="Edit">
                                                                         <i class="fas fa-edit"></i>
                                                                     </a>
@@ -110,143 +110,70 @@
 
     <script>
         $(document).ready(function() {
-            $('#saveCategoryBtn').on('click', function(e) {
-                e.preventDefault();
 
-                const btn = $(this);
-
-                // Get form inputs
-                const name = $('#name11').val().trim();
-                const parent = $('.select2[name="credit_card_type"]').eq(0).val();
-                const status = $('.select2[name="credit_card_type"]').eq(1).val();
-                const description = window.t_description?.getData()?.trim();
-                const imageFile = $('#featured_image_input')[0].files[0];
-
-                const imageBox = document.querySelector('.image-box-icon_image');
-                const imageInput = document.getElementById('featured_image_input');
-                const hasImage = imageInput.files.length > 0 || imageBox.classList.contains('has-image');
-
-                let isValid = true;
-                let errorMessages = [];
-
-                if (!name) {
-                    $('#name11').addClass('is-invalid');
-                    errorMessages.push('Please enter a category name.');
-                    isValid = false;
-                } else {
-                    $('#name11').removeClass('is-invalid');
-                }
-
-                if (!parent) {
-                    $('.select2[name="credit_card_type"]').eq(0).addClass('is-invalid');
-                    errorMessages.push('Please select a parent category.');
-                    isValid = false;
-                } else {
-                    $('.select2[name="credit_card_type"]').eq(0).removeClass('is-invalid');
-                }
-
-
-                if (!status) {
-                    $('.select2[name="credit_card_type"]').eq(1).addClass('is-invalid');
-                    errorMessages.push('Please select a status.');
-                    isValid = false;
-                } else {
-                    $('.select2[name="credit_card_type"]').eq(1).removeClass('is-invalid');
-                }
-
-                if (!description) {
-                    errorMessages.push('Please enter a description.');
-                    isValid = false;
-                }
-
-                if (!hasImage) {
-                    imageBox.classList.add('image-invalid');
-                    errorMessages.push('Please select a featured image.');
-                    isValid = false;
-                } else {
-                    imageBox.classList.remove('image-invalid');
-                }
-
-                if (!isValid) {
-                    Swal.fire({
-                        icon: 'warning',
-                        title: 'Please fix the following : ',
-                        html: '<ul style="text-align: left;">' + errorMessages.map(msg =>
-                            `<li>${msg}</li>`).join('') + '</ul>'
-                    });
-                    return;
-                }
-
-                if (!isValid) {
-                    return;
-                }
+            $('#categoryTable tbody').on('click', '.btn-delete', function() {
+                var categoryId = $(this).data('id');
+                var row = $(this).closest('tr');
 
                 Swal.fire({
                     title: 'Are you sure?',
-                    text: 'Do you want to save this category?',
-                    icon: 'question',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonText: 'Yes, Save it!',
-                    cancelButtonText: 'Cancel',
+                    confirmButtonColor: '#dc3545',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!'
                 }).then((result) => {
                     if (result.isConfirmed) {
-
-                        btn.prop('disabled', true).html(
-                            'Saving... <i class="fas fa-spinner fa-spin"></i>');
-
-                        const formData = new FormData();
-                        formData.append('name', name);
-                        formData.append('parent', parent);
-                        formData.append('status', status);
-                        formData.append('description', description);
-                        if (imageFile) {
-                            formData.append('featured_image', imageFile);
-                        }
-                        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
-
                         $.ajax({
-                            url: '/store-category',
-                            type: 'POST',
-                            data: formData,
-                            processData: false,
-                            contentType: false,
+                            url: '/categories/' + categoryId,
+                            type: 'DELETE',
+                            data: {
+                                _token: '{{ csrf_token() }}'
+                            },
                             success: function(response) {
-                                Swal.fire({
-                                    icon: 'success',
-                                    title: 'Category Saved',
-                                    text: response.message ||
-                                        'The category was saved successfully.',
-                                }).then(() => {
-                                    location.reload();
-                                });
+                                row.remove(); // 🔁 jQuery-only row removal
+
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Category has been deleted.',
+                                    'success'
+                                );
                             },
-                            // error: function(xhr) {
-                            //     let errorMsg = 'An error occurred.';
-
-                            //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
-                            //         errorMsg = Object.values(xhr.responseJSON.errors)
-                            //             .flat().join('\n');
-                            //     }
-
-                            //     Swal.fire({
-                            //         icon: 'error',
-                            //         title: 'Error',
-                            //         text: errorMsg,
-                            //     });
-
-                            //     console.error(xhr);
-                            // },
-                            error: function(data) {
-                                $('body').html(data.responseText);
-                            },
-                            complete: function() {
-                                btn.prop('disabled', false).html(
-                                    '<i class="fas fa-save"></i> Save');
+                            error: function(xhr) {
+                                Swal.fire(
+                                    'Error!',
+                                    'Something went wrong deleting the category.',
+                                    'error'
+                                );
                             }
+                            // error: function(data) {
+                            //     $('body').html(data.responseText);
+                            // }
                         });
                     }
                 });
             });
+
+
+            $('#categoryTable tbody').on('click', '.btn-edit', function() {
+                var editUrl = $(this).data('edit-url');
+
+                Swal.fire({
+                    title: 'Edit Product?',
+                    text: "You are about to edit this category.",
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonColor: '#0d6efd',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, proceed!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = editUrl;
+                    }
+                });
+            });
+
         });
     </script>
 @endsection

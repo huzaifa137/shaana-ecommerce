@@ -11,12 +11,54 @@
 </div>
 <!-- Single Page Header End -->
 
+<?php
+use App\Http\Controllers\Helper;
+?>
+
+<style>
+    .vesitable-item {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .vesitable-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(13, 110, 253, 0.2);
+    }
+
+    .pagination .page-item {
+        display: inline-block;
+        margin: 0 4px;
+    }
+
+    .pagination .page-link {
+        font-size: 1rem;
+        padding: 0.5rem 0.75rem;
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .pagination .active .page-link {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+    }
+</style>
+
 <!-- Fruits Shop Start-->
 <div class="container-fluid fruite py-5">
     <div class="container py-5">
-        <h1 class="mb-4">Fresh fruits shop</h1>
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+        <h1 class="mb-4">Shanana Beauty and Bedroom Products</h1>
         <div class="row g-4">
             <div class="col-lg-12">
+
                 <div class="row g-4">
                     <div class="col-xl-3">
                         <div class="input-group w-100 mx-auto d-flex">
@@ -39,6 +81,7 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="row g-4">
                     <div class="col-lg-3">
                         <div class="row g-4">
@@ -46,36 +89,18 @@
                                 <div class="mb-3">
                                     <h4>Categories</h4>
                                     <ul class="list-unstyled fruite-categorie">
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                                <span>(3)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                                <span>(5)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                                <span>(2)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                                <span>(8)</span>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="d-flex justify-content-between fruite-name">
-                                                <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                                <span>(5)</span>
-                                            </div>
-                                        </li>
+                                        @foreach ($categories as $category)
+                                            <?php
+                                            $countCategory = DB::table('products')->where('category', $category->id)->count();
+                                            ?>
+                                            <li>
+                                                <div class="d-flex justify-content-between fruite-name">
+                                                    <a href="#"><i
+                                                            class="fas fa-apple-alt me-2"></i>{{ $category->name }}</a>
+                                                    <span>({{ $countCategory }})</span>
+                                                </div>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
@@ -89,327 +114,266 @@
                                         for="rangeInput">0</output>
                                 </div>
                             </div>
+
                             <div class="col-lg-12">
-                                <div class="mb-3">
-                                    <h4>Additional</h4>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-1" name="Categories-1"
-                                            value="Beverages">
-                                        <label for="Categories-1"> Organic</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-2" name="Categories-1"
-                                            value="Beverages">
-                                        <label for="Categories-2"> Fresh</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-3" name="Categories-1"
-                                            value="Beverages">
-                                        <label for="Categories-3"> Sales</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-4" name="Categories-1"
-                                            value="Beverages">
-                                        <label for="Categories-4"> Discount</label>
-                                    </div>
-                                    <div class="mb-2">
-                                        <input type="radio" class="me-2" id="Categories-5" name="Categories-1"
-                                            value="Beverages">
-                                        <label for="Categories-5"> Expired</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                                <h4 class="mb-3">Featured products</h4>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="assets/img/featur-1.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
+                                <h4 class="mb-4">Featured products</h4>
+
+                                @foreach ($featuredProducts as $featuredProduct)
+                                    <div class="d-flex align-items-start mb-4">
+                                        <div class="me-3 flex-shrink-0">
+                                            <img src="{{ asset('storage/' . $featuredProduct->featured_image_2) }}"
+                                                class="img-fluid rounded border"
+                                                alt="{{ $featuredProduct->product_name }}"
+                                                style="width: 100px; height: 100px; object-fit: cover;">
                                         </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1 fw-semibold text-dark">{{ $featuredProduct->product_name }}
+                                            </h6>
+
+                                            <div class="d-flex mb-2">
+                                                @for ($i = 0; $i < 5; $i++)
+                                                    <i class="fa fa-star text-warning me-1"
+                                                        style="font-size: 14px;"></i>
+                                                @endfor
+                                            </div>
+
+                                            <div class="d-flex flex-column">
+                                                <span class="text-primary fw-semibold" style="font-size: 14px;">
+                                                    UGX {{ number_format($featuredProduct->sale_price) }}/=
+                                                </span>
+                                                <span class="text-muted text-decoration-line-through"
+                                                    style="font-size: 13px;">
+                                                    UGX {{ number_format($featuredProduct->price) }}/=
+                                                </span>
+                                            </div>
+
                                         </div>
                                     </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="assets/img/featur-2.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="d-flex align-items-center justify-content-start">
-                                    <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                        <img src="assets/img/featur-3.jpg" class="img-fluid rounded" alt="">
-                                    </div>
-                                    <div>
-                                        <h6 class="mb-2">Big Banana</h6>
-                                        <div class="d-flex mb-2">
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star text-secondary"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                        <div class="d-flex mb-2">
-                                            <h5 class="fw-bold me-2">2.99 $</h5>
-                                            <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                        </div>
-                                    </div>
-                                </div>
+                                @endforeach
+
                                 <div class="d-flex justify-content-center my-4">
                                     <a href="#"
                                         class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew
                                         More</a>
                                 </div>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="position-relative">
-                                    <img src="assets/img/banner-fruits.jpg" class="img-fluid w-100 rounded"
-                                        alt="">
-                                    <div class="position-absolute"
-                                        style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                        <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
-                                    </div>
-                                </div>
+                        </div>
+                    </div>
+
+                    @php
+                        $randomNames = [
+                            'Alice',
+                            'Bob',
+                            'Charlie',
+                            'Diana',
+                            'Ethan',
+                            'Fiona',
+                            'George',
+                            'Hannah',
+                            'Isaac',
+                            'Jasmine',
+                            'Kevin',
+                            'Laura',
+                            'Michael',
+                            'Nina',
+                            'Oscar',
+                            'Paula',
+                            'Quentin',
+                            'Rachel',
+                            'Samuel',
+                            'Tina',
+                            'Umar',
+                            'Violet',
+                            'William',
+                            'Xena',
+                            'Yusuf',
+                            'Zara',
+                            'Aaron',
+                            'Bella',
+                            'Caleb',
+                            'Delilah',
+                            'Edward',
+                            'Faith',
+                            'Gavin',
+                            'Hailey',
+                            'Ian',
+                            'Julia',
+                            'Kyle',
+                            'Lily',
+                            'Marcus',
+                            'Natalie',
+                            'Owen',
+                            'Penelope',
+                            'Ray',
+                            'Sophia',
+                            'Tristan',
+                            'Uma',
+                            'Victor',
+                            'Wendy',
+                            'Xander',
+                            'Yara',
+                        ];
+
+                        $countries = [
+                            'Europe' => [
+                                'Germany',
+                                'France',
+                                'Spain',
+                                'Italy',
+                                'Netherlands',
+                                'Sweden',
+                                'Norway',
+                                'Poland',
+                                'Portugal',
+                                'Greece',
+                            ],
+                            'Africa' => [
+                                'Nigeria',
+                                'Kenya',
+                                'South Africa',
+                                'Egypt',
+                                'Ghana',
+                                'Morocco',
+                                'Algeria',
+                                'Ethiopia',
+                                'Tunisia',
+                                'Uganda',
+                            ],
+                            'UK' => ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+                            'America' => [
+                                'USA',
+                                'Canada',
+                                'Brazil',
+                                'Mexico',
+                                'Argentina',
+                                'Colombia',
+                                'Chile',
+                                'Peru',
+                                'Venezuela',
+                                'Ecuador',
+                            ],
+                        ];
+
+                        $allCountries = array_merge(...array_values($countries));
+
+                        $salesData = $popupProducts
+                            ->map(function ($product) use ($randomNames, $allCountries) {
+                                return [
+                                    'name' => $randomNames[array_rand($randomNames)],
+                                    'product' => $product->product_name,
+                                    'image' => asset('storage/' . $product->featured_image_1),
+                                    'delivery' => rand(1, 4) . ' day delivery',
+                                    'country' => $allCountries[array_rand($allCountries)],
+                                ];
+                            })
+                            ->toArray();
+                    @endphp
+
+                    <div id="sales-popup"
+                        class="toast show align-items-center border shadow position-fixed bottom-0 start-0 m-3"
+                        role="alert" aria-live="assertive" aria-atomic="true"
+                        style="min-width: 300px; display:none; z-index: 1050; background-color: #F6DDD8;">
+                        <div class="d-flex">
+                            <img id="sales-popup-image" src="" alt="Product Image" class="rounded m-2"
+                                style="width: 50px; height: 50px; object-fit: cover;">
+                            <div class="toast-body ps-0">
+                                <div><strong id="sales-popup-name"></strong> from <span
+                                        id="sales-popup-country"></span></div>
+                                <div>just purchased</div>
+                                <div class="fw-bold" id="sales-popup-product"></div>
+                                <small class="text-muted" id="sales-popup-delivery"></small>
                             </div>
                         </div>
                     </div>
+
+                    <script>
+                        const salesData = @json($salesData);
+                        let currentIndex = 0;
+                        const popup = document.getElementById('sales-popup');
+                        const img = document.getElementById('sales-popup-image');
+                        const nameEl = document.getElementById('sales-popup-name');
+                        const productEl = document.getElementById('sales-popup-product');
+                        const deliveryEl = document.getElementById('sales-popup-delivery');
+                        const countryEl = document.getElementById('sales-popup-country');
+
+                        function showPopup(index) {
+                            const sale = salesData[index];
+                            img.src = sale.image;
+                            nameEl.textContent = sale.name;
+                            productEl.textContent = sale.product;
+                            deliveryEl.textContent = sale.delivery;
+                            countryEl.textContent = sale.country;
+                            popup.style.display = 'flex';
+                        }
+
+                        function cycleSales() {
+                            showPopup(currentIndex);
+                            currentIndex = (currentIndex + 1) % salesData.length;
+                        }
+
+                        cycleSales();
+                        setInterval(cycleSales, 5000);
+                    </script>
+
                     <div class="col-lg-9">
                         <div class="row g-4 justify-content-center">
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Grapes</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
+                            @php
+                                $cart = session('cart', []);
+                            @endphp
+
+                            @foreach ($products as $product)
+                                @php
+                                    $isInCart = array_key_exists($product->id, $cart);
+                                @endphp
+
+                                <div class="col-md-6 col-lg-4 mb-4">
+                                    <div class="border border-primary rounded position-relative vesitable-item h-100">
+                                        <div class="vesitable-img">
+                                            <img src="{{ asset('storage/' . $product->featured_image_1) }}"
+                                                class="img-fluid w-100 rounded-top" alt="">
+                                        </div>
+
+                                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                            style="top: 10px; left: 10px; font-weight: 600;">
+                                            {{ Helper::product_category_name($product->category) }}</div>
+
+                                        <div class="p-4 pb-0 rounded-bottom">
+                                            <h4 class="text-dark fw-bold">{{ $product->product_name }}</h4>
+                                            @php
+                                                $plainText = strip_tags($product->description);
+                                                $wordLimit = 15;
+
+                                                $shortDescription = Str::words($plainText, $wordLimit, '...');
+                                            @endphp
+                                            <p class="text-muted">{{ $shortDescription }}</p>
+                                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                                <p class="text-primary fs-5 fw-bold mb-0">Ugx
+                                                    {{ $product->sale_price }}/=</p>
+                                                @if ($isInCart)
+                                                    <button type="button"
+                                                        class="btn border border-success rounded-pill px-3 py-1 mt-4 mb-4 text-success"
+                                                        disabled>
+                                                        <i class="fa fa-check me-2 text-success"></i> In Cart
+                                                    </button>
+                                                @else
+                                                    <form method="POST"
+                                                        action="{{ route('shop.add.cart', $product->id) }}">
+                                                        @csrf
+                                                        <button type="submit"
+                                                            class="btn border border-primary rounded-pill px-3 py-1 mt-4 mb-4 text-primary">
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
+                                                            cart
+                                                        </button>
+                                                    </form>
+                                                @endif
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Grapes</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-2.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Raspberries</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-4.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Apricots</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-3.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Banana</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-1.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Oranges</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-2.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Raspberries</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-5.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Grapes</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-6 col-lg-6 col-xl-4">
-                                <div class="rounded position-relative fruite-item">
-                                    <div class="fruite-img">
-                                        <img src="assets/img/fruite-item-1.jpg" class="img-fluid w-100 rounded-top"
-                                            alt="">
-                                    </div>
-                                    <div class="text-white bg-secondary px-3 py-1 rounded position-absolute"
-                                        style="top: 10px; left: 10px;">Fruits</div>
-                                    <div class="p-4 border border-secondary border-top-0 rounded-bottom">
-                                        <h4>Oranges</h4>
-                                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te
-                                            incididunt</p>
-                                        <div class="d-flex justify-content-between flex-lg-wrap">
-                                            <p class="text-dark fs-5 fw-bold mb-0">$4.99 / kg</p>
-                                            <a href="#"
-                                                class="btn border border-secondary rounded-pill px-3 text-primary"><i
-                                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to
-                                                cart</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            {{-- <div class="col-12">
-                                <div class="pagination d-flex justify-content-center mt-5">
-                                    <a href="#" class="rounded">&laquo;</a>
-                                    <a href="#" class="active rounded">1</a>
-                                    <a href="#" class="rounded">2</a>
-                                    <a href="#" class="rounded">3</a>
-                                    <a href="#" class="rounded">4</a>
-                                    <a href="#" class="rounded">5</a>
-                                    <a href="#" class="rounded">6</a>
-                                    <a href="#" class="rounded">&raquo;</a>
-                                </div>
-                            </div> --}}
+                            @endforeach
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>

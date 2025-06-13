@@ -1,21 +1,51 @@
 @include('layouts.header')
 
 
-    <!-- Single Page Header start -->
-    <div class="container-fluid page-header py-5">
-        <h1 class="text-center text-white display-6">Cart</h1>
-        <ol class="breadcrumb justify-content-center mb-0">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">Pages</a></li>
-            <li class="breadcrumb-item active text-white">Cart</li>
-        </ol>
-    </div>
-    <!-- Single Page Header End -->
+<!-- Single Page Header start -->
+<div class="container-fluid page-header py-5">
+    <h1 class="text-center text-white display-6">Cart</h1>
+    <ol class="breadcrumb justify-content-center mb-0">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item"><a href="#">Pages</a></li>
+        <li class="breadcrumb-item active text-white">Cart</li>
+    </ol>
+</div>
+<!-- Single Page Header End -->
 
+<style>
+    .btn-minus,
+    .btn-plus {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+    }
 
-    <!-- Cart Page Start -->
-    <div class="container-fluid py-5">
-        <div class="container py-5">
+    .btn-handle {
+        width: 30px;
+        height: 30px;
+        padding: 0;
+    }
+</style>
+
+<!-- Cart Page Start -->
+<div class="container-fluid py-5">
+    <div class="container py-5">
+        @if (count($addedProducts) == 0)
+            <tr>
+                <td colspan="6">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 200px;">
+                        <div class="text-center">
+                            <i class="fa fa-shopping-cart fa-3x text-muted mb-3"></i>
+                            <h3 class="text-danger">Your cart is empty</h3>
+                            <p class="text-muted">Looks like you haven't added anything to your cart yet.</p>
+                            <a href="{{ route('item.shop') }}" class="btn btn-primary mt-3">
+                                <i class="fa fa-arrow-left"></i> Continue Shopping
+                            </a>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        @else
             <div class="table-responsive">
                 <table class="table">
                     <thead>
@@ -29,160 +59,205 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">
-                                <div class="d-flex align-items-center">
-                                    <img src="assets/img/vegetable-item-3.png" class="img-fluid me-5 rounded-circle"
-                                        style="width: 80px; height: 80px;" alt="">
-                                </div>
-                            </th>
-                            <td>
-                                <p class="mb-0 mt-4">Big Banana</p>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
-                            </td>
-                            <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
-                            </td>
-                            <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                    <i class="fa fa-times text-danger"></i>
-                                </button>
-                            </td>
 
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <div class="d-flex align-items-center">
-                                    <img src="assets/img/vegetable-item-5.jpg" class="img-fluid me-5 rounded-circle"
-                                        style="width: 80px; height: 80px;" alt="" alt="">
-                                </div>
-                            </th>
-                            <td>
-                                <p class="mb-0 mt-4">Potatoes</p>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
-                            </td>
-                            <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
+                        @php
+                            $subtotal = 0;
+                        @endphp
+
+                        @foreach ($addedProducts as $products)
+                            <?php
+                            $product = DB::table('products')->where('id', $products['id'])->first();
+                            ?>
+
+                            @php
+                                $price = (int) str_replace(',', '', $product->sale_price);
+                                $quantity = $products['quantity'] ?? 1;
+                                $itemTotal = $price * $quantity;
+                                $subtotal += $itemTotal;
+                            @endphp
+
+                            <tr>
+                                <th scope="row">
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('storage/' . $product->featured_image_1) }}"
+                                            class="img-fluid me-5" style="width: 100px; height: 100px;" alt="">
                                     </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
+                                </th>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ $product->product_name }}</p>
+                                </td>
+                                <td>
+                                    <p class="mb-0 mt-4">{{ $product->sale_price }}</p>
+                                </td>
+                                <td>
+                                    <div class="input-group quantity mt-4" style="width: 100px;">
+                                        <div class="input-group-btn">
+                                            <button
+                                                class="btn btn-sm btn-minus rounded-circle bg-light border change-qty"
+                                                data-change="-1" data-product-id="{{ $product->id }}">
+                                                <i class="fa fa-minus"></i>
+                                            </button>
+                                        </div>
+                                        <input type="text"
+                                            class="form-control form-control-sm text-center border-0 quantity-input"
+                                            data-product-id="{{ $product->id }}" value="{{ $quantity }}">
+
+                                        <div class="input-group-btn">
+                                            <button
+                                                class="btn btn-sm btn-plus rounded-circle bg-light border change-qty"
+                                                data-change="1" data-product-id="{{ $product->id }}">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </div>
                                     </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
-                            </td>
-                            <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                    <i class="fa fa-times text-danger"></i>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <th scope="row">
-                                <div class="d-flex align-items-center">
-                                    <img src="assets/img/vegetable-item-2.jpg" class="img-fluid me-5 rounded-circle"
-                                        style="width: 80px; height: 80px;" alt="" alt="">
-                                </div>
-                            </th>
-                            <td>
-                                <p class="mb-0 mt-4">Awesome Brocoli</p>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
-                            </td>
-                            <td>
-                                <div class="input-group quantity mt-4" style="width: 100px;">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                            <i class="fa fa-minus"></i>
-                                        </button>
-                                    </div>
-                                    <input type="text" class="form-control form-control-sm text-center border-0"
-                                        value="1">
-                                    <div class="input-group-btn">
-                                        <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                            <i class="fa fa-plus"></i>
-                                        </button>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <p class="mb-0 mt-4">2.99 $</p>
-                            </td>
-                            <td>
-                                <button class="btn btn-md rounded-circle bg-light border mt-4">
-                                    <i class="fa fa-times text-danger"></i>
-                                </button>
-                            </td>
-                        </tr>
+                                </td>
+
+                                <td class="item-total" data-product-id="{{ $product->id }}">
+                                    <p class="mb-0 mt-4">Ugx {{ number_format($itemTotal) }}/=</p>
+                                </td>
+
+                                <td>
+                                    <a href="{{ route('shop.cart.remove', $products['id']) }}"
+                                        class="btn btn-md btn-handle rounded-circle bg-light border mt-4 remove-from-cart"
+                                        data-url="{{ route('shop.cart.remove', $products['id']) }}">
+                                        <i class="fa fa-times text-danger"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
-            </div>
-            <div class="mt-5">
-                <input type="text" class="border-0 border-bottom rounded me-5 py-3 mb-4"
-                    placeholder="Coupon Code">
-                <button class="btn border-secondary rounded-pill px-4 py-3 text-primary" type="button">Apply
-                    Coupon</button>
-            </div>
-            <div class="row g-4 justify-content-end">
-                <div class="col-8"></div>
-                <div class="col-sm-8 col-md-7 col-lg-6 col-xl-4">
-                    <div class="bg-light rounded">
-                        <div class="p-4">
-                            <h1 class="display-6 mb-4">Cart <span class="fw-normal">Total</span></h1>
-                            <div class="d-flex justify-content-between mb-4">
-                                <h5 class="mb-0 me-4">Subtotal:</h5>
-                                <p class="mb-0">$96.00</p>
-                            </div>
-                            <div class="d-flex justify-content-between">
-                                <h5 class="mb-0 me-4">Shipping</h5>
-                                <div class="">
-                                    <p class="mb-0">Flat rate: $3.00</p>
-                                </div>
-                            </div>
-                            <p class="mb-0 text-end">Shipping to Ukraine.</p>
+
+
+                <div class="mt-5 d-flex justify-content-end">
+                    <div class="p-5 border rounded shadow bg-light" style="max-width: 450px; width: 100%;">
+                        <h4 class="fw-bold text-primary mb-4">Cart Summary</h4>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fw-semibold text-secondary fs-5">Subtotal:</span>
+                            <span class="subtotal-amount fw-bold text-dark fs-5">Ugx
+                                {{ number_format($subtotal) }}/=</span>
                         </div>
-                        <div class="py-4 mb-4 border-top border-bottom d-flex justify-content-between">
-                            <h5 class="mb-0 ps-4 me-4">Total</h5>
-                            <p class="mb-0 pe-4">$99.00</p>
+
+                        <div class="d-flex justify-content-between mb-3">
+                            <span class="fw-semibold text-secondary fs-5">Shipping:</span>
+                            <span class="fw-normal text-dark fs-5">Ugx 3,000/=</span>
                         </div>
-                        <button
-                            class="btn border-secondary rounded-pill px-4 py-3 text-primary text-uppercase mb-4 ms-4"
-                            type="button">Proceed Checkout</button>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between mb-4">
+                            <span class="fw-bold text-primary fs-4">Total:</span>
+                            <span class="total-amount fw-bold text-dark fs-4">Ugx
+                                {{ number_format($subtotal + 3000) }}/=</span>
+                        </div>
+
+                        <div class="d-grid">
+                            <a href="{{ url('/item-checkout')}}" class="btn btn-primary rounded-pill py-3 fs-6 text-uppercase text-white fw-bold">
+                                Proceed to Checkout</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    </div>
-    <!-- Cart Page End -->
 
-    @include('layouts.footer')
+
+            </div>
+        @endif
+    </div>
+</div>
+<!-- Cart Page End -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const buttons = document.querySelectorAll('.remove-from-cart');
+
+        buttons.forEach(button => {
+            button.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                const url = this.getAttribute('data-url');
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Remove this product from the cart?",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Yes, remove it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+
+                        Swal.fire({
+                            title: 'Removing...',
+                            html: '<i class="fas fa-spinner fa-spin fa-2x text-danger"></i>',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            showConfirmButton: false,
+                            didOpen: () => {
+                                setTimeout(() => {
+                                    window.location.href = url;
+                                }, 300);
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        $('.change-qty').off('click').on('click', function() {
+            const productId = $(this).data('product-id');
+            const change = parseInt($(this).data('change'));
+            const input = $(`.quantity-input[data-product-id="${productId}"]`);
+            let quantity = parseInt(input.val()) || 1;
+
+            quantity += change;
+            if (quantity < 1) quantity = 1;
+
+            input.val(quantity);
+
+            updateItemTotal(productId, quantity);
+        });
+
+        function updateItemTotal(productId, quantity) {
+            $.ajax({
+                url: "{{ route('shop.cart.updateQuantity') }}",
+                method: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    product_id: productId,
+                    quantity: quantity
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Update per-item total
+                        $(`td.item-total[data-product-id="${productId}"]`).html(
+                            `<p class="mb-0 mt-4">Ugx ${formatNumber(response.item_total)}/=</p>`
+                        );
+                        // Update subtotal
+                        $('.subtotal-amount').html(`Ugx ${formatNumber(response.subtotal)}/=`);
+
+                        // Update total (subtotal + fixed shipping fee of 3000)
+                        const total = response.subtotal + 3000;
+                        $('.total-amount').html(`Ugx ${formatNumber(total)}/=`);
+                    }
+                }
+            });
+        }
+
+        // Helper to format numbers with commas
+        function formatNumber(number) {
+            return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+    });
+</script>
+
+
+
+@include('layouts.footer')

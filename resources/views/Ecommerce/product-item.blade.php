@@ -2,15 +2,17 @@
 
 <!-- Single Page Header start -->
 <div class="container-fluid page-header py-5">
-    <h1 class="text-center text-white display-6">Shop Detail</h1>
+    <h1 class="text-center text-white display-6">Product Information</h1>
     <ol class="breadcrumb justify-content-center mb-0">
         <li class="breadcrumb-item"><a href="#">Home</a></li>
-        <li class="breadcrumb-item active text-white">Shop Detail</li>
+        <li class="breadcrumb-item active text-white">Product Information</li>
     </ol>
 </div>
 <!-- Single Page Header End -->
 
-
+<?php
+use App\Http\Controllers\Helper;
+?>
 <!-- Single Product Start -->
 <div class="container-fluid py-5 mt-5">
     <div class="container py-5">
@@ -20,27 +22,44 @@
                     <div class="col-lg-6">
                         <div class="border rounded">
                             <a href="#">
-                                <img src="{{ asset('storage/' . $product->featured_image_2) }}" class="img-fluid rounded"
-                                    alt="Image">
+                                <img src="{{ asset('storage/' . $product->featured_image_2) }}"
+                                    class="img-fluid rounded" alt="Image">
                             </a>
                         </div>
                     </div>
 
+                    <style>
+                        .btn-minus,
+                        .btn-plus {
+                            width: 30px;
+                            height: 30px;
+                            padding: 0;
+                        }
+                    </style>
+
                     <div class="col-lg-6">
-                        <h4 class="fw-bold mb-3">Brocoli</h4>
-                        <p class="mb-3">Category: Vegetables</p>
-                        <h5 class="fw-bold mb-3">3,35 $</h5>
+                        <h4 class="fw-bold mb-3">{{ $product->product_name }}</h4>
+                        <p class="mb-3">Category: {{ Helper::product_category_name($product->category) }}</p>
+                        <h5 class="fw-bold mb-3">Ugx {{ $product->sale_price }}/=</h5>
+
                         <div class="d-flex mb-4">
                             <i class="fa fa-star text-secondary"></i>
                             <i class="fa fa-star text-secondary"></i>
                             <i class="fa fa-star text-secondary"></i>
                             <i class="fa fa-star text-secondary"></i>
-                            <i class="fa fa-star"></i>
+                            <i class="fa fa-star text-secondary"></i>
                         </div>
-                        <p class="mb-4">The generated Lorem Ipsum is therefore always free from repetition
-                            injected humour, or non-characteristic words etc.</p>
-                        <p class="mb-4">Susp endisse ultricies nisi vel quam suscipit. Sabertooth peacock
-                            flounder; chain pickerel hatchetfish, pencilfish snailfish</p>
+                        @php
+                            use Illuminate\Support\Str;
+
+                            $plainText = strip_tags($product->description);
+                            $wordLimit = 40;
+
+                            $shortDescription = Str::words($plainText, $wordLimit, '...');
+                        @endphp
+
+                        <p class="mb-4">{{ $shortDescription }}</p>
+
                         <div class="input-group quantity mb-5" style="width: 100px;">
                             <div class="input-group-btn">
                                 <button class="btn btn-sm btn-minus rounded-circle bg-light border">
@@ -55,10 +74,12 @@
                                 </button>
                             </div>
                         </div>
-                        <a href="#"
-                            class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary"><i
-                                class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+
+                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                        </a>
                     </div>
+
                     <div class="col-lg-12">
                         <nav>
                             <div class="nav nav-tabs mb-3">
@@ -72,104 +93,126 @@
                         </nav>
                         <div class="tab-content mb-5">
                             <div class="tab-pane active" id="nav-about" role="tabpanel" aria-labelledby="nav-about-tab">
-                                <p>The generated Lorem Ipsum is therefore always free from repetition injected
-                                    humour, or non-characteristic words etc.
-                                    Susp endisse ultricies nisi vel quam suscipit </p>
-                                <p>Sabertooth peacock flounder; chain pickerel hatchetfish, pencilfish snailfish
-                                    filefish Antarctic
-                                    icefish goldeye aholehole trumpetfish pilot fish airbreathing catfish, electric
-                                    ray sweeper.</p>
-                                <div class="px-2">
+                                {!! $product->description !!}
+                                <div class="px-2 mt-4">
+
+                                    @php
+                                        $attributes = is_string($product->attributes)
+                                            ? json_decode($product->attributes, true)
+                                            : $product->attributes;
+                                        $labels = is_string($product->labels)
+                                            ? json_decode($product->labels, true)
+                                            : $product->labels;
+                                        $taxes = is_string($product->taxes)
+                                            ? json_decode($product->taxes, true)
+                                            : $product->taxes;
+
+                                        $labelDisplay =
+                                            collect($labels)->filter(fn($v) => $v == '1')->keys()->implode(', ') ?:
+                                            'None';
+                                        $taxDisplay =
+                                            collect($taxes)->filter(fn($v) => $v == '1')->keys()->implode(', ') ?:
+                                            'None';
+                                    @endphp
+
+
                                     <div class="row g-4">
                                         <div class="col-6">
                                             <div
-                                                class="row bg-light align-items-center text-center justify-content-center py-2">
+                                                class="row bg-light text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Weight</p>
+                                                    <p class="mb-0">SKU</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">1 kg</p>
+                                                    <p class="mb-0">{{ $product->sku }}</p>
                                                 </div>
                                             </div>
+
                                             <div class="row text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Country of Origin</p>
+                                                    <p class="mb-0">Available Stock</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">Agro Farm</p>
+                                                    <p class="mb-0">{{ $product->quantity }}</p>
                                                 </div>
                                             </div>
+
                                             <div
                                                 class="row bg-light text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Quality</p>
+                                                    <p class="mb-0">Price</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">Organic</p>
+                                                    <p class="mb-0">UGX {{ number_format($product->sale_price) }}</p>
                                                 </div>
                                             </div>
-                                            <div class="row text-center align-items-center justify-content-center py-2">
-                                                <div class="col-6">
-                                                    <p class="mb-0">Сheck</p>
-                                                </div>
-                                                <div class="col-6">
-                                                    <p class="mb-0">Healthy</p>
-                                                </div>
-                                            </div>
+
+                                            @if (!empty($attributes))
+                                                @foreach ($attributes as $attr)
+                                                    <div
+                                                        class="row text-center align-items-center justify-content-center py-2">
+                                                        <div class="col-6">
+                                                            <p class="mb-0">{{ ucfirst($attr['attribute']) }}</p>
+                                                        </div>
+                                                        <div class="col-6">
+                                                            <p class="mb-0">{{ $attr['value'] }}</p>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            @endif
+
                                             <div
                                                 class="row bg-light text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
-                                                    <p class="mb-0">Min Weight</p>
+                                                    <p class="mb-0">Labels</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">250 Kg</p>
+                                                    <p class="mb-0">{{ ucfirst($labelDisplay) }}</p>
+                                                </div>
+                                            </div>
+
+                                            <div class="row text-center align-items-center justify-content-center py-2">
+                                                <div class="col-6">
+                                                    <p class="mb-0">Tax</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-0">{{ ucfirst($taxDisplay) }}</p>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            @php
+                                use Carbon\Carbon;
+                            @endphp
+
                             <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
-                                <div class="d-flex">
-                                    <img src="/assets/img/avatar.jpg" class="img-fluid rounded-circle p-3"
-                                        style="width: 100px; height: 100px;" alt="">
-                                    <div class="">
-                                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                        <div class="d-flex justify-content-between">
-                                            <h5>Jason Smith</h5>
-                                            <div class="d-flex mb-3">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
+                                @foreach ($reviews as $review)
+                                    <div class="d-flex">
+                                        <img src="/assets/img/avatar.jpg" class="img-fluid rounded-circle p-3"
+                                            style="width: 100px; height: 100px;" alt="">
+                                        <div class="">
+
+                                            <p class="mb-2" style="font-size: 14px;">
+                                                {{ Carbon::parse($review->review_date)->format('d, M, Y') }}
+                                            </p>
+
+                                            <div class="d-flex justify-content-between">
+                                                <h5>{{ $review->reviewer_name }}</h5>
+                                                <div class="d-flex mb-3">
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                    <i class="fa fa-star text-secondary"></i>
+                                                </div>
                                             </div>
+                                            <p>{{ $review->review_message }}</p>
                                         </div>
-                                        <p>The generated Lorem Ipsum is therefore always free from repetition
-                                            injected humour, or non-characteristic
-                                            words etc. Susp endisse ultricies nisi vel quam suscipit </p>
                                     </div>
-                                </div>
-                                <div class="d-flex">
-                                    <img src="/assets/img/avatar.jpg" class="img-fluid rounded-circle p-3"
-                                        style="width: 100px; height: 100px;" alt="">
-                                    <div class="">
-                                        <p class="mb-2" style="font-size: 14px;">April 12, 2024</p>
-                                        <div class="d-flex justify-content-between">
-                                            <h5>Sam Peters</h5>
-                                            <div class="d-flex mb-3">
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star text-secondary"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
-                                        </div>
-                                        <p class="text-dark">The generated Lorem Ipsum is therefore always free
-                                            from repetition injected humour, or non-characteristic
-                                            words etc. Susp endisse ultricies nisi vel quam suscipit </p>
-                                    </div>
-                                </div>
+                                @endforeach
                             </div>
                             <div class="tab-pane" id="nav-vision" role="tabpanel">
                                 <p class="text-dark">Tempor erat elitr rebum at clita. Diam dolor diam ipsum et
@@ -181,45 +224,65 @@
                             </div>
                         </div>
                     </div>
-                    <form action="#">
-                        <h4 class="mb-5 fw-bold">Leave a Reply</h4>
-                        <div class="row g-4">
+                    <form action="#" method="POST">
+                        @csrf
+                        <h4 class="mb-5 fw-bold">Your experience matters — leave a review on this product</h4>
+                        <div class="row g-4 border rounded bg-white p-4">
+
                             <div class="col-lg-6">
-                                <div class="border-bottom rounded">
-                                    <input type="text" class="form-control border-0 me-4"
-                                        placeholder="Yur Name *">
-                                </div>
+                                <label class="form-label">Enter your name *</label>
+                                <input type="text"
+                                    class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
+                                    name="reviews[0][name]" placeholder="John Doe" required>
                             </div>
+
                             <div class="col-lg-6">
-                                <div class="border-bottom rounded">
-                                    <input type="email" class="form-control border-0" placeholder="Your Email *">
-                                </div>
+                                <label class="form-label">Enter your email *</label>
+                                <input type="email"
+                                    class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
+                                    name="reviews[0][email]" placeholder="john@example.com" required>
                             </div>
-                            <div class="col-lg-12">
-                                <div class="border-bottom rounded my-4">
-                                    <textarea name="" id="" class="form-control border-0" cols="30" rows="8"
-                                        placeholder="Your Review *" spellcheck="false"></textarea>
-                                </div>
+
+                            <div class="col-lg-6">
+                                <label class="form-label">Enter your rating *</label>
+                                <select
+                                    class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
+                                    name="reviews[0][rating]" required>
+                                    <option value="">Select rating</option>
+                                    <option value="5">5 Stars</option>
+                                    <option value="4">4 Stars</option>
+                                    <option value="3">3 Stars</option>
+                                    <option value="2">2 Stars</option>
+                                    <option value="1">1 Star</option>
+                                </select>
                             </div>
+
+                            <div class="col-lg-6">
+                                <label class="form-label">Review Date *</label>
+                                <input type="date"
+                                    class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
+                                    name="reviews[0][date]" min="{{ \Carbon\Carbon::now()->toDateString() }}"
+                                    required>
+                            </div>
+
+
                             <div class="col-lg-12">
-                                <div class="d-flex justify-content-between py-3 mb-5">
-                                    <div class="d-flex align-items-center">
-                                        <p class="mb-0 me-3">Please rate:</p>
-                                        <div class="d-flex align-items-center" style="font-size: 12px;">
-                                            <i class="fa fa-star text-muted"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <a href="#"
-                                        class="btn border border-secondary text-primary rounded-pill px-4 py-3">
-                                        Post Comment</a>
-                                </div>
+                                <label class="form-label mt-3">Your Review *</label>
+                                <textarea name="reviews[0][message]"
+                                    class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm" rows="5"
+                                    placeholder="Write your review..." required></textarea>
+                            </div>
+
+                            <div class="col-lg-12 text-end mt-4">
+                                <button type="submit"
+                                    class="btn border border-secondary text-primary rounded-pill px-4 py-3 shadow-sm">
+                                    📨 Post Comment
+                                </button>
                             </div>
                         </div>
                     </form>
+
+
                 </div>
             </div>
             <div class="col-lg-4 col-xl-3">
@@ -233,162 +296,62 @@
                         <div class="mb-4">
                             <h4>Categories</h4>
                             <ul class="list-unstyled fruite-categorie">
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Apples</a>
-                                        <span>(3)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Oranges</a>
-                                        <span>(5)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Strawbery</a>
-                                        <span>(2)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Banana</a>
-                                        <span>(8)</span>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div class="d-flex justify-content-between fruite-name">
-                                        <a href="#"><i class="fas fa-apple-alt me-2"></i>Pumpkin</a>
-                                        <span>(5)</span>
-                                    </div>
-                                </li>
+                                @foreach ($categories as $category)
+                                    <?php
+                                    $countCategory = DB::table('products')->where('category', $category->id)->count();
+                                    ?>
+                                    <li>
+                                        <div class="d-flex justify-content-between fruite-name">
+                                            <a href="#"><i
+                                                    class="fas fa-apple-alt me-2"></i>{{ $category->name }}</a>
+                                            <span>({{ $countCategory }})</span>
+                                        </div>
+                                    </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
                     <div class="col-lg-12">
                         <h4 class="mb-4">Featured products</h4>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded" style="width: 100px; height: 100px;">
-                                <img src="/assets/img/featur-1.jpg" class="img-fluid rounded" alt="Image">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
+
+                        @foreach ($featuredProducts as $featuredProduct)
+                            <div class="d-flex align-items-start mb-4">
+                                <div class="me-3 flex-shrink-0">
+                                    <img src="{{ asset('storage/' . $featuredProduct->featured_image_2) }}"
+                                        class="img-fluid rounded border" alt="{{ $featuredProduct->product_name }}"
+                                        style="width: 100px; height: 100px; object-fit: cover;">
                                 </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded" style="width: 100px; height: 100px;">
-                                <img src="/assets/img/featur-2.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 fw-semibold text-dark">{{ $featuredProduct->product_name }}</h6>
+
+                                    <div class="d-flex mb-2">
+                                        @for ($i = 0; $i < 5; $i++)
+                                            <i class="fa fa-star text-warning me-1" style="font-size: 14px;"></i>
+                                        @endfor
+                                    </div>
+
+                                    <div class="d-flex flex-column">
+                                        <span class="text-primary fw-semibold" style="font-size: 14px;">
+                                            UGX {{ number_format($featuredProduct->sale_price) }}/=
+                                        </span>
+                                        <span class="text-muted text-decoration-line-through"
+                                            style="font-size: 13px;">
+                                            UGX {{ number_format($featuredProduct->price) }}/=
+                                        </span>
+                                    </div>
+
                                 </div>
                             </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded" style="width: 100px; height: 100px;">
-                                <img src="/assets/img/featur-3.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                <img src="/assets/img/vegetable-item-4.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                <img src="/assets/img/vegetable-item-5.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="d-flex align-items-center justify-content-start">
-                            <div class="rounded me-4" style="width: 100px; height: 100px;">
-                                <img src="/assets/img/vegetable-item-6.jpg" class="img-fluid rounded" alt="">
-                            </div>
-                            <div>
-                                <h6 class="mb-2">Big Banana</h6>
-                                <div class="d-flex mb-2">
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star text-secondary"></i>
-                                    <i class="fa fa-star"></i>
-                                </div>
-                                <div class="d-flex mb-2">
-                                    <h5 class="fw-bold me-2">2.99 $</h5>
-                                    <h5 class="text-danger text-decoration-line-through">4.11 $</h5>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
+
                         <div class="d-flex justify-content-center my-4">
                             <a href="#"
                                 class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew
                                 More</a>
                         </div>
                     </div>
-                    <div class="col-lg-12">
+
+                    {{-- <div class="col-lg-12">
                         <div class="position-relative">
                             <img src="/assets/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
                             <div class="position-absolute"
@@ -396,157 +359,45 @@
                                 <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
                             </div>
                         </div>
-                    </div>
+                    </div> --}}
+                    
                 </div>
             </div>
         </div>
         <h1 class="fw-bold mb-0">Related products</h1>
         <div class="vesitable">
             <div class="owl-carousel vegetable-carousel justify-content-center">
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Parsely</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+
+                @foreach ($products as $product)
+                    <div class="border border-primary rounded position-relative vesitable-item">
+                        <div class="vesitable-img">
+                            <img src="{{ asset('storage/' . $product->featured_image_1) }}"
+                                class="img-fluid w-100 rounded-top" alt="">
+                        </div>
+                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                            style="top: 10px; right: 10px;">{{ Helper::product_category_name($product->category) }}
+                        </div>
+                        <div class="p-4 pb-0 rounded-bottom">
+                            <h4>{{ $product->product_name }}</h4>
+
+                            @php
+                                $plainText = strip_tags($product->description);
+                                $wordLimit = 15;
+
+                                $shortDescription = Str::words($plainText, $wordLimit, '...');
+                            @endphp
+
+                            <p>{{ $shortDescription }}</p>
+                            <div class="d-flex justify-content-between flex-lg-wrap">
+                                <p class="text-dark fs-5 fw-bold">Ugx {{ $product->sale_price }}/=</p>
+                                <a href="#"
+                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
+                                        class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-1.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Parsely</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$4.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-3.png" class="img-fluid w-100 rounded-top bg-light"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Banana</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-4.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Bell Papper</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Potatoes</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Parsely</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-5.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Potatoes</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="border border-primary rounded position-relative vesitable-item">
-                    <div class="vesitable-img">
-                        <img src="/assets/img/vegetable-item-6.jpg" class="img-fluid w-100 rounded-top"
-                            alt="">
-                    </div>
-                    <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                        style="top: 10px; right: 10px;">Vegetable</div>
-                    <div class="p-4 pb-0 rounded-bottom">
-                        <h4>Parsely</h4>
-                        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit sed do eiusmod te incididunt</p>
-                        <div class="d-flex justify-content-between flex-lg-wrap">
-                            <p class="text-dark fs-5 fw-bold">$7.99 / kg</p>
-                            <a href="#"
-                                class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                    class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </div>

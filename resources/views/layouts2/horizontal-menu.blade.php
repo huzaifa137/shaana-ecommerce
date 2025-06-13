@@ -14,11 +14,11 @@
                         Dashboard <i class="fa fa-angle-down horizontal-icon"></i>
                     </a>
                     <ul class="sub-menu">
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard 01</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard 02</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard 03</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard 04</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard 05</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 01</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 02</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 03</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard 04</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 05</a></li>
                     </ul>
                 </li>
                 <li aria-haspopup="true">
@@ -35,21 +35,22 @@
                     <ul class="sub-menu">
                         <li aria-haspopup="true"><a href="{{ route('all.products') }}">All Products</a></li>
                         <li aria-haspopup="true"><a href="{{ route('add.product') }}">Add Product</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Product Prices</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Product Inventory</a></li>
-                        
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Prices</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Inventory</a>
+                        </li>
+
+                        <li aria-haspopup="true"><a href="{{ route('product.categories') }}">All Categories</a></li>
                         <li aria-haspopup="true"><a href="{{ route('add.category') }}">Add Categories</a></li>
-                        <li aria-haspopup="true"><a href="{{ route('product.categories') }}">Product Categories</a></li>
-                        
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Tags</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Attributes</a>
+
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Tags</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Attributes</a>
                         </li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Options</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Collections</a>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Options</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Collections</a>
                         </li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Labels</a>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Labels</a>
                         </li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Product Reviews</a>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Product Reviews</a>
                         </li>
                     </ul>
                 </li>
@@ -67,11 +68,11 @@
                         Widgets <i class="fa fa-angle-down horizontal-icon"></i>
                     </a>
                     <ul class="sub-menu">
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard 01</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard 02</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard 03</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard 04</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard 05</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 01</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 02</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 03</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard 04</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 05</a></li>
                     </ul>
                 </li>
                 <li aria-haspopup="true">
@@ -85,11 +86,11 @@
                         Forms <i class="fa fa-angle-down horizontal-icon"></i>
                     </a>
                     <ul class="sub-menu">
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard 01</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard 02</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard 03</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard 04</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard 05</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 01</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 02</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 03</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard 04</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 05</a></li>
                     </ul>
                 </li>
                 <li aria-haspopup="true"><a href="{{ url('/' . ($page = '#')) }}" class="sub-icon">
@@ -105,15 +106,15 @@
                         <li aria-haspopup="true" class="sub-menu-sub"><a
                                 href="{{ url('/' . ($page = '#')) }}">Charts</a>
                             <ul class="sub-menu">
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         01</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         02</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         03</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard
                                         04</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         05</a></li>
                             </ul>
                         </li>
@@ -153,15 +154,15 @@
                         <li aria-haspopup="true" class="sub-menu-sub"><a
                                 href="{{ url('/' . ($page = '#')) }}">Shop</a>
                             <ul class="sub-menu">
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         01</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         02</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         03</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard
                                         04</a></li>
-                                <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard
+                                <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard
                                         05</a></li>
                             </ul>
                         </li>
@@ -180,11 +181,11 @@
                         Elements <i class="fa fa-angle-down horizontal-icon"></i>
                     </a>
                     <ul class="sub-menu">
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard 01</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard 02</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard 03</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard 04</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard 05</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 01</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 02</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 03</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard 04</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 05</a></li>
                     </ul>
                 </li>
                 <li aria-haspopup="true"><a href="{{ url('/' . ($page = '#')) }}" class="sub-icon ">
@@ -196,11 +197,11 @@
                         </svg>
                         Pages <i class="fa fa-angle-down horizontal-icon"></i></a>
                     <ul class="sub-menu">
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index')) }}">Dashboard 01</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index2')) }}">Dashboard 02</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index3')) }}">Dashboard 03</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index4')) }}">Dashboard 04</a></li>
-                        <li aria-haspopup="true"><a href="{{ url('/' . ($page = 'index5')) }}">Dashboard 05</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 01</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 02</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 03</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/')}}">Dashboard 04</a></li>
+                        <li aria-haspopup="true"><a href="{{ url('/') }}">Dashboard 05</a></li>
                     </ul>
                 </li>
             </ul>

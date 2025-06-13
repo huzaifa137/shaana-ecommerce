@@ -93,14 +93,14 @@
                                     <div>
                                         @foreach ($categories as $category)
                                             <div class="mb-3" style="width: 100%;">
-                                                <a class="btn btn-white w-100 text-left" href="#">
-                                                    <i class="fe fe-grid text"></i> <span
-                                                        style="font-weight: bold">{{ $category->name }}</span>
+                                                <a class="btn btn-white w-100 text-left"
+                                                    href="{{ route('edit.category', $category->id) }}">
+                                                    <i class="fe fe-grid text"></i>
+                                                    <span style="font-weight: bold">{{ $category->name }}</span>
                                                 </a>
                                             </div>
                                         @endforeach
                                     </div>
-
                                 </div>
                             </div>
                         </div>
@@ -153,7 +153,6 @@
                             </div>
 
                             <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
-
 
                             <div class="form">
                                 <div class="form-group">

@@ -676,7 +676,7 @@
                     <div
                         class="glass-panel hero-panel p-5 rounded-5 shadow-lg d-flex flex-column justify-content-center text-white">
                         <h1 class="display-1 fw-extrabold mb-3">
-                            <span class="highlight-pink">Shanana</span> Beauty Products
+                            <span class="highlight-pink">Shanana</span> Beauty and Bedroom products
                         </h1>
                         <p class="fs-4 mb-4 text-light">Beauty and bedroom must-haves, all in one place.</p>
 
@@ -912,7 +912,6 @@
                                     class="swiper-prev category-carousel-prev btn btn-pink rounded-circle">❮</button>
                                 <button
                                     class="swiper-next category-carousel-next btn btn-pink rounded-circle">❯</button>
-
                             </div>
                         </div>
                     </div>
@@ -926,70 +925,26 @@
                 <div class="col-md-12">
                     <div class="category-carousel swiper">
                         <div class="swiper-wrapper">
-                            <!-- Repeated Category Cards -->
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                    <img src="{{ asset('storage/products/SIEDhTsPvtNJ0LLhtfYjX61HJvFcJEeICM9vya7w.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                      <img src="{{ asset('storage/products/tNUR9XS35JO5jKBTvF3Nbv7P75xpMcWRPJWH4t4f.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads & Sweets</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                    <img src="{{ asset('storage/products/jvalUutO6sQakhXfiBKG83iGhqQ7E28fvFW7GVbm.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                    <img src="{{ asset('storage/products/49nIOwvTBBziuYXTCHgKdmn5djFf6CKaJm3BEsJS.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Beverages</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                    <img src="{{ asset('storage/products/73epv9UNQ8OW3W1Lhs4AGpQpST6wxGCZRHTilI2q.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Meat Products</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                     <img src="{{ asset('storage/products/vaZOXh7NCZbh1KjN57E69PwpRqcooRDAVxr7gpd0.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                    <img src="{{ asset('storage/products/qdNgk9ABvCcXJq2Ubs2WTh9eazUyR93Xm5lDfbnL.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Fruits & Veges</h4>
-                            </a>
-                            <a href="category.html" class="nav-link swiper-slide text-center category-card">
-                                <div class="category-thumb-wrapper">
-                                    <img src="{{ asset('storage/products/I7x13ARGQYgDWs8dIduK6Fs5Rimz69kgJ2j4JPq6.png') }}" class="rounded-circle"
-                                        alt="Fruits & Veges">
-                                </div>
-                                <h4 class="fs-6 mt-3 fw-semibold text-white category-title">Breads & Sweets</h4>
-                            </a>
+
+                            @foreach ($categories as $category)
+                                <a href="javascript:void();" class="nav-link swiper-slide text-center category-card">
+                                    <div class="category-thumb-wrapper">
+                                        <img src="{{ asset('storage/' . $category->featured_image) }}"
+                                            class="rounded-circle" alt="{{ $category->name }}">
+                                    </div>
+                                    <h4 class="fs-6 mt-3 fw-semibold text-white category-title">{{ $category->name }}
+                                    </h4>
+                                </a>
+                            @endforeach
+
+
+
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
-
 
     <style>
         .section-header.bg-white {
@@ -1317,13 +1272,13 @@
                             <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
                                 style="box-sizing: border-box;">
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/'.$product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
                                 </figure>
                                 <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
                                             <svg width="18" height="18" class="text-warning">
@@ -1339,18 +1294,44 @@
                                                 <use xlink:href="#star-full"></use>
                                             </svg>
                                             <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
+                                                <use xlink:href="#star-full"></use>
                                             </svg>
                                         </span>
-                                        <span>(222)</span>
+
+                                        @php
+                                            $reviewCounts = DB::table('product_reviews')
+                                                ->where('product_id', $product->id)
+                                                ->count();
+                                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
+                                        @endphp
+
+                                        <span>({{ $displayReviewCount }})</span>
+
+
                                     </div>
+
+                                    @php
+                                        $discount = 0;
+                                        if ($product->price > 0 && $product->sale_price < $product->price) {
+                                            $discount = round(
+                                                (($product->price - $product->sale_price) / $product->price) * 100,
+                                            );
+                                        }
+                                    @endphp
+
                                     <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
+                                        <del>Ugx{{ number_format($product->price) }}</del>
                                         <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
+                                            class="text-dark fw-semibold">Ugx{{ number_format($product->sale_price) }}</span>
+
+                                        @if ($discount > 0)
+                                            <span
+                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
+                                                {{ $discount }}% OFF
+                                            </span>
+                                        @endif
                                     </div>
+
                                     <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
                                         <div class="row g-2 align-items-center">
                                             <div class="col-3">
@@ -1433,7 +1414,7 @@
                             <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
                                 <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
                                     style="max-width: 180px; height: auto;" class="img-fluid">
-                                    
+
                             </a>
                         </figure>
 
@@ -1449,11 +1430,7 @@
         </div>
     </section>
 
-
-
-
     <section id="featured-products" class="pb-5" style="overflow-x: hidden;">
-
         <div class="container-lg">
             <div class="row">
                 <div class="col-12">
@@ -1474,13 +1451,13 @@
                             <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
                                 style="box-sizing: border-box;">
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/'.$product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
                                 </figure>
                                 <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
                                             <svg width="18" height="18" class="text-warning">
@@ -1546,7 +1523,6 @@
                 </div>
             </div>
         </div>
-
     </section>
 
     <section>
@@ -1603,7 +1579,7 @@
             </div>
         </div>
 
-          <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+        <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
             <div class="container-lg">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
@@ -1612,13 +1588,13 @@
                             <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
                                 style="box-sizing: border-box;">
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/'.$product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
                                 </figure>
                                 <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
                                             <svg width="18" height="18" class="text-warning">
@@ -1701,7 +1677,7 @@
             </div>
         </div>
 
-          <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
+        <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
             <div class="container-lg">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
@@ -1710,13 +1686,14 @@
                             <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
                                 style="box-sizing: border-box;">
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/'.$product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
                                 </figure>
+
                                 <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">Whole Wheat Sandwich Bread</h3>
+                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
                                             <svg width="18" height="18" class="text-warning">
@@ -1810,6 +1787,159 @@
 
         </div>
     </section>
+
+    @php
+        $randomNames = [
+            'Alice',
+            'Bob',
+            'Charlie',
+            'Diana',
+            'Ethan',
+            'Fiona',
+            'George',
+            'Hannah',
+            'Isaac',
+            'Jasmine',
+            'Kevin',
+            'Laura',
+            'Michael',
+            'Nina',
+            'Oscar',
+            'Paula',
+            'Quentin',
+            'Rachel',
+            'Samuel',
+            'Tina',
+            'Umar',
+            'Violet',
+            'William',
+            'Xena',
+            'Yusuf',
+            'Zara',
+            'Aaron',
+            'Bella',
+            'Caleb',
+            'Delilah',
+            'Edward',
+            'Faith',
+            'Gavin',
+            'Hailey',
+            'Ian',
+            'Julia',
+            'Kyle',
+            'Lily',
+            'Marcus',
+            'Natalie',
+            'Owen',
+            'Penelope',
+            'Ray',
+            'Sophia',
+            'Tristan',
+            'Uma',
+            'Victor',
+            'Wendy',
+            'Xander',
+            'Yara',
+        ];
+
+        $countries = [
+            'Europe' => [
+                'Germany',
+                'France',
+                'Spain',
+                'Italy',
+                'Netherlands',
+                'Sweden',
+                'Norway',
+                'Poland',
+                'Portugal',
+                'Greece',
+            ],
+            'Africa' => [
+                'Nigeria',
+                'Kenya',
+                'South Africa',
+                'Egypt',
+                'Ghana',
+                'Morocco',
+                'Algeria',
+                'Ethiopia',
+                'Tunisia',
+                'Uganda',
+            ],
+            'UK' => ['England', 'Scotland', 'Wales', 'Northern Ireland'],
+            'America' => [
+                'USA',
+                'Canada',
+                'Brazil',
+                'Mexico',
+                'Argentina',
+                'Colombia',
+                'Chile',
+                'Peru',
+                'Venezuela',
+                'Ecuador',
+            ],
+        ];
+
+        $allCountries = array_merge(...array_values($countries));
+
+        $salesData = $popupProducts
+            ->map(function ($product) use ($randomNames, $allCountries) {
+                return [
+                    'name' => $randomNames[array_rand($randomNames)],
+                    'product' => $product->product_name,
+                    'image' => asset('storage/' . $product->featured_image_1),
+                    'delivery' => rand(1, 4) . ' day delivery',
+                    'country' => $allCountries[array_rand($allCountries)],
+                ];
+            })
+            ->toArray();
+    @endphp
+
+    <div id="sales-popup" class="toast show align-items-center border shadow position-fixed bottom-0 start-0 m-3"
+        role="alert" aria-live="assertive" aria-atomic="true"
+        style="min-width: 300px; display:none; z-index: 1050; background-color: #FFF;">
+        <div class="d-flex">
+            <img id="sales-popup-image" src="" alt="Product Image" class="rounded m-2"
+                style="width: 50px; height: 50px; object-fit: cover;">
+            <div class="toast-body ps-0">
+                <div><strong id="sales-popup-name"></strong> from <span id="sales-popup-country"></span></div>
+                <div>just purchased</div>
+                <div class="fw-bold" id="sales-popup-product"></div>
+                <small class="text-muted" id="sales-popup-delivery"></small>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const salesData = @json($salesData);
+        let currentIndex = 0;
+        const popup = document.getElementById('sales-popup');
+        const img = document.getElementById('sales-popup-image');
+        const nameEl = document.getElementById('sales-popup-name');
+        const productEl = document.getElementById('sales-popup-product');
+        const deliveryEl = document.getElementById('sales-popup-delivery');
+        const countryEl = document.getElementById('sales-popup-country');
+
+        function showPopup(index) {
+            const sale = salesData[index];
+            img.src = sale.image;
+            nameEl.textContent = sale.name;
+            productEl.textContent = sale.product;
+            deliveryEl.textContent = sale.delivery;
+            countryEl.textContent = sale.country;
+            popup.style.display = 'flex';
+        }
+
+        function cycleSales() {
+            showPopup(currentIndex);
+            currentIndex = (currentIndex + 1) % salesData.length;
+        }
+
+        cycleSales();
+        setInterval(cycleSales, 5000);
+    </script>
 
     <section class="py-4">
         <div class="container-lg">

@@ -2,7 +2,7 @@
 				<div class="app-header header top-header">
 					<div class="container">
 						<div class="d-flex">
-							<a class="header-brand text-left" href="{{ url('/' . $page='index') }}">
+							<a class="header-brand text-left" href="{{ url('/') }}">
 								<img src="{{URL::asset('assets2/images/brand/logo.png')}}" class="header-brand-img desktop-lgo" alt="Dashtic logo">
 								<img src="{{URL::asset('assets2/images/brand/logo1.png')}}" class="header-brand-img dark-logo" alt="Dashtic logo">
 								<img src="{{URL::asset('assets2/images/brand/favicon.png')}}" class="header-brand-img mobile-logo" alt="Dashtic logo">
