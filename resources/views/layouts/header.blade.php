@@ -100,8 +100,7 @@
                             $addedProducts = Session::get('cart', []);
                             $cartCount = count($addedProducts);
                             ?>
-
-
+                            
                             <a href="{{ url('item-cart') }}" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span

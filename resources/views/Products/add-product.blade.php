@@ -14,13 +14,6 @@
         <div class="page-leftheader">
             <h4 class="page-title">Add Product</h4>
         </div>
-        {{-- <div class="page-rightheader ml-auto d-lg-flex d-none">
-            <div class="ml-5 mb-0">
-                <a href="" class="btn btn-md btn-primary">
-                    <i class="fas fa-plus me-2"></i> Create
-                </a>
-            </div>
-        </div> --}}
     </div>
 @endsection
 @section('content')

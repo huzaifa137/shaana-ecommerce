@@ -55,7 +55,16 @@ use App\Http\Controllers\Helper;
             </div>
         @endif
 
-        <h1 class="mb-4">Shanana Beauty and Bedroom Products</h1>
+        @if ($optionsId == 1)
+            <h1 class="mb-4">Best Selling Products</h1>
+        @elseif ($optionsId == 2)
+            <h1 class="mb-4">Featured Products</h1>
+        @elseif ($optionsId == 3)
+            <h1 class="mb-4">Most Popular Products</h1>
+        @elseif ($optionsId == 4)
+            <h1 class="mb-4">New Arrivals</h1>
+        @endif
+
         <div class="row g-4">
             <div class="col-lg-12">
 
@@ -70,7 +79,7 @@ use App\Http\Controllers\Helper;
                     <div class="col-6"></div>
                     <div class="col-xl-3">
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                            <label for="fruits">Default Sorting:</label>
+                            <label for="fruits">Sorting:</label>
                             <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
                                 form="fruitform">
                                 <option value="#">None</option>
@@ -101,7 +110,7 @@ use App\Http\Controllers\Helper;
                                     </ul>
                                 </div>
                             </div>
-                           
+
                             <div class="col-lg-12">
                                 <h4 class="mb-4">Featured products</h4>
 
@@ -114,8 +123,7 @@ use App\Http\Controllers\Helper;
                                                 style="width: 100px; height: 100px; object-fit: cover;">
                                         </div>
                                         <div class="flex-grow-1">
-                                            <h6 class="mb-1 fw-semibold text-dark">
-                                                {{ $featuredProduct->product_name }}
+                                            <h6 class="mb-1 fw-semibold text-dark">{{ $featuredProduct->product_name }}
                                             </h6>
 
                                             <div class="d-flex mb-2">
@@ -138,10 +146,10 @@ use App\Http\Controllers\Helper;
                                         </div>
                                     </div>
                                 @endforeach
+
                             </div>
                         </div>
                     </div>
-
 
                     @php
                         $randomNames = [
@@ -267,8 +275,7 @@ use App\Http\Controllers\Helper;
                             <img id="sales-popup-image" src="" alt="Product Image" class="rounded m-2"
                                 style="width: 50px; height: 50px; object-fit: cover;">
                             <div class="toast-body ps-0">
-                                <div><strong id="sales-popup-name"></strong> from <span
-                                        id="sales-popup-country"></span>
+                                <div><strong id="sales-popup-name"></strong> from <span id="sales-popup-country"></span>
                                 </div>
                                 <div>Just purchased</div>
                                 <div class="fw-bold" id="sales-popup-product"></div>
@@ -333,20 +340,19 @@ use App\Http\Controllers\Helper;
                                 $cart = session('cart', []);
                             @endphp
 
-                            @foreach ($products as $product)
+                            @forelse ($products as $product)
                                 @php
                                     $isInCart = array_key_exists($product->id, $cart);
                                 @endphp
 
                                 <div class="col-md-6 col-lg-4 mb-4">
                                     <div class="border border-primary rounded position-relative vesitable-item h-100">
-                                        {{-- Make the entire card clickable --}}
-                                        <a href="{{ url('/product-item/' . $product->id) }}"
-                                            class="stretched-link"></a>
+                                        {{-- Full clickable card link --}}
+                                        <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"></a>
 
                                         <div class="vesitable-img">
                                             <img src="{{ asset('storage/' . $product->featured_image_1) }}"
-                                                class="img-fluid w-100 rounded-top" alt="">
+                                                class="img-fluid w-100 rounded-top" alt="{{ $product->product_name }}">
                                         </div>
 
                                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
@@ -362,11 +368,13 @@ use App\Http\Controllers\Helper;
                                                 $wordLimit = 15;
                                                 $shortDescription = Str::words($plainText, $wordLimit, '...');
                                             @endphp
+
                                             <p class="text-muted">{{ $shortDescription }}</p>
 
                                             <div class="d-flex justify-content-between flex-lg-wrap">
-                                                <p class="text-primary fs-5 fw-bold mb-0">Ugx
-                                                    {{ $product->sale_price }}/=</p>
+                                                <p class="text-primary fs-5 fw-bold mb-0">
+                                                    Ugx {{ $product->sale_price }}/=
+                                                </p>
 
                                                 @if ($isInCart)
                                                     <button type="button"
@@ -381,8 +389,8 @@ use App\Http\Controllers\Helper;
                                                         @csrf
                                                         <button type="submit"
                                                             class="btn border border-primary rounded-pill px-3 py-1 mt-4 mb-4 text-primary">
-                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i>
-                                                            Add to cart
+                                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to
+                                                            cart
                                                         </button>
                                                     </form>
                                                 @endif
@@ -390,21 +398,19 @@ use App\Http\Controllers\Helper;
                                         </div>
                                     </div>
                                 </div>
-                            @endforeach
+
+                            @empty
+                                <div class="col-12 text-center my-5">
+                                    <div class="alert alert-info p-5 rounded">
+                                        <i class="fa fa-info-circle fa-3x mb-3 text-primary"></i>
+                                        <h4 class="mb-3">No Products Found</h4>
+                                        <p class="mb-0">We couldn't find any products under this category.</p>
+                                    </div>
+                                </div>
+                            @endforelse
                         </div>
                     </div>
 
-                    <style>
-                        .stretched-link {
-                            position: absolute;
-                            top: 0;
-                            left: 0;
-                            bottom: 0;
-                            right: 0;
-                            z-index: 1;
-                            text-indent: -9999px;
-                        }
-                    </style>
 
                 </div>
             </div>

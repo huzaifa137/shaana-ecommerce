@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\ProductsController;
+use App\Http\Controllers\NewsletterController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(MasterController::class)->group(function () {
@@ -30,6 +31,8 @@ Route::controller(MasterController::class)->group(function () {
     Route::post('user-generate-forgot-password-link', 'generateForgotPasswordLink')->name('user-generate-forgot-password-link');
 
     Route::get('/', 'home')->name('home');
+    Route::get('/item-categories/{id}', 'itemCategories')->name('item.categories');
+    Route::get('/product-options/{id}', 'itemOptions')->name('product.options');
     Route::get('password/reset/{id}', 'createNewPassword')->name('password/reset');
     Route::get('/user-forgot-password', 'userForgotPassword')->name('user.forgot.password');
 
@@ -41,9 +44,13 @@ Route::controller(CustomerController::class)->group(function () {
 
         Route::group(['middleware' => ['CustomerAuth']], function () {
             Route::get('/dashboard', 'customerDashboard')->name('customer.dashboard');
+            Route::get('/contact/{id}/edit', 'edit')->name('contact.edit');
+            Route::put('/contact/{id}', 'update')->name('contact.update');
         });
     });
 
+    Route::post('/contact', 'store')->name('contact.store');
+    Route::post('/subscribe', 'subscribe')->name('newsletter.subscribe');
     Route::get('/customer-logout', 'customerLogout')->name('customer.logout');
 });
 
@@ -89,7 +96,7 @@ Route::controller(ProductsController::class)->group(function () {
         Route::post('/shop/add-to-cart/{id}', 'addToCart')->name('shop.add.cart');
         Route::get('/shop/cart/remove/{id}', 'removeFromCart')->name('shop.cart.remove');
         Route::post('/cart/update-quantity', 'updateQuantity')->name('shop.cart.updateQuantity');
-        Route::get('/exchange-rates', 'getExchangeRates')->name('exchange.rates');	
+        Route::get('/exchange-rates', 'getExchangeRates')->name('exchange.rates');
 
     });
 });

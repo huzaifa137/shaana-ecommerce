@@ -129,10 +129,26 @@ class Helper extends Controller
 
     public static function product_category_name($category_id)
     {
-        $category_id  = (int) $category_id;
-        $category = DB::table('categories')->where('id', '=', $category_id)->first();
+        $category_id = (int) $category_id;
+        $category    = DB::table('categories')->where('id', '=', $category_id)->first();
 
         return $category_name = @$category->name;
+    }
+
+    public static function abbreviate_number($number)
+    {
+        if ($number >= 1000000) {
+            return round($number / 1000000, 1) . 'M';
+        } elseif ($number >= 100000) {
+            return round($number / 1000) . 'K';
+        } elseif ($number >= 10000) {
+            return round($number / 1000) . 'K';
+        } elseif ($number >= 1000) {
+            return round($number / 1000, 1) . 'K';
+        }
+
+        return number_format($number);
+
     }
 
 }

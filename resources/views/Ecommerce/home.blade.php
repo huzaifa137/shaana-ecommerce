@@ -30,6 +30,10 @@
 
 </head>
 
+<?php
+use App\Http\Controllers\Helper;
+?>
+
 <body>
 
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
@@ -336,207 +340,90 @@
         <div class="offcanvas-header justify-content-center">
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
+
         <div class="offcanvas-body">
             <div class="order-md-last">
                 <h4 class="d-flex justify-content-between align-items-center mb-3">
                     <span class="text-primary">Your cart</span>
-                    <span class="badge bg-primary rounded-pill">3</span>
+                    <span class="badge bg-primary rounded-pill">
+                        {{ count(session('cart', [])) }}
+                    </span>
                 </h4>
-                <ul class="list-group mb-3">
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Growers cider</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$12</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Fresh grapes</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$8</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between lh-sm">
-                        <div>
-                            <h6 class="my-0">Heinz tomato ketchup</h6>
-                            <small class="text-body-secondary">Brief description</small>
-                        </div>
-                        <span class="text-body-secondary">$5</span>
-                    </li>
-                    <li class="list-group-item d-flex justify-content-between">
-                        <span>Total (USD)</span>
-                        <strong>$20</strong>
-                    </li>
-                </ul>
 
-                <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
+                @php
+                    $cart = session('cart', []);
+                    $total = 0;
+                @endphp
+
+                @if (!empty($cart))
+                    <ul class="list-group mb-3">
+                        @foreach ($cart as $productId => $item)
+                            @php
+                                $product = \App\Models\Product::find($productId);
+                                $quantity = $item['quantity'] ?? 1;
+                                $price = $product->sale_price * $quantity;
+                                $total += $price;
+                            @endphp
+
+                            @if ($product)
+                                <li class="list-group-item d-flex justify-content-between lh-sm">
+                                    <div>
+                                        <h6 class="my-0">{{ $product->product_name }}</h6>
+                                        <small class="text-body-secondary">Qty: {{ $quantity }}</small>
+                                    </div>
+                                    <span class="text-body-secondary">Ugx {{ number_format($price) }}</span>
+                                </li>
+                            @endif
+                        @endforeach
+
+                        <li class="list-group-item d-flex justify-content-between">
+                            <span>Total (UGX)</span>
+                            <strong>Ugx {{ number_format($total) }}</strong>
+                        </li>
+                    </ul>
+
+                    <a href="{{ route('item.checkout') }}" class="w-100 btn btn-primary btn-lg">Continue to
+                        checkout</a>
+                @else
+                    <div class="text-center p-5">
+                        <i class="fa fa-shopping-cart fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">Your cart is empty</h5>
+                        <p>Looks like you haven't added any products yet.</p>
+                        <a href="{{ route('item.shop') }}" class="btn btn-outline-primary">Start Shopping</a>
+                    </div>
+                @endif
             </div>
         </div>
     </div>
 
+
     <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
 
         <div class="offcanvas-header justify-content-between">
-            <h4 class="fw-normal text-uppercase fs-6">Menu</h4>
+            <h4 class="fw-normal text-uppercase fs-6">Product Categories</h4>
             <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
         </div>
 
         <div class="offcanvas-body">
 
             <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-                <li class="nav-item border-dashed active">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#fruits"></use>
-                        </svg>
-                        <span>Fruits and vegetables</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#dairy"></use>
-                        </svg>
-                        <span>Dairy and Eggs</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#meat"></use>
-                        </svg>
-                        <span>Meat and Poultry</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#seafood"></use>
-                        </svg>
-                        <span>Seafood</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#bakery"></use>
-                        </svg>
-                        <span>Bakery and Bread</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#canned"></use>
-                        </svg>
-                        <span>Canned Goods</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#frozen"></use>
-                        </svg>
-                        <span>Frozen Foods</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#pasta"></use>
-                        </svg>
-                        <span>Pasta and Rice</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#breakfast"></use>
-                        </svg>
-                        <span>Breakfast Foods</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#snacks"></use>
-                        </svg>
-                        <span>Snacks and Chips</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <button
-                        class="btn btn-toggle dropdown-toggle position-relative w-100 d-flex justify-content-between align-items-center text-dark p-2"
-                        data-bs-toggle="collapse" data-bs-target="#beverages-collapse" aria-expanded="false">
-                        <div class="d-flex gap-3">
+
+                @foreach ($categories as $category)
+                    <?php
+                    $countCategory = DB::table('products')->where('category', $category->id)->count();
+                    ?>
+                    <li>
+                        <a href="{{ url('/item-categories/' . $category->id) }}"
+                            class="nav-link d-flex align-items-center gap-3 text-dark p-2">
                             <svg width="24" height="24" viewBox="0 0 24 24">
-                                <use xlink:href="#beverages"></use>
+                                <use xlink:href="#fruits"></use>
                             </svg>
-                            <span>Beverages</span>
-                        </div>
-                    </button>
-                    <div class="collapse" id="beverages-collapse">
-                        <ul class="btn-toggle-nav list-unstyled fw-normal ps-5 pb-1">
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
-                                    class="dropdown-item">Water</a></li>
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
-                                    class="dropdown-item">Juice</a></li>
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
-                                    class="dropdown-item">Soda</a></li>
-                            <li class="border-bottom py-2"><a href="{{ url('/') }} "
-                                    class="dropdown-item">Tea</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#spices"></use>
-                        </svg>
-                        <span>Spices and Seasonings</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#baby"></use>
-                        </svg>
-                        <span>Baby Food and Formula</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#health"></use>
-                        </svg>
-                        <span>Health and Wellness</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#household"></use>
-                        </svg>
-                        <span>Household Supplies</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#personal"></use>
-                        </svg>
-                        <span>Personal Care</span>
-                    </a>
-                </li>
-                <li class="nav-item border-dashed">
-                    <a href="{{ url('/') }} " class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#pet"></use>
-                        </svg>
-                        <span>Pet Food and Supplies</span>
-                    </a>
-                </li>
+                            <span>{{ $category->name }}</span>
+                        </a>
+                    </li>
+                @endforeach
+
+
             </ul>
 
         </div>
@@ -596,31 +483,59 @@
 
                 <div
                     class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
-                    <ul class="d-flex justify-content-end list-unstyled m-0">
+                    <ul class="d-flex justify-content-end list-unstyled m-0 align-items-center">
+
+                        {{-- User Icon --}}
                         <li>
-                            <a href="{{ url('user-login') }}" class="p-2 mx-1">
+                            <a href="{{ url('user-login') }}" class="position-relative p-2 mx-1">
                                 <svg width="24" height="24">
                                     <use xlink:href="#user"></use>
                                 </svg>
                             </a>
                         </li>
+
+                        {{-- Wishlist Icon --}}
                         <li>
-                            <a href="#" class="p-2 mx-1">
+                            <a href="#" class="position-relative p-2 mx-1">
                                 <svg width="24" height="24">
                                     <use xlink:href="#wishlist"></use>
                                 </svg>
                             </a>
                         </li>
-                        <li>
-                            <a href="#" class="p-2 mx-1" data-bs-toggle="offcanvas"
+
+                        {{-- Cart Icon --}}
+                        <li class="position-relative">
+                            @php
+                                $addedProducts = Session::get('cart', []);
+                                $cartCount = count($addedProducts);
+                            @endphp
+
+                            <a href="#" class="position-relative p-2 mx-1" data-bs-toggle="offcanvas"
                                 data-bs-target="#offcanvasCart" aria-controls="offcanvasCart">
                                 <svg width="24" height="24">
                                     <use xlink:href="#shopping-bag"></use>
                                 </svg>
+                                @if ($cartCount > 0)
+                                    <span
+                                        class="position-absolute top-0 start-75 translate-middle badge rounded-pill bg-danger cart-badge">
+
+                                        {{ $cartCount }}
+                                        <span class="visually-hidden">cart items</span>
+                                    </span>
+                                @endif
                             </a>
                         </li>
+
                     </ul>
                 </div>
+
+                <style>
+                    .cart-badge {
+                        font-size: 0.7rem;
+                        padding: 0.3em 0.5em;
+                    }
+                </style>
+
             </div>
         </div>
     </header>
@@ -901,12 +816,17 @@
     <section class="pb-5" style="overflow-x: hidden;">
 
         <div class="container-lg">
+
+            @if (session('success'))
+                <div class="alert alert-success mt-3">{{ session('success') }}</div>
+            @endif
             <div class="row">
                 <div class="col-12">
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
                         <h2 class="section-title mb-0">Shop by Category</h2>
                         <div class="d-flex align-items-center gap-3">
-                            <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                            <a href="javascript:void();" class="btn btn-pink rounded-pill px-4 py-2 shadow">View
+                                All</a>
                             <div class="swiper-buttons d-flex gap-2">
                                 <button
                                     class="swiper-prev category-carousel-prev btn btn-pink rounded-circle">❮</button>
@@ -927,7 +847,8 @@
                         <div class="swiper-wrapper">
 
                             @foreach ($categories as $category)
-                                <a href="javascript:void();" class="nav-link swiper-slide text-center category-card">
+                                <a href="{{ url('/item-categories/' . $category->id) }}"
+                                    class="nav-link swiper-slide text-center category-card">
                                     <div class="category-thumb-wrapper">
                                         <img src="{{ asset('storage/' . $category->featured_image) }}"
                                             class="rounded-circle" alt="{{ $category->name }}">
@@ -1247,6 +1168,26 @@
             border-color: #ff69b4;
             color: #fff;
         }
+
+        .product-item .stretched-link {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        .product-item form,
+        .product-item .btn,
+        .product-item input,
+        .product-item .col-3,
+        .product-item .col-7,
+        .product-item .col-2 {
+            position: relative;
+            z-index: 2;
+            /* Keep these interactive */
+        }
     </style>
 
 
@@ -1255,9 +1196,17 @@
         <div class="container-lg">
             <div class="row">
                 <div class="col-12">
+                    @if (session('success'))
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ session('success') }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"
+                                aria-label="Close"></button>
+                        </div>
+                    @endif
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
-                        <h2 class="section-title mb-0">Best selling products</h2>
-                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                        <h2 class="section-title mb-0">Best Selling Products</h2>
+                        <a href="{{ url('/product-options/1') }}"
+                            class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
                     </div>
                 </div>
             </div>
@@ -1267,12 +1216,30 @@
             <div class="container-lg">
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
-                    @foreach ($products as $product)
+                    @foreach ($bestSellingProducts as $product)
+                        @php
+                            $cart = session('cart', []);
+                            $isInCart = array_key_exists($product->id, $cart);
+                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
+
+                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
+                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
+
+                            $discount = 0;
+                            if ($product->price > 0 && $product->sale_price < $product->price) {
+                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                            }
+                        @endphp
+
                         <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
                                 style="box-sizing: border-box;">
+                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
+                                    style="z-index: 1;"></a>
+
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}"
+                                        title="{{ $product->product_name }}">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
@@ -1281,49 +1248,19 @@
                                     <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <svg width="18" height="18" class="text-warning">
+                                                    <use xlink:href="#star-full"></use>
+                                                </svg>
+                                            @endfor
                                         </span>
-
-                                        @php
-                                            $reviewCounts = DB::table('product_reviews')
-                                                ->where('product_id', $product->id)
-                                                ->count();
-                                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
-                                        @endphp
-
                                         <span>({{ $displayReviewCount }})</span>
-
-
                                     </div>
 
-                                    @php
-                                        $discount = 0;
-                                        if ($product->price > 0 && $product->sale_price < $product->price) {
-                                            $discount = round(
-                                                (($product->price - $product->sale_price) / $product->price) * 100,
-                                            );
-                                        }
-                                    @endphp
-
                                     <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>Ugx{{ number_format($product->price) }}</del>
+                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
                                         <span
-                                            class="text-dark fw-semibold">Ugx{{ number_format($product->sale_price) }}</span>
-
+                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
                                         @if ($discount > 0)
                                             <span
                                                 class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
@@ -1335,23 +1272,49 @@
                                     <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
                                         <div class="row g-2 align-items-center">
                                             <div class="col-3">
-                                                <input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"
-                                                    style="min-width: 100%; height: 40px; text-align: center;">
+                                                @if ($isInCart)
+                                                    <input type="number" name="quantity"
+                                                        class="form-control border-dark-subtle input-number quantity"
+                                                        value="{{ $cartQty }}" min="1" max="9"
+                                                        readonly
+                                                        style="min-width: 100%; height: 40px; text-align: center;">
+                                                @else
+                                                    <form method="POST"
+                                                        action="{{ route('shop.add.cart', $product->id) }}">
+                                                        @csrf
+                                                        <input type="number" name="quantity"
+                                                            class="form-control border-dark-subtle input-number quantity"
+                                                            value="{{ $cartQty }}" min="1"
+                                                            max="9"
+                                                            style="min-width: 100%; height: 40px; text-align: center;">
+                                                @endif
                                             </div>
+
                                             <div class="col-7">
-                                                <a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg>
-                                                    Add to Cart
-                                                </a>
+                                                @if ($isInCart)
+                                                    <a href="javascript:void(0);"
+                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;" disabled>
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        In Cart
+                                                    </a>
+                                                @else
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        Add to Cart
+                                                    </button>
+                                                    </form>
+                                                @endif
                                             </div>
+
                                             <div class="col-2">
-                                                <a href="#"
+                                                <a href="javascript:void(0);"
                                                     class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
                                                     style="height: 40px;">
                                                     <svg width="18" height="18">
@@ -1361,15 +1324,16 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     @endforeach
 
-
                 </div>
             </div>
         </div>
+
 
     </section>
 
@@ -1436,7 +1400,8 @@
                 <div class="col-12">
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
                         <h2 class="section-title mb-0">Featured products</h2>
-                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                        <a href="{{ url('/product-options/2') }}"
+                            class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
                     </div>
                 </div>
             </div>
@@ -1447,11 +1412,29 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
                     @foreach ($featuredProducts as $product)
+                        @php
+                            $cart = session('cart', []);
+                            $isInCart = array_key_exists($product->id, $cart);
+                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
+
+                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
+                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
+
+                            $discount = 0;
+                            if ($product->price > 0 && $product->sale_price < $product->price) {
+                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                            }
+                        @endphp
+
                         <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
                                 style="box-sizing: border-box;">
+                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
+                                    style="z-index: 1;"></a>
+
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}"
+                                        title="{{ $product->product_name }}">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
@@ -1460,51 +1443,73 @@
                                     <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <svg width="18" height="18" class="text-warning">
+                                                    <use xlink:href="#star-full"></use>
+                                                </svg>
+                                            @endfor
                                         </span>
-                                        <span>(222)</span>
+                                        <span>({{ $displayReviewCount }})</span>
                                     </div>
+
                                     <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
+                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
                                         <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
+                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
+                                        @if ($discount > 0)
+                                            <span
+                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
+                                                {{ $discount }}% OFF
+                                            </span>
+                                        @endif
                                     </div>
+
                                     <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
                                         <div class="row g-2 align-items-center">
                                             <div class="col-3">
-                                                <input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"
-                                                    style="min-width: 100%; height: 40px; text-align: center;">
+                                                @if ($isInCart)
+                                                    <input type="number" name="quantity"
+                                                        class="form-control border-dark-subtle input-number quantity"
+                                                        value="{{ $cartQty }}" min="1" max="9"
+                                                        readonly
+                                                        style="min-width: 100%; height: 40px; text-align: center;">
+                                                @else
+                                                    <form method="POST"
+                                                        action="{{ route('shop.add.cart', $product->id) }}">
+                                                        @csrf
+                                                        <input type="number" name="quantity"
+                                                            class="form-control border-dark-subtle input-number quantity"
+                                                            value="{{ $cartQty }}" min="1"
+                                                            max="9"
+                                                            style="min-width: 100%; height: 40px; text-align: center;">
+                                                @endif
                                             </div>
+
                                             <div class="col-7">
-                                                <a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg>
-                                                    Add to Cart
-                                                </a>
+                                                @if ($isInCart)
+                                                    <a href="javascript:void(0);"
+                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;" disabled>
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        In Cart
+                                                    </a>
+                                                @else
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        Add to Cart
+                                                    </button>
+                                                    </form>
+                                                @endif
                                             </div>
+
                                             <div class="col-2">
-                                                <a href="#"
+                                                <a href="javascript:void(0);"
                                                     class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
                                                     style="height: 40px;">
                                                     <svg width="18" height="18">
@@ -1514,11 +1519,11 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     @endforeach
-
 
                 </div>
             </div>
@@ -1540,7 +1545,8 @@
                             <p>Just Sign Up & Register it now to become member.</p>
                         </div>
                         <div class="col-md-5 p-3">
-                            <form>
+                            <form method="POST" action="{{ route('newsletter.subscribe') }}">
+                                @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label d-none">Name</label>
                                     <input type="text" class="form-control form-control-md rounded-0"
@@ -1573,7 +1579,8 @@
                 <div class="col-12">
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
                         <h2 class="section-title mb-0">Most popular products</h2>
-                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                        <a href="{{ url('/product-options/3') }}"
+                            class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
                     </div>
                 </div>
             </div>
@@ -1584,11 +1591,29 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
                     @foreach ($popularProducts as $product)
+                        @php
+                            $cart = session('cart', []);
+                            $isInCart = array_key_exists($product->id, $cart);
+                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
+
+                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
+                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
+
+                            $discount = 0;
+                            if ($product->price > 0 && $product->sale_price < $product->price) {
+                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                            }
+                        @endphp
+
                         <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
                                 style="box-sizing: border-box;">
+                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
+                                    style="z-index: 1;"></a>
+
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}"
+                                        title="{{ $product->product_name }}">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
@@ -1597,51 +1622,73 @@
                                     <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <svg width="18" height="18" class="text-warning">
+                                                    <use xlink:href="#star-full"></use>
+                                                </svg>
+                                            @endfor
                                         </span>
-                                        <span>(222)</span>
+                                        <span>({{ $displayReviewCount }})</span>
                                     </div>
+
                                     <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
+                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
                                         <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
+                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
+                                        @if ($discount > 0)
+                                            <span
+                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
+                                                {{ $discount }}% OFF
+                                            </span>
+                                        @endif
                                     </div>
+
                                     <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
                                         <div class="row g-2 align-items-center">
                                             <div class="col-3">
-                                                <input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"
-                                                    style="min-width: 100%; height: 40px; text-align: center;">
+                                                @if ($isInCart)
+                                                    <input type="number" name="quantity"
+                                                        class="form-control border-dark-subtle input-number quantity"
+                                                        value="{{ $cartQty }}" min="1" max="9"
+                                                        readonly
+                                                        style="min-width: 100%; height: 40px; text-align: center;">
+                                                @else
+                                                    <form method="POST"
+                                                        action="{{ route('shop.add.cart', $product->id) }}">
+                                                        @csrf
+                                                        <input type="number" name="quantity"
+                                                            class="form-control border-dark-subtle input-number quantity"
+                                                            value="{{ $cartQty }}" min="1"
+                                                            max="9"
+                                                            style="min-width: 100%; height: 40px; text-align: center;">
+                                                @endif
                                             </div>
+
                                             <div class="col-7">
-                                                <a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg>
-                                                    Add to Cart
-                                                </a>
+                                                @if ($isInCart)
+                                                    <a href="javascript:void(0);"
+                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;" disabled>
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        In Cart
+                                                    </a>
+                                                @else
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        Add to Cart
+                                                    </button>
+                                                    </form>
+                                                @endif
                                             </div>
+
                                             <div class="col-2">
-                                                <a href="#"
+                                                <a href="javascript:void(0);"
                                                     class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
                                                     style="height: 40px;">
                                                     <svg width="18" height="18">
@@ -1651,11 +1698,11 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     @endforeach
-
 
                 </div>
             </div>
@@ -1671,7 +1718,8 @@
                 <div class="col-12">
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
                         <h2 class="section-title mb-0">Just Arrived</h2>
-                        <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
+                        <a href="{{ url('/product-options/4') }}"
+                            class="btn btn-pink rounded-pill px-4 py-2 shadow">View All</a>
                     </div>
                 </div>
             </div>
@@ -1682,65 +1730,104 @@
                 <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
                     @foreach ($newProducts as $product)
+                        @php
+                            $cart = session('cart', []);
+                            $isInCart = array_key_exists($product->id, $cart);
+                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
+
+                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
+                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
+
+                            $discount = 0;
+                            if ($product->price > 0 && $product->sale_price < $product->price) {
+                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
+                            }
+                        @endphp
+
                         <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column"
+                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
                                 style="box-sizing: border-box;">
+                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
+                                    style="z-index: 1;"></a>
+
                                 <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}" title="Product Title">
+                                    <a href="{{ url('/product-item/' . $product->id) }}"
+                                        title="{{ $product->product_name }}">
                                         <img src="{{ asset('storage/' . $product->featured_image_1) }}"
                                             alt="Product Thumbnail" style="max-width: 100%; height: auto;">
                                     </a>
                                 </figure>
-
                                 <div class="flex-grow-1 d-flex flex-column text-center">
                                     <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
                                     <div class="mb-2">
                                         <span class="rating">
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-full"></use>
-                                            </svg>
-                                            <svg width="18" height="18" class="text-warning">
-                                                <use xlink:href="#star-half"></use>
-                                            </svg>
+                                            @for ($i = 0; $i < 5; $i++)
+                                                <svg width="18" height="18" class="text-warning">
+                                                    <use xlink:href="#star-full"></use>
+                                                </svg>
+                                            @endfor
                                         </span>
-                                        <span>(222)</span>
+                                        <span>({{ $displayReviewCount }})</span>
                                     </div>
+
                                     <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>$24.00</del>
-                                        <span class="text-dark fw-semibold">$18.00</span>
+                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
                                         <span
-                                            class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">10%
-                                            OFF</span>
+                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
+                                        @if ($discount > 0)
+                                            <span
+                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
+                                                {{ $discount }}% OFF
+                                            </span>
+                                        @endif
                                     </div>
+
                                     <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
                                         <div class="row g-2 align-items-center">
                                             <div class="col-3">
-                                                <input type="number" name="quantity"
-                                                    class="form-control border-dark-subtle input-number quantity"
-                                                    value="1"
-                                                    style="min-width: 100%; height: 40px; text-align: center;">
+                                                @if ($isInCart)
+                                                    <input type="number" name="quantity"
+                                                        class="form-control border-dark-subtle input-number quantity"
+                                                        value="{{ $cartQty }}" min="1" max="9"
+                                                        readonly
+                                                        style="min-width: 100%; height: 40px; text-align: center;">
+                                                @else
+                                                    <form method="POST"
+                                                        action="{{ route('shop.add.cart', $product->id) }}">
+                                                        @csrf
+                                                        <input type="number" name="quantity"
+                                                            class="form-control border-dark-subtle input-number quantity"
+                                                            value="{{ $cartQty }}" min="1"
+                                                            max="9"
+                                                            style="min-width: 100%; height: 40px; text-align: center;">
+                                                @endif
                                             </div>
+
                                             <div class="col-7">
-                                                <a href="#"
-                                                    class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#cart"></use>
-                                                    </svg>
-                                                    Add to Cart
-                                                </a>
+                                                @if ($isInCart)
+                                                    <a href="javascript:void(0);"
+                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;" disabled>
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        In Cart
+                                                    </a>
+                                                @else
+                                                    <button type="submit"
+                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
+                                                        style="height: 40px;">
+                                                        <svg width="18" height="18">
+                                                            <use xlink:href="#cart"></use>
+                                                        </svg>
+                                                        Add to Cart
+                                                    </button>
+                                                    </form>
+                                                @endif
                                             </div>
+
                                             <div class="col-2">
-                                                <a href="#"
+                                                <a href="javascript:void(0);"
                                                     class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
                                                     style="height: 40px;">
                                                     <svg width="18" height="18">
@@ -1750,11 +1837,11 @@
                                             </div>
                                         </div>
                                     </div>
+
                                 </div>
                             </div>
                         </div>
                     @endforeach
-
 
                 </div>
             </div>
@@ -1774,8 +1861,8 @@
                             <div class="d-flex gap-2 flex-wrap mb-5">
                                 <a href="#" title="App store"><img src="/assets1/images/img-app-store.png"
                                         alt="app-store"></a>
-                                <a href="#" title="Google Play"><img
-                                        src="/assets1/images/img-google-play.png" alt="google-play"></a>
+                                <a href="#" title="Google Play"><img src="/assets1/images/img-google-play.png"
+                                        alt="google-play"></a>
                             </div>
                         </div>
                         <div class="col-md-5">
@@ -1784,9 +1871,9 @@
                     </div>
                 </div>
             </div>
-
         </div>
     </section>
+
 
     @php
         $randomNames = [
@@ -1899,13 +1986,21 @@
 
     <div id="sales-popup" class="toast show align-items-center border shadow position-fixed bottom-0 start-0 m-3"
         role="alert" aria-live="assertive" aria-atomic="true"
-        style="min-width: 300px; display:none; z-index: 1050; background-color: #FFF;">
+        style="min-width: 300px; display:none; z-index: 1050; background-color: #FFF; position: relative;">
+
+        <!-- Close Button -->
+        <button id="sales-popup-close" aria-label="Close popup"
+            style="position: absolute; top: 5px; right: 8px; background: transparent; border: none; font-weight: bold; font-size: 16px; cursor: pointer;">
+            &times;
+        </button>
+
         <div class="d-flex">
             <img id="sales-popup-image" src="" alt="Product Image" class="rounded m-2"
                 style="width: 50px; height: 50px; object-fit: cover;">
             <div class="toast-body ps-0">
-                <div><strong id="sales-popup-name"></strong> from <span id="sales-popup-country"></span></div>
-                <div>just purchased</div>
+                <div><strong id="sales-popup-name"></strong> from <span id="sales-popup-country"></span>
+                </div>
+                <div>Just purchased</div>
                 <div class="fw-bold" id="sales-popup-product"></div>
                 <small class="text-muted" id="sales-popup-delivery"></small>
             </div>
@@ -1913,6 +2008,11 @@
     </div>
 
     <script>
+        @if (session()->has('reset_popup'))
+            localStorage.removeItem('salesPopupClosedAt');
+            @php session()->forget('reset_popup'); @endphp
+        @endif
+
         const salesData = @json($salesData);
         let currentIndex = 0;
         const popup = document.getElementById('sales-popup');
@@ -1921,6 +2021,7 @@
         const productEl = document.getElementById('sales-popup-product');
         const deliveryEl = document.getElementById('sales-popup-delivery');
         const countryEl = document.getElementById('sales-popup-country');
+        const closeBtn = document.getElementById('sales-popup-close');
 
         function showPopup(index) {
             const sale = salesData[index];
@@ -1937,25 +2038,32 @@
             currentIndex = (currentIndex + 1) % salesData.length;
         }
 
-        cycleSales();
-        setInterval(cycleSales, 5000);
+        let interval;
+        const closedAt = localStorage.getItem('salesPopupClosedAt');
+        const now = Date.now();
+        const twelveHours = 12 * 60 * 60 * 1000; // 12 hours in milliseconds
+
+        if (!closedAt || now - closedAt > twelveHours) {
+            cycleSales();
+            interval = setInterval(cycleSales, 5000);
+        } else {
+            popup.style.display = 'none';
+        }
+
+        closeBtn.addEventListener('click', () => {
+            popup.style.display = 'none';
+            localStorage.setItem('salesPopupClosedAt', Date.now());
+            if (interval) clearInterval(interval);
+        });
     </script>
 
     <section class="py-4">
         <div class="container-lg">
             <h2 class="my-4">People are also looking for</h2>
-            <a href="#" class="btn btn-warning me-2 mb-2">Organic Face Serum</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Hydrating Lip Balm</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Vitamin C Moisturizer</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Natural Body Butter</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Herbal Hair Oil</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Aloe Vera Gel</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Rosewater Toner</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Clay Face Mask</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Organic Shampoo Bar</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Exfoliating Scrub</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Lavender Face Mist</a>
-            <a href="#" class="btn btn-warning me-2 mb-2">Charcoal Cleanser</a>
+            @foreach ($categories as $category)
+                <a href="{{ url('item-categories/' . $category->id) }}"
+                    class="btn btn-warning me-2 mb-2">{{ $category->name }}</a>
+            @endforeach
         </div>
 
     </section>
@@ -2158,6 +2266,23 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.change-qty').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const productId = btn.dataset.productId;
+                    const change = parseInt(btn.dataset.change);
+                    const input = document.querySelector(
+                        `.quantity-input[data-product-id="${productId}"]`);
+                    let current = parseInt(input.value) || 1;
+                    let updated = current + change;
+                    if (updated < 1) updated = 1;
+                    input.value = updated;
+                });
+            });
+        });
+    </script>
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();

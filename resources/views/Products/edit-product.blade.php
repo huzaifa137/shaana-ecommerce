@@ -14,13 +14,6 @@
         <div class="page-leftheader">
             <h4 class="page-title">Edit Product</h4>
         </div>
-        {{-- <div class="page-rightheader ml-auto d-lg-flex d-none">
-            <div class="ml-5 mb-0">
-                <a href="" class="btn btn-md btn-primary">
-                    <i class="fas fa-plus me-2"></i> Create
-                </a>
-            </div>
-        </div> --}}
     </div>
 @endsection
 
@@ -247,7 +240,6 @@
                             </div>
 
 
-                            <!-- Labels Row -->
                             <!-- Styled Section Container -->
                             <div class="card p-4 mb-4 shadow-sm border rounded">
                                 <h4 class="mb-4">Product Attributes</h4>
@@ -349,7 +341,6 @@
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -478,6 +469,65 @@
                                             <i class="fas fa-plus me-1"></i> Add Review
                                         </button>
                                     </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h3 class="card-title">Striped Rows</h3>
+                                        </div>
+                                        <div class="card-body p-0">
+                                            <div class="table-responsive">
+                                                <table
+                                                    class="table table-striped table-hover card-table table-vcenter text-nowrap mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ID</th>
+                                                            <th>Name</th>
+                                                            <th>Position</th>
+                                                            <th>Salary</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Joan Powell</td>
+                                                            <td>Associate Developer</td>
+                                                            <td>$450,870</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Gavin Gibson</td>
+                                                            <td>Account manager</td>
+                                                            <td>$230,540</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Julian Kerr</td>
+                                                            <td>Senior Javascript Developer</td>
+                                                            <td>$55,300</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">4</th>
+                                                            <td>Cedric Kelly</td>
+                                                            <td>Accountant</td>
+                                                            <td>$234,100</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">5</th>
+                                                            <td>Samantha May</td>
+                                                            <td>Junior Technical Author</td>
+                                                            <td>$43,198</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div><!-- bd -->
+                                        </div><!-- bd -->
+                                    </div><!-- bd -->
+
                                 </div>
                             </div>
 

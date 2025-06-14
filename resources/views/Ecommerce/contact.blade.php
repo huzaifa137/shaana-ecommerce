@@ -14,15 +14,22 @@
 
 <!-- Contact Start -->
 <div class="container-fluid contact py-5">
+
     <div class="container py-5">
         <div class="p-5 bg-light rounded">
             <div class="row g-4">
                 <div class="col-12">
                     <div class="text-center mx-auto" style="max-width: 700px;">
-                        <h1 class="text-primary">Get in touch</h1>
-                        <p class="mb-4">The contact form is currently inactive. Get a functional and working contact
-                            form with Ajax & PHP in a few minutes. Just copy and paste the files, add a little code and
-                            you're done. <a href="https://htmlcodex.com/contact-form">Download Now</a>.</p>
+
+                        @if (session('success'))
+                            <div class="alert alert-success mt-3">
+                                {{ session('success') }}
+                            </div>
+                        @endif
+
+                        <h1 class="text-primary">Contact Us</h1>
+                        <p class="mb-4">Have questions, feedback, or need support? We’re here to help! Please fill out
+                            the form below and our team will get back to you as soon as possible.</p>
                     </div>
                 </div>
                 <div class="col-lg-12">
@@ -33,14 +40,25 @@
                     </div>
                 </div>
                 <div class="col-lg-7">
-                    <form action="" class="">
-                        <input type="text" class="w-100 form-control border-0 py-3 mb-4" placeholder="Your Name">
-                        <input type="email" class="w-100 form-control border-0 py-3 mb-4"
+                    <form action="{{ route('contact.store') }}" method="POST">
+                        @csrf
+                        <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name"
+                            placeholder="Your Name">
+                        <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="phone"
+                            placeholder="Your Phonenumber">
+                        <input type="email" class="w-100 form-control border-0 py-3 mb-4" name="email"
                             placeholder="Enter Your Email">
-                        <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" placeholder="Your Message"></textarea>
-                        <button class="w-100 btn form-control border-secondary py-3 bg-white text-primary "
-                            type="submit">Submit</button>
+                        <textarea class="w-100 form-control border-0 mb-4" rows="5" cols="10" name="message"
+                            placeholder="Your Message"></textarea>
+                        <button id="submitBtn"
+                            class="w-100 btn form-control border-secondary py-3 bg-white text-primary" type="submit">
+                            <span id="btnText">Submit</span>
+                            <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status"
+                                aria-hidden="true"></span>
+                        </button>
+
                     </form>
+
                 </div>
                 <div class="col-lg-5">
                     <div class="d-flex p-4 rounded mb-4 bg-white">
@@ -69,6 +87,23 @@
         </div>
     </div>
 </div>
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const btnSpinner = document.getElementById('btnSpinner');
+
+        form.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            btnText.textContent = 'Submitting...';
+            btnSpinner.classList.remove('d-none');
+        });
+    });
+</script>
+
 <!-- Contact End -->
 
 @include('layouts.footer')

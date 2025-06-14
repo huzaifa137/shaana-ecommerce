@@ -157,7 +157,7 @@ class ProductsController extends Controller
             'featured_image_1' => 'nullable|image',
             'featured_image_2' => 'nullable|image',
             'featured_image_3' => 'nullable|image',
-            'reviews'          => 'nullable|string', // reviews come as JSON string
+            'reviews'          => 'nullable|string',
         ]);
 
         $product = new Product($validated);
@@ -165,7 +165,7 @@ class ProductsController extends Controller
         $product->attributes = json_decode($request->input('attributes'), true);
         $product->labels     = json_decode($request->input('labels'), true);
         $product->taxes      = json_decode($request->input('taxes'), true);
-
+        
         foreach ([1, 2, 3] as $index) {
             $key = "featured_image_{$index}";
             if ($request->hasFile($key)) {
@@ -199,7 +199,6 @@ class ProductsController extends Controller
 
     public function deleteProduct(Product $product)
     {
-        // Check if the product exists
         try {
 
             if ($product->featured_image_1) {
@@ -309,23 +308,23 @@ class ProductsController extends Controller
         return response()->json(['message' => 'Product updated successfully']);
     }
 
-    public function addToCart($id)
+    public function addToCart(Request $request, $id)
     {
-        $product = Product::findOrFail($id);
-
-        $cart = Session::get('cart', []);
-
+        $product      = Product::findOrFail($id);
+        $cart         = Session::get('cart', []);
         $cleanedPrice = (int) str_replace(',', '', $product->sale_price);
 
+        $quantity = (int) $request->input('quantity', 1);
+
         if (isset($cart[$id])) {
-            $cart[$id]['quantity'] += 1;
+            $cart[$id]['quantity'] += $quantity;
         } else {
             $cart[$id] = [
                 "id"        => $product->id,
                 "name"      => $product->product_name,
                 "thumbnail" => $product->featured_image_1,
                 "price"     => $cleanedPrice,
-                "quantity"  => 1,
+                "quantity"  => $quantity,
             ];
         }
 
@@ -377,7 +376,7 @@ class ProductsController extends Controller
 
     public function getExchangeRates()
     {
-        $base    = 'UGX'; 
+        $base    = 'UGX';
         $symbols = 'USD,EUR,GBP';
 
         $response = Http::get("https://api.exchangerate.host/latest", [

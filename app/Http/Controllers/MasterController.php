@@ -25,7 +25,7 @@ class MasterController extends Controller
         $popularProducts     = Product::where('labels->popular', true)->get();
         $newProducts         = Product::where('labels->new', true)->get();
 
-        $popupProducts = $featuredProducts->take(15); 
+        $popupProducts = $featuredProducts->take(15);
 
         return view('Ecommerce.home', compact(
             'products',
@@ -38,12 +38,44 @@ class MasterController extends Controller
         ));
     }
 
+    public function itemCategories($categoryId)
+    {
+
+        $products         = Product::where('category', '=', $categoryId)->get();
+        $categories       = Category::all();
+        $featuredProducts = Product::where('labels->featured', true)->paginate(5);
+        $popupProducts    = $featuredProducts->take(15);
+        $category         = Category::findOrFail($categoryId);
+
+        return view('Ecommerce.item-categories', compact('products', 'categories', 'featuredProducts', 'popupProducts', 'category'));
+    }
+
+    public function itemOptions($optionsId)
+    {
+
+        if ($optionsId == 1) {
+            $products = Product::where('labels->bestSelling', true)->get();
+        } elseif ($optionsId == 2) {
+            $products = Product::where('labels->featured', true)->get();
+        } elseif ($optionsId == 3) {
+            $products = Product::where('labels->popular', true)->get();
+        } elseif ($optionsId == 4) {
+            $products = Product::where('labels->new', true)->get();
+        } 
+
+        $categories       = Category::all();
+        $featuredProducts = Product::where('labels->featured', true)->paginate(5);
+        $popupProducts    = $featuredProducts->take(15);
+
+        return view('Ecommerce.item-options', compact('products', 'categories', 'featuredProducts', 'popupProducts', 'optionsId'));
+    }
+
     public function itemShop()
     {
         $products         = Product::all();
         $categories       = Category::all();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
-        $popupProducts = $featuredProducts->take(15); 
+        $popupProducts    = $featuredProducts->take(15);
 
         return view('Ecommerce.item-shop', compact('products', 'categories', 'featuredProducts', 'popupProducts'));
     }

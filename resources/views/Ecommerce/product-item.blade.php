@@ -16,6 +16,15 @@ use App\Http\Controllers\Helper;
 <!-- Single Product Start -->
 <div class="container-fluid py-5 mt-5">
     <div class="container py-5">
+
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        @endif
+
+
         <div class="row g-4 mb-5">
             <div class="col-lg-8 col-xl-9">
                 <div class="row g-4">
@@ -58,26 +67,54 @@ use App\Http\Controllers\Helper;
                             $shortDescription = Str::words($plainText, $wordLimit, '...');
                         @endphp
 
+                        @php
+                            $cart = session('cart', []);
+                            $isInCart = array_key_exists($product->id, $cart);
+                        @endphp
+
                         <p class="mb-4">{{ $shortDescription }}</p>
 
-                        <div class="input-group quantity mb-5" style="width: 100px;">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-minus rounded-circle bg-light border">
-                                    <i class="fa fa-minus"></i>
-                                </button>
+                        @if ($isInCart)
+                            <div class="input-group quantity mb-4" style="width: 120px;">
+                                <input type="text" class="form-control form-control-sm text-center border-0"
+                                    value="{{ $cart[$product->id]['quantity'] ?? 1 }}" readonly />
                             </div>
-                            <input type="text" class="form-control form-control-sm text-center border-0"
-                                value="1">
-                            <div class="input-group-btn">
-                                <button class="btn btn-sm btn-plus rounded-circle bg-light border">
-                                    <i class="fa fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
 
-                        <a href="#" class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
-                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
-                        </a>
+                            <button type="button"
+                                class="btn border border-success rounded-pill px-4 py-2 mb-4 text-success" disabled>
+                                <i class="fa fa-check me-2 text-success"></i> In Cart
+                            </button>
+                        @else
+                            <form method="POST" action="{{ route('shop.add.cart', $product->id) }}">
+                                @csrf
+                                <div class="input-group quantity mb-4" style="width: 120px;">
+                                    <div class="input-group-btn">
+                                        <button type="button"
+                                            class="btn btn-sm btn-minus rounded-circle bg-light border change-qty"
+                                            data-change="-1" data-product-id="{{ $product->id }}">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
+                                    </div>
+                                    <input type="text" name="quantity"
+                                        class="form-control form-control-sm text-center border-0 quantity-input"
+                                        data-product-id="{{ $product->id }}" value="1"
+                                        oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                    <div class="input-group-btn">
+                                        <button type="button"
+                                            class="btn btn-sm btn-plus rounded-circle bg-light border change-qty"
+                                            data-change="1" data-product-id="{{ $product->id }}">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <button type="submit"
+                                    class="btn border border-secondary rounded-pill px-4 py-2 mb-4 text-primary">
+                                    <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                </button>
+                            </form>
+                        @endif
+
                     </div>
 
                     <div class="col-lg-12">
@@ -143,7 +180,8 @@ use App\Http\Controllers\Helper;
                                                     <p class="mb-0">Price</p>
                                                 </div>
                                                 <div class="col-6">
-                                                    <p class="mb-0">UGX {{ number_format($product->sale_price) }}</p>
+                                                    <p class="mb-0">UGX {{ number_format($product->sale_price) }}
+                                                    </p>
                                                 </div>
                                             </div>
 
@@ -171,7 +209,8 @@ use App\Http\Controllers\Helper;
                                                 </div>
                                             </div>
 
-                                            <div class="row text-center align-items-center justify-content-center py-2">
+                                            <div
+                                                class="row text-center align-items-center justify-content-center py-2">
                                                 <div class="col-6">
                                                     <p class="mb-0">Tax</p>
                                                 </div>
@@ -188,7 +227,8 @@ use App\Http\Controllers\Helper;
                                 use Carbon\Carbon;
                             @endphp
 
-                            <div class="tab-pane" id="nav-mission" role="tabpanel" aria-labelledby="nav-mission-tab">
+                            <div class="tab-pane" id="nav-mission" role="tabpanel"
+                                aria-labelledby="nav-mission-tab">
                                 @foreach ($reviews as $review)
                                     <div class="d-flex">
                                         <img src="/assets/img/avatar.jpg" class="img-fluid rounded-circle p-3"
@@ -302,7 +342,7 @@ use App\Http\Controllers\Helper;
                                     ?>
                                     <li>
                                         <div class="d-flex justify-content-between fruite-name">
-                                            <a href="#"><i
+                                            <a href="{{ url('/item-categories/' . $category->id) }}"><i
                                                     class="fas fa-apple-alt me-2"></i>{{ $category->name }}</a>
                                             <span>({{ $countCategory }})</span>
                                         </div>
@@ -312,7 +352,7 @@ use App\Http\Controllers\Helper;
                         </div>
                     </div>
                     <div class="col-lg-12">
-                        <h4 class="mb-4">Featured products</h4>
+                        <h4 class="mb-4">Featured Products</h4>
 
                         @foreach ($featuredProducts as $featuredProduct)
                             <div class="d-flex align-items-start mb-4">
@@ -322,7 +362,8 @@ use App\Http\Controllers\Helper;
                                         style="width: 100px; height: 100px; object-fit: cover;">
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-1 fw-semibold text-dark">{{ $featuredProduct->product_name }}</h6>
+                                    <h6 class="mb-1 fw-semibold text-dark">{{ $featuredProduct->product_name }}
+                                    </h6>
 
                                     <div class="d-flex mb-2">
                                         @for ($i = 0; $i < 5; $i++)
@@ -344,62 +385,90 @@ use App\Http\Controllers\Helper;
                             </div>
                         @endforeach
 
-                        <div class="d-flex justify-content-center my-4">
-                            <a href="#"
-                                class="btn border border-secondary px-4 py-3 rounded-pill text-primary w-100">Vew
-                                More</a>
-                        </div>
                     </div>
 
-                    {{-- <div class="col-lg-12">
-                        <div class="position-relative">
-                            <img src="/assets/img/banner-fruits.jpg" class="img-fluid w-100 rounded" alt="">
-                            <div class="position-absolute"
-                                style="top: 50%; right: 10px; transform: translateY(-50%);">
-                                <h3 class="text-secondary fw-bold">Fresh <br> Fruits <br> Banner</h3>
-                            </div>
-                        </div>
-                    </div> --}}
-                    
                 </div>
             </div>
         </div>
+
         <h1 class="fw-bold mb-0">Related products</h1>
+
         <div class="vesitable">
             <div class="owl-carousel vegetable-carousel justify-content-center">
+                @php $cart = session('cart', []); @endphp
 
                 @foreach ($products as $product)
-                    <div class="border border-primary rounded position-relative vesitable-item">
+                    @php $isInCart = array_key_exists($product->id, $cart); @endphp
+
+                    <div class="border border-primary rounded position-relative vesitable-item h-100">
+                        
+                        <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"></a>
+
                         <div class="vesitable-img">
                             <img src="{{ asset('storage/' . $product->featured_image_1) }}"
-                                class="img-fluid w-100 rounded-top" alt="">
+                                class="img-fluid w-100 rounded-top" alt="{{ $product->product_name }}">
                         </div>
+
                         <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                            style="top: 10px; right: 10px;">{{ Helper::product_category_name($product->category) }}
+                            style="top: 10px; right: 10px; z-index: 2;">
+                            {{ Helper::product_category_name($product->category) }}
                         </div>
-                        <div class="p-4 pb-0 rounded-bottom">
-                            <h4>{{ $product->product_name }}</h4>
+
+                        <div class="p-4 pb-0 rounded-bottom position-relative" style="z-index: 2;">
+                            <h4 class="fw-bold">{{ $product->product_name }}</h4>
 
                             @php
                                 $plainText = strip_tags($product->description);
                                 $wordLimit = 15;
-
                                 $shortDescription = Str::words($plainText, $wordLimit, '...');
                             @endphp
 
                             <p>{{ $shortDescription }}</p>
+
                             <div class="d-flex justify-content-between flex-lg-wrap">
                                 <p class="text-dark fs-5 fw-bold">Ugx {{ $product->sale_price }}/=</p>
-                                <a href="#"
-                                    class="btn border border-secondary rounded-pill px-3 py-1 mb-4 text-primary"><i
-                                        class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart</a>
+
+                                @if ($isInCart)
+                                    <button type="button"
+                                        class="btn border border-success rounded-pill px-3 py-1 mb-4 text-success"
+                                        disabled style="z-index: 3; position: relative;">
+                                        <i class="fa fa-check me-2 text-success"></i> In Cart
+                                    </button>
+                                @else
+                                    <form method="POST" action="{{ route('shop.add.cart', $product->id) }}"
+                                        style="z-index: 3; position: relative;">
+                                        @csrf
+                                        <button type="submit"
+                                            class="btn border border-primary rounded-pill px-3 py-1 mb-4 text-primary">
+                                            <i class="fa fa-shopping-bag me-2 text-primary"></i> Add to cart
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
                 @endforeach
-
             </div>
         </div>
+
+
+
+        <script>
+            $(document).ready(function() {
+                $('.change-qty').off('click').on('click', function() {
+                    const productId = $(this).data('product-id');
+                    const change = parseInt($(this).data('change'));
+                    const input = $(`.quantity-input[data-product-id="${productId}"]`);
+                    let quantity = parseInt(input.val()) || 1;
+
+                    quantity += change;
+                    if (quantity < 1) quantity = 1;
+
+                    input.val(quantity);
+                });
+            });
+        </script>
+
     </div>
 </div>
 <!-- Single Product End -->
