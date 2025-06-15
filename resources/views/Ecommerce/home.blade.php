@@ -382,8 +382,8 @@ use App\Http\Controllers\Helper;
                         </li>
                     </ul>
 
-                    <a href="{{ route('item.checkout') }}" class="w-100 btn btn-primary btn-lg">Continue to
-                        checkout</a>
+                    <a href="{{ route('item.cart') }}" class="w-100 btn btn-primary btn-lg">Continue to
+                        cart</a>
                 @else
                     <div class="text-center p-5">
                         <i class="fa fa-shopping-cart fa-3x text-muted mb-3"></i>
@@ -457,9 +457,38 @@ use App\Http\Controllers\Helper;
                         <li class="nav-item active">
                             <a href="{{ url('/item-shop') }}" class="nav-link">Shop</a>
                         </li>
-                        <li class="nav-item active">
+                        {{-- <li class="nav-item active">
                             <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
-                        </li>
+                        </li> --}}
+                        @if (Session::has('LoggedCustomer'))
+                            <?php
+                            $addedProducts = Session::get('cart', []);
+                            $cartCount = count($addedProducts);
+                            ?>
+                            <li class="nav-item active">
+                                @if ($cartCount > 0)
+                                    <a href="{{ url('/item-cart') }}"
+                                        class="nav-link position-relative d-inline-block">
+                                        <span class="position-relative d-inline-flex align-items-center">
+                                            Cart
+                                            <span
+                                                class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger animate__animated animate__bounce"
+                                                style="width: 20px; height: 20px; font-size: 12px; right: -6px; display: flex; justify-content: center; align-items: center;">
+                                                {{ $cartCount }}
+                                                <span class="visually-hidden">items in cart</span>
+                                            </span>
+                                        </span>
+                                    </a>
+                                @else
+                                    <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
+                                @endif
+                            </li>
+                        @else
+                            <li class="nav-item active">
+                                <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
+                            </li>
+                        @endif
+
                         <li class="nav-item active">
                             <a href="{{ url('/contact-us') }}" class="nav-link">Contact Us</a>
                         </li>
@@ -596,9 +625,11 @@ use App\Http\Controllers\Helper;
                         <p class="fs-4 mb-4 text-light">Beauty and bedroom must-haves, all in one place.</p>
 
                         <div class="d-flex flex-wrap gap-4 mb-5">
-                            <a href="#" class="btn btn-pink btn-lg rounded-pill px-5 py-3 shadow">Start
+                            <a href="{{ route('item.shop') }}"
+                                class="btn btn-pink btn-lg rounded-pill px-5 py-3 shadow">Start
                                 Shopping</a>
-                            <a href="#" class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 shadow">Join
+                            <a href="javascript:void();"
+                                class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 shadow">Join
                                 Now</a>
                         </div>
 
@@ -612,7 +643,7 @@ use App\Http\Controllers\Helper;
                                 <small class="text-uppercase letter-spacing">Happy Customers</small>
                             </div>
                             <div>
-                                <h3 class="fw-bold mb-1">20+</h3>
+                                <h3 class="fw-bold mb-1">1+</h3>
                                 <small class="text-uppercase letter-spacing">Store Locations</small>
                             </div>
                         </div>
@@ -2191,12 +2222,18 @@ use App\Http\Controllers\Helper;
                     <div class="footer-menu">
                         <h5 class="widget-title">Our Company</h5>
                         <ul class="menu-list list-unstyled">
-                            <li class="menu-item"><a href="#" class="nav-link">About Us</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Our Story</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Sustainability</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Careers</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Press & Media</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Affiliate Program</a></li>
+                            <li class="menu-item"><a href="{{ route('home') }}" class="nav-link">Home</a>
+                            </li>
+                            <li class="menu-item"><a href="{{ route('item.shop') }}" class="nav-link">Shop</a>
+                            </li>
+                            <li class="menu-item"><a href="{{ route('item.cart') }}" class="nav-link">Cart</a>
+                            </li>
+                            <li class="menu-item"><a href="{{ route('user.login') }}" class="nav-link">Login</a>
+                            </li>
+                            <li class="menu-item"><a href="{{ route('customer.dashboard') }}"
+                                    class="nav-link">Dashboard</a></li>
+                            <li class="menu-item"><a href="{{ route('user.register') }}" class="nav-link">Create
+                                    Account</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2206,12 +2243,18 @@ use App\Http\Controllers\Helper;
                     <div class="footer-menu">
                         <h5 class="widget-title">Quick Links</h5>
                         <ul class="menu-list list-unstyled">
-                            <li class="menu-item"><a href="#" class="nav-link">Shop All</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Best Sellers</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">New Arrivals</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Gift Sets</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Track Order</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Store Locator</a></li>
+                            <li class="menu-item"><a href="{{ route('item.shop') }}" class="nav-link">Shop
+                                    All</a></li>
+                            <li class="menu-item"><a href="{{ url('product-options/1') }}" class="nav-link">Best
+                                    Sellers</a></li>
+                            <li class="menu-item"><a href="{{ url('product-options/2') }}"
+                                    class="nav-link">Featured Products</a></li>
+                            <li class="menu-item"><a href="{{ url('product-options/4') }}" class="nav-link">New
+                                    Arrivals</a></li>
+                            <li class="menu-item"><a href="{{ url('product-options/3') }}" class="nav-link">Most
+                                    Popular Productsr</a></li>
+                            <li class="menu-item"><a
+                                    href="{{ route('customer.dashboard') }}"class="nav-link">Dashboard</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2221,12 +2264,17 @@ use App\Http\Controllers\Helper;
                     <div class="footer-menu">
                         <h5 class="widget-title">Support</h5>
                         <ul class="menu-list list-unstyled">
-                            <li class="menu-item"><a href="#" class="nav-link">FAQs</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Contact Us</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Returns & Refunds</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Shipping Info</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Privacy Policy</a></li>
-                            <li class="menu-item"><a href="#" class="nav-link">Terms & Conditions</a></li>
+                            <li class="menu-item"><a href="javascript:void();" class="nav-link">FAQs</a></li>
+                            <li class="menu-item"><a href="{{ route('contact.us') }}" class="nav-link">Contact
+                                    Us</a></li>
+                            <li class="menu-item"><a href="javascript:void();" class="nav-link">Shipping Info</a>
+                            </li>
+                            <li class="menu-item"><a href="javascript:void();" class="nav-link">Privacy Policy</a>
+                            </li>
+                            <li class="menu-item"><a href="javascript:void();" class="nav-link">Returns &
+                                    Refunds</a></li>
+                            <li class="menu-item"><a href="javascript:void();" class="nav-link">Terms &
+                                    Conditions</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2237,7 +2285,7 @@ use App\Http\Controllers\Helper;
                         <h5 class="widget-title">Subscribe to Us</h5>
                         <p>Get the latest on new arrivals, exclusive offers, and beauty tips — straight to your inbox.
                         </p>
-                        <form class="d-flex mt-3 gap-0" action="index.html">
+                        <form class="d-flex mt-3 gap-0" action="javascript:void();">
                             <input class="form-control rounded-start rounded-0 bg-light" type="email"
                                 placeholder="Email Address" aria-label="Email Address">
                             <button class="btn btn-dark rounded-end rounded-0" type="submit">Subscribe</button>

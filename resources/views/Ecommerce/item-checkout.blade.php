@@ -16,8 +16,18 @@
 <div class="container-fluid ">
     <div class="container py-5">
         <h1 class="mb-4">Billing details</h1>
-        <form action="#">
+        <form action="{{ route('order.place') }}" method="POST">
+            @csrf
             <div class="row g-5">
+
+                <input type="hidden" name="name" value="{{ $user->first_name }} {{ $user->last_name }}">
+                <input type="hidden" name="phone" value="{{ $user->mobile }}">
+                <input type="hidden" name="address" value="{{ $user->address }}">
+                <input type="hidden" name="region" value="{{ $user->city }}">
+                <input type="hidden" name="note" value="{{ old('order_notes') }}">
+                <input type="hidden" name="email" value="{{ $user->email }}">
+                <input type="hidden" name="country" value="{{ $user->country }}">
+                <input type="hidden" name="postcode" value="{{ $user->postcode }}">
 
                 <div class="col-md-12 col-lg-12 col-xl-12">
                     <div class="table-responsive">
@@ -64,7 +74,7 @@
                                     </tr>
                                 @empty
                                     <tr>
-                                        <td colspan="5" class="text-center py-5">Your cart is empty.</td>
+                                        <td colspan="5" class="text-center py-5 text-danger">Your cart is empty.</td>
                                     </tr>
                                 @endforelse
 
@@ -127,8 +137,8 @@
 
                     <hr>
                     <div class="form-check my-3">
-                        <input class="form-check-input" type="checkbox" id="Address-1" name="Address" value="Address"
-                            {{ $user->default_shipping_address == 1 ? 'checked' : '' }}>
+                        <input class="form-check-input" type="checkbox" id="Address-1" name="Address"
+                            value="Address" {{ $user->default_shipping_address == 1 ? 'checked' : '' }}>
                         <label class="form-check-label" for="Address-1">Ship to a different address?</label>
                     </div>
 
@@ -185,15 +195,44 @@
                         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
                     <div class="text-center mt-5">
-                        <button class="btn btn-primary btn-lg d-flex text-white align-items-center justify-content-center gap-2">
+                        <button type="submit"
+                            class="btn btn-primary btn-lg d-flex text-white align-items-center justify-content-center gap-2">
                             <i class="fas fa-shopping-cart"></i> Place Order
                         </button>
                     </div>
 
                 </div>
-
             </div>
         </form>
+
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            if (window.history.replaceState) {
+                window.history.replaceState(null, null, window.location.href);
+            }
+
+            @if (session('success'))
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!',
+                    text: '{{ session('success') }}',
+                    confirmButtonColor: '#3085d6',
+                    timer: 3500
+                });
+            @endif
+
+            @if (session('error'))
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops!',
+                    text: '{{ session('error') }}',
+                    confirmButtonColor: '#d33',
+                    timer: 4000
+                });
+            @endif
+        </script>
+
     </div>
 </div>
 <!-- Checkout Page End -->
@@ -264,6 +303,5 @@
 
     fetchRates();
 </script>
-
 
 @include('layouts.footer')

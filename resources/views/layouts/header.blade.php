@@ -76,8 +76,35 @@
                     <div class="navbar-nav mx-auto">
                         <a href="{{ url('/') }}" class="nav-item nav-link">Home</a>
                         <a href="{{ url('item-shop') }}" class="nav-item nav-link">Shop</a>
-                        <a href="{{ url('item-cart') }}" class="nav-item nav-link">Cart</a>
+
+                        @if (Session::has('LoggedCustomer'))
+                            <?php
+                            $addedProducts = Session::get('cart', []);
+                            $cartCount = count($addedProducts);
+                            ?>
+
+                            @if ($cartCount > 0)
+                                <a href="{{ url('item-cart') }}"
+                                    class="nav-item nav-link position-relative d-inline-block">
+                                    <span class="position-relative d-inline-flex align-items-center">
+                                        Cart
+                                        <span
+                                            class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger animate__animated animate__bounce"
+                                            style="width: 20px; height: 20px; font-size: 12px; right: -6px; display: flex; justify-content: center; align-items: center;">
+                                            {{ $cartCount }}
+                                            <span class="visually-hidden">items in cart</span>
+                                        </span>
+                                    </span>
+                                </a>
+                            @else
+                                <a href="{{ url('item-cart') }}" class="nav-item nav-link">Cart</a>
+                            @endif
+                        @else
+                            <a href="{{ url('item-cart') }}" class="nav-item nav-link">Cart</a>
+                        @endif
+
                         <a href="{{ url('contact-us') }}" class="nav-item nav-link">Contact Us</a>
+
                         @if (!Session::has('LoggedCustomer') && !Session::has('LoggedAdmin'))
                             <li class="nav-item active">
                                 <a href="{{ url('/user-login') }}" class="nav-link">Login</a>
@@ -100,7 +127,7 @@
                             $addedProducts = Session::get('cart', []);
                             $cartCount = count($addedProducts);
                             ?>
-                            
+
                             <a href="{{ url('item-cart') }}" class="position-relative me-4 my-auto">
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                                 <span

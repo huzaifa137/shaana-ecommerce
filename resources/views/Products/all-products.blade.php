@@ -58,7 +58,7 @@
                                         @endif
                                     </td>
                                     <td class="fw-bold">{{ $product->product_name }}</td>
-                                    <td><strong>${{ number_format((float) str_replace(',', '', $product->price), 2) }}</strong>
+                                    <td><strong>Ugx{{ number_format((float) str_replace(',', '', $product->price), 2) }}</strong>
                                     </td>
                                     <td>
                                         @switch($product->status)

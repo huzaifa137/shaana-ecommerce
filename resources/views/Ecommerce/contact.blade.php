@@ -21,12 +21,6 @@
                 <div class="col-12">
                     <div class="text-center mx-auto" style="max-width: 700px;">
 
-                        @if (session('success'))
-                            <div class="alert alert-success mt-3">
-                                {{ session('success') }}
-                            </div>
-                        @endif
-
                         <h1 class="text-primary">Contact Us</h1>
                         <p class="mb-4">Have questions, feedback, or need support? We’re here to help! Please fill out
                             the form below and our team will get back to you as soon as possible.</p>
@@ -35,11 +29,46 @@
                 <div class="col-lg-12">
                     <div class="h-100 rounded">
                         <iframe class="rounded w-100" style="height: 400px;"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d387191.33750346623!2d-73.97968099999999!3d40.6974881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c24fa5d33f083b%3A0xc80b8f06e177fe62!2sNew%20York%2C%20NY%2C%20USA!5e0!3m2!1sen!2sbd!4v1694259649153!5m2!1sen!2sbd"
-                            loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7979.548968284603!2d32.642165!3d0.353184!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x177dbb1fc56a973f%3A0x9ad368bc2b1d8c33!2sJunction%20Mall%2C%20Kireka!5e0!3m2!1sen!2sug!4v1718134759012!5m2!1sen!2sug"
+                            loading="lazy" referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
                     </div>
                 </div>
+
                 <div class="col-lg-7">
+
+                    @if ($errors->any())
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Validation Errors',
+                                    html: `
+                    <ul style="text-align: left;">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                `
+                                });
+                            });
+                        </script>
+                    @endif
+
+                    @if (session('success'))
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Success',
+                                    text: '{{ session('success') }}',
+                                }).then(() => {
+                                    document.querySelector('form').reset();
+                                });
+                            });
+                        </script>
+                    @endif
+
                     <form action="{{ route('contact.store') }}" method="POST">
                         @csrf
                         <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name"
@@ -88,21 +117,80 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const form = document.querySelector('form');
         const submitBtn = document.getElementById('submitBtn');
         const btnText = document.getElementById('btnText');
-        const btnSpinner = document.getElementById('btnSpinner');
 
-        form.addEventListener('submit', function() {
-            submitBtn.disabled = true;
-            btnText.textContent = 'Submitting...';
-            btnSpinner.classList.remove('d-none');
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            Array.from(form.elements).forEach(el => {
+                if (el.classList) el.classList.remove('is-invalid');
+            });
+
+            let errors = [];
+
+            if (!form.name.value.trim()) {
+                errors.push('Name is required');
+                form.name.classList.add('is-invalid');
+            }
+            if (!form.phone.value.trim()) {
+                errors.push('Phone number is required');
+                form.phone.classList.add('is-invalid');
+            }
+            if (!form.email.value.trim()) {
+                errors.push('Email is required');
+                form.email.classList.add('is-invalid');
+            } else if (!validateEmail(form.email.value.trim())) {
+                errors.push('Email format is invalid');
+                form.email.classList.add('is-invalid');
+            }
+            if (!form.message.value.trim()) {
+                errors.push('Message is required');
+                form.message.classList.add('is-invalid');
+            }
+
+            if (errors.length > 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Validation Errors',
+                    html: '<ul style="text-align:left;">' + errors.map(e => `<li>${e}</li>`)
+                        .join('') + '</ul>',
+                });
+                return;
+            }
+
+            // Confirm before submit
+            Swal.fire({
+                title: 'Confirm Submission',
+                text: 'Are you sure you want to submit your message?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, submit it!',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    submitBtn.disabled = true;
+                    btnText.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+                    form.submit();
+                }
+            });
+
         });
+
+        // Helper email validation function
+        function validateEmail(email) {
+            // Basic regex for email validation
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email.toLowerCase());
+        }
     });
 </script>
+
 
 <!-- Contact End -->
 

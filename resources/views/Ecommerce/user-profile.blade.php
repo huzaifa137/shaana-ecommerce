@@ -9,6 +9,12 @@
     </ol>
 </div>
 
+<style>
+    .form-label {
+    color: var(--bs-primary);
+}
+</style>
+
 <div class="container-fluid  mt-5">
     <div class="container ">
         <div class="row g-4 mb-5">

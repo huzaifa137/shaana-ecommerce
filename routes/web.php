@@ -3,8 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MasterController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
-use App\Http\Controllers\NewsletterController;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(MasterController::class)->group(function () {
@@ -47,11 +47,41 @@ Route::controller(CustomerController::class)->group(function () {
             Route::get('/contact/{id}/edit', 'edit')->name('contact.edit');
             Route::put('/contact/{id}', 'update')->name('contact.update');
         });
+
+        Route::group(['middleware' => ['AdminAuth']], function () {
+            Route::get('/contact-us-messages', 'customerContactUsMessage')->name('customer.contactus.messages');
+            Route::get('/contact-us-message-details/{id}', 'showMessageDetails')->name('contactus.messages.details');
+        });
+
+        Route::post('/admin/messages/{id}/update-status', 'updateStatus')->name('admin.messages.updateStatus');
     });
 
     Route::post('/contact', 'store')->name('contact.store');
     Route::post('/subscribe', 'subscribe')->name('newsletter.subscribe');
     Route::get('/customer-logout', 'customerLogout')->name('customer.logout');
+});
+
+Route::controller(OrderController::class)->group(function () {
+
+    Route::group(['middleware' => ['CustomerAuth']], function () {
+        Route::post('/place-order', 'placeOrder')->name('order.place');
+
+        Route::group(['prefix' => '/customer'], function () {
+            Route::get('/orders', 'myOrders')->name('customer.orders');
+            Route::get('/my-orders/{order}', 'showOrders')->name('customer.order.view');
+        });
+    });
+
+    Route::group(['middleware' => ['AdminAuth']], function () {
+        Route::group(['prefix' => '/shanana'], function () {
+            Route::get('/orders/{order}', 'showOrderinformation')->name('admin.orders.show');
+            Route::get('/orders-notifications', 'adminOrdersNotifications')->name('admin.order.notifications');
+            Route::get('/admin-orders', 'adminOrders')->name('admin.orders');
+            Route::get('/orders/{order}/invoice', 'showInvoice')->name('orders.invoice');
+            Route::post('/orders/{order}/status', 'updateStatus')->name('admin.orders.updateStatus');
+        });
+    });
+
 });
 
 Route::controller(AdminController::class)->group(function () {

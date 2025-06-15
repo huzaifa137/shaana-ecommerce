@@ -70,11 +70,7 @@ use App\Http\Controllers\Helper;
                     <div class="col-6"></div>
                     <div class="col-xl-3">
                         <div class="bg-light ps-3 py-3 rounded d-flex justify-content-between mb-4">
-                            <label for="fruits">Default Sorting:</label>
-                            <select id="fruits" name="fruitlist" class="border-0 form-select-sm bg-light me-3"
-                                form="fruitform">
-                                <option value="#">None</option>
-                            </select>
+                            <label for="fruits">Default Sorting: None</label>
                         </div>
                     </div>
                 </div>
@@ -101,7 +97,7 @@ use App\Http\Controllers\Helper;
                                     </ul>
                                 </div>
                             </div>
-                           
+
                             <div class="col-lg-12">
                                 <h4 class="mb-4">Featured products</h4>
 
@@ -267,8 +263,7 @@ use App\Http\Controllers\Helper;
                             <img id="sales-popup-image" src="" alt="Product Image" class="rounded m-2"
                                 style="width: 50px; height: 50px; object-fit: cover;">
                             <div class="toast-body ps-0">
-                                <div><strong id="sales-popup-name"></strong> from <span
-                                        id="sales-popup-country"></span>
+                                <div><strong id="sales-popup-name"></strong> from <span id="sales-popup-country"></span>
                                 </div>
                                 <div>Just purchased</div>
                                 <div class="fw-bold" id="sales-popup-product"></div>
@@ -341,8 +336,7 @@ use App\Http\Controllers\Helper;
                                 <div class="col-md-6 col-lg-4 mb-4">
                                     <div class="border border-primary rounded position-relative vesitable-item h-100">
                                         {{-- Make the entire card clickable --}}
-                                        <a href="{{ url('/product-item/' . $product->id) }}"
-                                            class="stretched-link"></a>
+                                        <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"></a>
 
                                         <div class="vesitable-img">
                                             <img src="{{ asset('storage/' . $product->featured_image_1) }}"

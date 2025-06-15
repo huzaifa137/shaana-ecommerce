@@ -71,4 +71,35 @@ class CustomerController extends Controller
 
         return redirect()->route('contact.index')->with('success', 'Message updated successfully!');
     }
+
+    public function customerContactUsMessage()
+    {
+        $messages = Contact::latest()->get();
+
+        return view('Admin.customer-contact-us-messages', compact('messages'));
+    }
+
+    public function myMessages($id)
+    {
+        $orders = Order::where('user_id', session('LoggedCustomer'))->latest()->get();
+
+        return view('customer.orders', compact('orders'));
+    }
+
+    public function showMessageDetails($id)
+    {
+        $message = Contact::findOrFail($id);
+        return view('Customer.contact-us-message-details', compact('message'));
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+
+        $message         = Contact::findOrFail($id);
+        $message->status = $request->input('status');
+        $message->save();
+
+        return redirect()->back()->with('success', 'Status updated successfully.');
+    }
+
 }
