@@ -12,7 +12,6 @@ class OrderController extends Controller
 {
     public function placeOrder(Request $request)
     {
-
         $cart = session()->get('cart', []); // or Cart::where('user_id', auth()->id())->get();
 
         if (empty($cart)) {
@@ -60,13 +59,13 @@ class OrderController extends Controller
                                        // Clear cart
             session()->forget('cart'); // or delete Cart::where(...)
 
-            $user = User::where('id', session('LoggedCustomer'))->first();
-            $user->notify(new NewOrderNotification($order));
+            // $user = User::where('id', session('LoggedCustomer'))->first();
+            // $user->notify(new NewOrderNotification($order));
 
-            $admins = User::where('user_role', '!=', '1')->get(); // Adjust based on your role system
-            foreach ($admins as $admin) {
-                $admin->notify(new NewOrderNotification($order));
-            }
+            // $admins = User::where('user_role', '!=', '1')->get(); // Adjust based on your role system
+            // foreach ($admins as $admin) {
+            //     $admin->notify(new NewOrderNotification($order));
+            // }
 
             return redirect()->back()->with('success', 'Order placed successfully!');
 

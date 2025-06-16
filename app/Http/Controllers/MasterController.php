@@ -61,7 +61,7 @@ class MasterController extends Controller
             $products = Product::where('labels->popular', true)->get();
         } elseif ($optionsId == 4) {
             $products = Product::where('labels->new', true)->get();
-        } 
+        }
 
         $categories       = Category::all();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
@@ -123,8 +123,9 @@ class MasterController extends Controller
         $reviews          = ProductReview::where('product_id', $product->id)->get();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
         $products         = Product::all();
+        $product_id       = $id;
 
-        return view('Ecommerce.product-item', compact('product', 'categories', 'reviews', 'featuredProducts', 'products'));
+        return view('Ecommerce.product-item', compact('product', 'categories', 'reviews', 'featuredProducts', 'products', 'product_id'));
     }
 
     public function userProfile()

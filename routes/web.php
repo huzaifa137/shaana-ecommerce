@@ -114,9 +114,11 @@ Route::controller(ProductsController::class)->group(function () {
         Route::post('/update-category/{id}', 'updateCategory')->name('categories.update');
         Route::post('/store-category', 'storeCategory')->name('store.category');
         Route::post('/store-product', 'storeProduct')->name('store.product');
+        Route::post('/store-review', 'storeReview')->name('store.review');
 
         Route::put('/products/{id}', 'updateProduct')->name('products.update');
         Route::delete('/products/{product}', 'deleteProduct')->name('products.destroy');
+        Route::delete('/reviews/{id}', 'deleteReview')->name('reviews.destroy');
         Route::delete('/categories/{category}', 'deleteCategory')->name('category.destroy');
 
     });
@@ -129,4 +131,9 @@ Route::controller(ProductsController::class)->group(function () {
         Route::get('/exchange-rates', 'getExchangeRates')->name('exchange.rates');
 
     });
+
+    Route::group(['middleware' => ['CustomerAuth']], function () {
+        Route::post('/customer-store-review', 'customerStoreReview')->name('customer.store.review');
+    });
+
 });

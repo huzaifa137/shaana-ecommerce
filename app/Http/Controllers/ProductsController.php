@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
@@ -165,7 +166,7 @@ class ProductsController extends Controller
         $product->attributes = json_decode($request->input('attributes'), true);
         $product->labels     = json_decode($request->input('labels'), true);
         $product->taxes      = json_decode($request->input('taxes'), true);
-        
+
         foreach ([1, 2, 3] as $index) {
             $key = "featured_image_{$index}";
             if ($request->hasFile($key)) {
@@ -197,6 +198,64 @@ class ProductsController extends Controller
         ]);
     }
 
+    public function storeReview(Request $request)
+    {
+        $reviews = json_decode($request->input('reviews'), true);
+
+        if (is_array($reviews)) {
+            foreach ($reviews as $review) {
+                ProductReview::create([
+                    'product_id'     => $request->productId,
+                    'reviewer_name'  => $review['name'],
+                    'reviewer_email' => $review['email'] ?? null,
+                    'rating'         => $review['rating'] ?? null,
+                    'review_message' => $review['message'],
+                    'review_date'    => $review['date'] ?? null,
+                ]);
+            }
+        }
+
+        return response()->json([
+            'message' => 'Product review saved successfully.',
+        ]);
+    }
+
+    public function customerStoreReview(Request $request)
+    {
+        $request->validate([
+            'product_id' => 'required|exists:products,id',
+            'name'       => 'required|string|max:255',
+            'email'      => 'required|email|max:255',
+            'rating'     => 'required|integer|min:1|max:5',
+            'message'    => 'required|string',
+            'date'       => 'required|date',
+        ]);
+
+        $customer = User::where('id', Session('LoggedCustomer'))->first();
+        
+        // Check for existing review
+        $existingReview = ProductReview::where('product_id', $request->product_id)
+            ->where('reviewer_email', $customer->email)
+            ->first();
+
+        if ($existingReview) {
+            return response()->json([
+                'message' => 'You have already submitted a review for this product.',
+            ], 409); // 409 = Conflict
+        }
+
+        ProductReview::create([
+            'product_id'     => $request->product_id,
+            'reviewer_name'  => $request->name,
+            'reviewer_email' => $customer->email,
+            'rating'         => $request->rating,
+            'review_message' => $request->message,
+            'review_date'    => $request->date,
+        ]);
+
+        return response()->json(['message' => 'Thank you! Your review has been posted.']);
+    }
+
     public function deleteProduct(Product $product)
     {
         try {
@@ -211,6 +270,14 @@ class ProductsController extends Controller
         } catch (\Exception $e) {
             return response()->json(['error' => 'Delete failed'], 500);
         }
+    }
+
+    public function deleteReview($id)
+    {
+
+        $review = ProductReview::findOrFail($id);
+        $review->delete();
+        return response()->json(['message' => 'Review deleted successfully.']);
     }
 
     public function updateProduct(Request $request, $id)

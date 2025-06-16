@@ -195,7 +195,7 @@
                         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 
                     <div class="text-center mt-5">
-                        <button type="submit"
+                        <button type="submit" id="placeOrderBtn"
                             class="btn btn-primary btn-lg d-flex text-white align-items-center justify-content-center gap-2">
                             <i class="fas fa-shopping-cart"></i> Place Order
                         </button>
@@ -238,6 +238,15 @@
 <!-- Checkout Page End -->
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const button = document.getElementById('placeOrderBtn');
+        button.disabled = true;
+        button.innerHTML = 'Placing Order...<i class="fas fa-spinner fa-spin"></i>';
+    });
+</script>
+
 
 <script>
     const apiKey = 'd91f4ccfef7a4e238ee266b7';

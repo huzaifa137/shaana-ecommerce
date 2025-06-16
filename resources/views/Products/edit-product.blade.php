@@ -417,7 +417,9 @@
                                 <div class="p-3 border rounded bg-light h-100">
                                     <div id="review-container">
                                         @foreach ($reviews as $index => $review)
-                                            <div class="border rounded bg-white p-3 mb-3 position-relative review-item">
+                                            <div class="border rounded bg-white p-3 mb-3 position-relative review-item"
+                                                @if (isset($review->id)) data-id="{{ $review->id }}" @endif>
+
                                                 <div class="form-row">
                                                     <div class="col-md-3 mb-3">
                                                         <label class="form-label">Name</label>
@@ -457,9 +459,8 @@
                                                         <textarea class="form-control" name="reviews[{{ $index }}][message]" rows="3">{{ $review->review_message }}</textarea>
                                                     </div>
                                                 </div>
-                                                <button type="button" class="btn btn-danger btn-sm review-remove-btn">
-                                                    🗑️
-                                                </button>
+                                                <button type="button"
+                                                    class="btn btn-danger btn-sm review-remove-btn">🗑️</button>
                                             </div>
                                         @endforeach
                                     </div>
@@ -469,65 +470,6 @@
                                             <i class="fas fa-plus me-1"></i> Add Review
                                         </button>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-12 col-lg-12">
-                                
-                                    <div class="card">
-                                        <div class="card-header">
-                                            <h3 class="card-title">Striped Rows</h3>
-                                        </div>
-                                        <div class="card-body p-0">
-                                            <div class="table-responsive">
-                                                <table
-                                                    class="table table-striped table-hover card-table table-vcenter text-nowrap mb-0">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>ID</th>
-                                                            <th>Name</th>
-                                                            <th>Position</th>
-                                                            <th>Salary</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <th scope="row">1</th>
-                                                            <td>Joan Powell</td>
-                                                            <td>Associate Developer</td>
-                                                            <td>$450,870</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">2</th>
-                                                            <td>Gavin Gibson</td>
-                                                            <td>Account manager</td>
-                                                            <td>$230,540</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">3</th>
-                                                            <td>Julian Kerr</td>
-                                                            <td>Senior Javascript Developer</td>
-                                                            <td>$55,300</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">4</th>
-                                                            <td>Cedric Kelly</td>
-                                                            <td>Accountant</td>
-                                                            <td>$234,100</td>
-                                                        </tr>
-                                                        <tr>
-                                                            <th scope="row">5</th>
-                                                            <td>Samantha May</td>
-                                                            <td>Junior Technical Author</td>
-                                                            <td>$43,198</td>
-                                                        </tr>
-                                                    </tbody>
-                                                </table>
-                                            </div><!-- bd -->
-                                        </div><!-- bd -->
-                                    </div><!-- bd -->
-
                                 </div>
                             </div>
 
@@ -555,6 +497,10 @@
     </div>
     </div>
 
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         const allAttributes = {
@@ -845,6 +791,154 @@
             if (e.target.classList.contains('review-remove-btn')) {
                 e.target.closest('.review-item').remove();
             }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#saveReviewBtn').on('click', function(e) {
+                e.preventDefault();
+
+                const btn = $(this);
+                const productId = $('#product_id').val();
+
+                // ✅ Collect reviews
+                let reviews = [];
+
+                $('#review-container .border').each(function() {
+                    const row = $(this);
+
+                    const name = row.find('input[name*="[name]"]').val().trim();
+                    const email = row.find('input[name*="[email]"]').val().trim();
+                    const rating = row.find('select[name*="[rating]"]').val();
+                    const date = row.find('input[name*="[date]"]').val();
+                    const message = row.find('textarea[name*="[message]"]').val().trim();
+
+                    reviews.push({
+                        name,
+                        email,
+                        rating,
+                        date,
+                        message
+                    });
+                });
+
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: 'Do you want to save this product review?',
+                    icon: 'question',
+                    showCancelButton: true,
+                    confirmButtonText: 'Yes, Save it!',
+                    cancelButtonText: 'Cancel',
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        btn.prop('disabled', true).html(
+                            'Saving... <i class="fas fa-spinner fa-spin"></i>');
+
+                        const formData = new FormData();
+
+                        formData.append('reviews', JSON.stringify(reviews));
+                        formData.append('productId', productId);
+                        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+
+                        $.ajax({
+                            url: '/store-review',
+                            type: 'POST',
+                            data: formData,
+                            processData: false,
+                            contentType: false,
+                            success: function(response) {
+                                Swal.fire({
+                                    icon: 'success',
+                                    title: 'Reviews Saved',
+                                    text: response.message ||
+                                        'The product reviews are saved successfully.',
+                                }).then(() => {
+                                    location.reload();
+                                });
+                            },
+                            //  error: function(xhr) {
+                            //     let errorMsg = 'An error occurred.';
+                            //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
+                            //         errorMsg = Object.values(xhr.responseJSON.errors)
+                            //             .flat().join('<br>');
+                            //     } else if (xhr.responseJSON?.message) {
+                            //         errorMsg = xhr.responseJSON.message;
+                            //     }
+                            //     Swal.fire({
+                            //         icon: 'error',
+                            //         title: 'Error',
+                            //         html: errorMsg,
+                            //     });
+                            // },
+                            error: function(data) {
+                                $('body').html(data.responseText);
+                            },
+                            complete: function() {
+                                btn.prop('disabled', false).html(
+                                    '<i class="fas fa-save"></i> Save');
+                            }
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const reviewContainer = document.getElementById('review-container');
+
+            reviewContainer.addEventListener('click', function(e) {
+                const deleteBtn = e.target.closest('.review-remove-btn');
+                if (deleteBtn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    const reviewItem = deleteBtn.closest('.review-item');
+                    const reviewId = reviewItem.getAttribute('data-id'); // null if not saved
+
+                    Swal.fire({
+                        title: 'Are you sure?',
+                        text: reviewId ? 'You are about to permanently delete this review.' :
+                            'Remove this unsaved review?',
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonColor: '#dc3545',
+                        cancelButtonColor: '#6c757d',
+                        confirmButtonText: 'Yes, delete it!'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            if (reviewId) {
+                                // Delete from DB via AJAX
+                                fetch(`/reviews/${reviewId}`, {
+                                        method: 'DELETE',
+                                        headers: {
+                                            'Content-Type': 'application/json',
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        }
+                                    })
+                                    .then(response => {
+                                        if (!response.ok) throw new Error('Failed to delete');
+                                        reviewItem.remove();
+                                        Swal.fire('Deleted!', 'Review has been deleted.',
+                                            'success');
+                                    })
+                                    .catch(() => {
+                                        Swal.fire('Error!', 'Failed to delete the review.',
+                                            'error');
+                                    });
+                            } else {
+                                // Unsaved review, just remove from DOM
+                                reviewItem.remove();
+                                Swal.fire('Removed!', 'This unsaved review has been removed.',
+                                    'info');
+                            }
+                        }
+                    });
+                }
+            });
         });
     </script>
 

@@ -264,30 +264,31 @@ use App\Http\Controllers\Helper;
                             </div>
                         </div>
                     </div>
-                    <form action="#" method="POST">
+                    <form id="reviewForm" action="#" method="POST">
                         @csrf
                         <h4 class="mb-5 fw-bold">Your experience matters — leave a review on this product</h4>
                         <div class="row g-4 border rounded bg-white p-4">
+                            <input type="hidden" name="product_id" value="{{ $product->id }}">
 
                             <div class="col-lg-6">
-                                <label class="form-label">Enter your name *</label>
+                                <label class="form-label">Enter your fullname *</label>
                                 <input type="text"
                                     class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
-                                    name="reviews[0][name]" placeholder="John Doe" required>
+                                    name="name" placeholder="John Doe" required>
                             </div>
 
                             <div class="col-lg-6">
                                 <label class="form-label">Enter your email *</label>
                                 <input type="email"
                                     class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
-                                    name="reviews[0][email]" placeholder="john@example.com" required>
+                                    name="email" placeholder="john@example.com" required>
                             </div>
 
                             <div class="col-lg-6">
                                 <label class="form-label">Enter your rating *</label>
                                 <select
                                     class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
-                                    name="reviews[0][rating]" required>
+                                    name="rating" required>
                                     <option value="">Select rating</option>
                                     <option value="5">5 Stars</option>
                                     <option value="4">4 Stars</option>
@@ -301,16 +302,13 @@ use App\Http\Controllers\Helper;
                                 <label class="form-label">Review Date *</label>
                                 <input type="date"
                                     class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
-                                    name="reviews[0][date]" min="{{ \Carbon\Carbon::now()->toDateString() }}"
-                                    required>
+                                    name="date" min="{{ \Carbon\Carbon::now()->toDateString() }}" required>
                             </div>
-
 
                             <div class="col-lg-12">
                                 <label class="form-label mt-3">Your Review *</label>
-                                <textarea name="reviews[0][message]"
-                                    class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm" rows="5"
-                                    placeholder="Write your review..." required></textarea>
+                                <textarea name="message" class="form-control border-0 border-bottom border-primary bg-light px-2 py-2 shadow-sm"
+                                    rows="5" placeholder="Write your review..." required></textarea>
                             </div>
 
                             <div class="col-lg-12 text-end mt-4">
@@ -321,6 +319,73 @@ use App\Http\Controllers\Helper;
                             </div>
                         </div>
                     </form>
+
+
+                    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+                    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const reviewForm = document.getElementById('reviewForm');
+
+                            reviewForm.addEventListener('submit', function(e) {
+                                e.preventDefault();
+
+                                const formData = new FormData(reviewForm);
+
+                                const submitBtn = reviewForm.querySelector('button[type="submit"]');
+                                submitBtn.disabled = true;
+                                submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin me-2"></i> Submitting...`;
+
+                                fetch("{{ route('customer.store.review') }}", {
+                                        method: 'POST',
+                                        headers: {
+                                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                        },
+                                        body: formData
+                                    })
+                                    .then(async response => {
+                                        const contentType = response.headers.get("content-type");
+
+                                        if (!response.ok) {
+                                            if (contentType && contentType.includes("application/json")) {
+                                                const errorJson = await response.json();
+                                                throw new Error(errorJson.message || 'Something went wrong.');
+                                            } else {
+                                                const errorText = await response.text();
+                                                throw new Error(errorText); // HTML fallback
+                                            }
+                                        }
+
+                                        return response.json();
+                                    })
+                                    .then(data => {
+                                        Swal.fire({
+                                            title: 'Success!',
+                                            text: data.message || 'Review submitted successfully.',
+                                            icon: 'success',
+                                            confirmButtonText: 'OK'
+                                        }).then(() => {
+                                            location.reload(); // Reload the page to show the new review
+                                        });
+                                    })
+                                    .catch(error => {
+                                        const isHtml = error.message.trim().startsWith('<');
+
+                                        if (isHtml) {
+                                            // Replace body with raw HTML if Laravel returned a full HTML error page
+                                            document.body.innerHTML = error.message;
+                                        } else {
+                                            Swal.fire('Error!', error.message || 'Something went wrong.', 'error');
+                                        }
+
+                                        submitBtn.disabled = false;
+                                        submitBtn.innerHTML = '📨 Post Comment';
+                                    });
+                            });
+                        });
+                    </script>
+
 
 
                 </div>
@@ -401,7 +466,7 @@ use App\Http\Controllers\Helper;
                     @php $isInCart = array_key_exists($product->id, $cart); @endphp
 
                     <div class="border border-primary rounded position-relative vesitable-item h-100">
-                        
+
                         <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"></a>
 
                         <div class="vesitable-img">
