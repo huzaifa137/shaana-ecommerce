@@ -45,14 +45,14 @@ class NewOrderNotification extends Notification
             ->line('Thank you for using our application!');
     }
 
-    public function toDatabase($notifiable)
-    {
-        return [
-            'message' => "Order #{$this->orderId} status changed to {$this->status}.",
-            'url'     => route('admin.order.view', $this->orderId),
-            'icon'    => $this->status == 'delivered' ? '✅' : '📦',
-        ];
-    }
+    // public function toDatabase($notifiable)
+    // {
+    //     return [
+    //         'message' => "Order #{$this->order->id} status changed to {$this->status}.",
+    //         'url'     => route('admin.order.view', $this->order->id),
+    //         'icon'    => $this->status == 'delivered' ? '✅' : '📦',
+    //     ];
+    // }
 
     /**
      * Get the array representation of the notification.

@@ -59,13 +59,13 @@ class OrderController extends Controller
                                        // Clear cart
             session()->forget('cart'); // or delete Cart::where(...)
 
-            // $user = User::where('id', session('LoggedCustomer'))->first();
-            // $user->notify(new NewOrderNotification($order));
+            $user = User::where('id', session('LoggedCustomer'))->first();
+            $user->notify(new NewOrderNotification($order));
 
-            // $admins = User::where('user_role', '!=', '1')->get(); // Adjust based on your role system
-            // foreach ($admins as $admin) {
-            //     $admin->notify(new NewOrderNotification($order));
-            // }
+            $admins = User::where('user_role', '!=', '1')->get(); // Adjust based on your role system
+            foreach ($admins as $admin) {
+                $admin->notify(new NewOrderNotification($order));
+            }
 
             return redirect()->back()->with('success', 'Order placed successfully!');
 

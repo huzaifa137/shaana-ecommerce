@@ -6,7 +6,7 @@
 
                 <div class="col-lg-9">
                     <a href="javascript:void(0);">
-                        <h1 class="text-primary mb-0">Shanana Beauty and Bedroom Products</h1>
+                        <h1 class="text-primary mb-0">Shanana Beauty Products</h1>
                         <p class="text-secondary mb-0">Get to Know Us</p>
                     </a>
                 </div>
@@ -67,9 +67,9 @@
             <div class="col-lg-3 col-md-6">
                 <div class="footer-item">
                     <h4 class="text-light mb-3">Contact</h4>
-                    <p>Address: 1429 Netus Rd, NY 48247</p>
-                    <p>Email: Example@gmail.com</p>
-                    <p>Phone: +0123 4567 8910</p>
+                    <p>Address: Junction Mall, Namugongo Road, Kireka, Uganda</p>
+                    <p>Email: shananabeauty120@gmail.com</p>
+                    <p>Phone: +256 702 501 011</p>
                     <p>Payments Accepted</p>
                     <img src="/assets/img/payment.png" class="img-fluid" alt="">
                 </div>

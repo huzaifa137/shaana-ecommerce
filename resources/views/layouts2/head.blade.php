@@ -1,5 +1,5 @@
 <!-- Title -->
-<title>Shanana Beauty and Bedroom Products</title>
+<title>Shanana Beauty Products</title>
 <!--Favicon -->
 <link rel="icon" href="{{URL::asset('assets2/images/brand/favicon.ico')}}" type="image/x-icon"/>
 <!-- Bootstrap css -->

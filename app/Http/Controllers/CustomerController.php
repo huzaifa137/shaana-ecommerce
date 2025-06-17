@@ -3,14 +3,24 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Newsletter;
+use App\Models\Order;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class CustomerController extends Controller
 {
 
     public function customerDashboard()
     {
-        return view('Customer.customer-dashboard');
+        $orders = Order::with(['items.product'])
+            ->where('user_id', session('LoggedCustomer'))
+            ->latest()
+            ->get();
+
+        $BestSellingProducts = Product::where('labels->bestSelling', true)->get();
+
+        return view('Customer.customer-dashboard', compact('orders', 'BestSellingProducts'));
     }
 
     public function customerLogout()
@@ -48,7 +58,23 @@ class CustomerController extends Controller
 
         $contact = Contact::create($request->all());
 
-        return redirect()->back()->with('success', 'Your message has been submitted!');
+        $data = [
+            'name'    => $request->name,
+            'email'   => $request->email,
+            'phone'   => $request->phone,
+            'message' => $request->message,
+            'title'   => 'New Contact Message Received',
+        ];
+
+        try {
+            Mail::send('emails.contact-submitted', ['data' => $data], function ($message) use ($data) {
+                $message->to($data['email'])->subject($data['title']);
+            });
+        } catch (\Exception $e) {
+            return back()->with('error', 'Message submitted, but failed to send confirmation email.');
+        }
+
+        return redirect()->back()->with('success', 'Your message has been submitted successfully!');
     }
 
     public function edit($id)

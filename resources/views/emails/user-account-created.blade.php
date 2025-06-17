@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Shanana Beauty and Bedroom Products</title>
+    <title>Welcome to Shanana Beauty Products</title>
 </head>
 
 <body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #fff; color: #333;">
@@ -27,7 +27,7 @@
 
                             <p style="font-size: 15px; color: #555;">
                                 We are thrilled to inform you that your account has been successfully created on
-                                <strong>Shanana Beauty and Bedroom Products!</strong> Welcome aboard!
+                                <strong>Shanana Beauty Products!</strong> Welcome aboard!
                             </p>
 
                             <h3 style="color: #ec407a;">Your Account Details:</h3>
@@ -53,14 +53,14 @@
                                 offer.
                             </p>
 
-                            <p style="font-size: 15px; color: #555;">Warm regards,<br><strong>The Shanana Beauty and Bedroom Products
+                            <p style="font-size: 15px; color: #555;">Warm regards,<br><strong>The Shanana Beauty Products
                                     Team</strong></p>
                         </td>
                     </tr>
                     <tr>
                         <td
                             style="background-color: #f8bbd0; text-align: center; padding: 15px; font-size: 13px; color: #555;">
-                            &copy; {{ date('Y') }} Shanana Beauty and Bedroom Products. All rights reserved.
+                            &copy; {{ date('Y') }} Shanana Beauty Products. All rights reserved.
                         </td>
                     </tr>
                 </table>

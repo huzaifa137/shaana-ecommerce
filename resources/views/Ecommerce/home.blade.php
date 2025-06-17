@@ -620,7 +620,7 @@ use App\Http\Controllers\Helper;
                     <div
                         class="glass-panel hero-panel p-5 rounded-5 shadow-lg d-flex flex-column justify-content-center text-white">
                         <h1 class="display-1 fw-extrabold mb-3">
-                            <span class="highlight-pink">Shanana</span> Beauty and Bedroom products
+                            <span class="highlight-pink">Shanana</span> Beauty Products
                         </h1>
                         <p class="fs-4 mb-4 text-light">Beauty and bedroom must-haves, all in one place.</p>
 
@@ -2302,7 +2302,7 @@ use App\Http\Controllers\Helper;
         <div class="container-lg">
             <div class="row">
                 <div class="col-md-6 copyright">
-                    <p>© <span id="year"></span> Shanana Beauty and Bedroom Products. All rights reserved.</p>
+                    <p>© <span id="year"></span> Shanana Beauty Products. All rights reserved.</p>
                 </div>
                 <div class="col-md-6 credit-link text-start text-md-end">
                     <p>

@@ -69,6 +69,20 @@
                         </script>
                     @endif
 
+                    @if (session('error'))
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function() {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'error',
+                                    text: '{{ session('error') }}',
+                                }).then(() => {
+                                    document.querySelector('form').reset();
+                                });
+                            });
+                        </script>
+                    @endif
+
                     <form action="{{ route('contact.store') }}" method="POST">
                         @csrf
                         <input type="text" class="w-100 form-control border-0 py-3 mb-4" name="name"
@@ -175,7 +189,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     submitBtn.disabled = true;
-                    btnText.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Saving...`;
+                    btnText.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Submitting...`;
                     form.submit();
                 }
             });
