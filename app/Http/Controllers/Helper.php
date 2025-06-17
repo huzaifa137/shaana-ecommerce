@@ -31,13 +31,14 @@ class Helper extends Controller
         return $admin ? trim($admin->first_name . ' ' . $admin->last_name) : null;
     }
 
-    public static function student_username($user = "")
+    public static function fullname($user = "")
     {
         $user = (int) $user;
-        return DB::table('users')
-            ->where('id', $user)
-            ->where('user_role', 1)
-            ->value('username');
+
+        $first_name = DB::table('users')->where('id', '=', $user)->value('first_name');
+        $last_name  = DB::table('users')->where('id', '=', $user)->value('last_name');
+
+        return $user = @$first_name . ' ' . @$last_name;
     }
 
     public static function category_name($user = "")

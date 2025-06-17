@@ -27,42 +27,38 @@
     <!--End Page header-->
 @endsection
 @section('content')
-    <!-- Row -->
     <div class="row">
         <div class="col-md-12 col-lg-12">
 
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">My Orders</h3>
+                    <h3 class="card-title">All Customers</h3>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover align-middle">
                             <thead class="table-primary">
                                 <tr>
-                                    <th>ID</th>
-                                    <th>Customer</th>
-                                    <th>Total</th>
-                                    <th>Status</th>
-                                    <th>Payment</th>
+                                    <th>#</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Country</th>
+                                    <th>Joined</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($orders as $key => $order)
+                                @forelse($customers as $index => $customer)
                                     <tr>
-                                        <td style="width: 1px;">{{ $key + 1 }}</td>
-                                        <td>{{ $order->user->first_name ?? 'Guest' }}</td>
-                                        <td>{{ number_format($order->total_amount) }} UGX</td>
+                                        <td>{{ $index + $customers->firstItem() }}</td>
+                                        <td>{{ $customer->first_name }} {{ $customer->last_name }}</td>
+                                        <td>{{ $customer->email }}</td>
+                                        <td>{{ $customer->country ?? 'N/A' }}</td>
+                                        <td>{{ $customer->created_at->format('d M Y') }}</td>
                                         <td>
-                                            <input type="text" class="form-control" value="{{ ucfirst($order->status) }}"
-                                                disabled>
-                                        </td>
-                                        <td>{{ $order->payment_method }}</td>
-                                        <td>
-                                            <a href="{{ route('admin.orders.show', $order->id) }}"
+                                            <a href="{{ route('admin.customers.show', $customer->id) }}"
                                                 class="btn btn-sm btn-info text-white">
-                                                <i class="fas fa-eye me-1"></i> Details
+                                                <i class="fas fa-eye me-1"></i> View
                                             </a>
                                         </td>
                                     </tr>
@@ -70,7 +66,7 @@
                                     <tr>
                                         <td colspan="6">
                                             <div class="alert alert-warning text-center mb-0">
-                                                <i class="fas fa-exclamation-circle me-2"></i> No orders found.
+                                                <i class="fas fa-exclamation-circle me-2"></i> No customers found.
                                             </div>
                                         </td>
                                     </tr>
@@ -78,9 +74,9 @@
                             </tbody>
                         </table>
                     </div>
-                  
-                     <div class="d-flex justify-content-end align-items-center p-3">
-                        {{ $orders->links('pagination::bootstrap-5') }}
+
+                    <div class="d-flex justify-content-end align-items-center p-3">
+                        {{ $customers->links('pagination::bootstrap-5') }}
                     </div>
 
                 </div>
@@ -88,9 +84,6 @@
 
         </div>
     </div>
-    </div>
-    <!-- End Row -->
-
     </div>
     </div><!-- end app-content-->
     </div>

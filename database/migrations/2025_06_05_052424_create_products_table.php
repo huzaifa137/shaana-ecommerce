@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('sale_price')->nullable();   // can change to decimal
             $table->integer('quantity')->default(0);
             $table->string('sku')->nullable();
+            $table->boolean('is_combo')->default(false);
 
             $table->json('attributes')->nullable();
             $table->json('labels')->nullable();

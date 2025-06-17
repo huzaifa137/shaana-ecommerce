@@ -410,6 +410,29 @@
                                 </div>
                             </div>
 
+
+                            <!-- Styled Section Container -->
+                            <div class="card p-4 mb-4 shadow-sm border rounded">
+                                <h4 class="mb-4">Product Combo</h4>
+
+                                <div class="row mt-2">
+                                    <div class="col-12">
+                                        <div class="p-3 border rounded bg-light">
+                                            <h5 class="mb-3 text-primary">Product Combo</h5>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" id="is-product-combo"
+                                                    name="product_combo_checkbox" {{ $isCombo ? 'checked' : '' }}>
+                                                <label class="form-check-label" for="is-product-combo">Is this product a
+                                                    combo?</label>
+                                            </div>
+                                            <small class="form-text text-muted">
+                                                Check this box if this product is part of a special combo deal.
+                                            </small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Product Reviews Section -->
                             <div class="card p-4 mb-4 shadow-sm border rounded">
                                 <h4 class="mb-4">Product Reviews</h4>
@@ -958,16 +981,24 @@
 
     <script>
         $(document).ready(function() {
+            // Add this line to handle the product ID from the route for PUT request URL
+            const productIdFromRoute = window.location.pathname.split('/').pop();
+
             $('#saveProductBtn').on('click', function(e) {
                 e.preventDefault();
 
                 const btn = $(this);
-                const productId = $('#product_id').val();
+                // Ensure you're getting the product ID from a hidden input if you have one,
+                // or directly from the URL as shown below.
+                // Assuming you have a hidden input: <input type="hidden" id="product_id" value="{{ $product->id }}">
+                const productId = $('#product_id').val() ||
+                productIdFromRoute; // Use the hidden input or route ID
 
                 const productName = $('#product_name').val().trim();
                 const category = $('#category_select').val();
                 const status = $('#status_select').val();
-                const description = t_description.getData().trim();
+                const description = t_description.getData()
+            .trim(); // Assuming t_description is your CKEditor instance
 
                 const price = $('#price').val().trim();
                 const salePrice = $('#salePrice').val().trim();
@@ -991,6 +1022,13 @@
                     import: $('#tax-import').is(':checked'),
                     export: $('#tax-export').is(':checked')
                 };
+
+                // Get the state of the Product Combo checkbox
+                const isProductCombo = $('#is-product-combo').is(':checked');
+                const productComboData = {
+                    yesCombo: isProductCombo
+                };
+
 
                 // Attributes
                 let attributes = [];
@@ -1102,18 +1140,20 @@
                     $('#sku').removeClass('is-invalid');
                 }
 
-                if (!Object.values(labels).some(Boolean)) {
-                    errorMessages.push('Please select at least one product label.');
-                    isValid = false;
-                }
+                // Removed validation for labels and taxes as they are optional and their empty state is handled by the model
+                // if (!Object.values(labels).some(Boolean)) {
+                //     errorMessages.push('Please select at least one product label.');
+                //     isValid = false;
+                // }
 
-                if (!Object.values(taxes).some(Boolean)) {
-                    errorMessages.push('Please select at least one tax option.');
-                    isValid = false;
-                }
+                // if (!Object.values(taxes).some(Boolean)) {
+                //     errorMessages.push('Please select at least one tax option.');
+                //     isValid = false;
+                // }
 
-                const hasExistingImage = existingImages.image1 || existingImages.image2 || existingImages
-                    .image3;
+                // Assuming existingImages is globally available or passed to this scope
+                const hasExistingImage = (typeof existingImages !== 'undefined' && (existingImages.image1 ||
+                    existingImages.image2 || existingImages.image3));
                 if (!hasExistingImage && !image1 && !image2 && !image3) {
                     errorMessages.push('Please upload at least one product image.');
                     isValid = false;
@@ -1157,19 +1197,22 @@
                         formData.append('quantity', quantity);
                         formData.append('sku', sku);
 
+                        // Append the product_combo data
+                        formData.append('product_combo', JSON.stringify(
+                        productComboData)); // Send as JSON string
+
                         attributes.forEach((attr, index) => {
                             formData.append(`attributes[${index}][attribute]`, attr
                                 .attribute);
                             formData.append(`attributes[${index}][value]`, attr.value);
                         });
 
-                        Object.entries(labels).forEach(([key, value]) => {
-                            formData.append(`labels[${key}]`, value ? 1 : 0);
-                        });
+                        // Labels are sent as JSON string in the store/update method, so we need to stringify them here
+                        formData.append('labels', JSON.stringify(labels));
 
-                        Object.entries(taxes).forEach(([key, value]) => {
-                            formData.append(`taxes[${key}]`, value ? 1 : 0);
-                        });
+                        // Taxes are sent as JSON string
+                        formData.append('taxes', JSON.stringify(taxes));
+
 
                         if (image1) formData.append('featured_image_1', image1);
                         if (image2) formData.append('featured_image_2', image2);
@@ -1180,13 +1223,13 @@
                         formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
                         $.ajax({
-                            url: `/products/${productId}`,
-                            type: 'POST',
+                            url: `/products/${productId}`, // Ensure this URL is correct for your update route
+                            type: 'POST', // Use POST and then override for PUT
                             data: formData,
                             processData: false,
                             contentType: false,
                             headers: {
-                                'X-HTTP-Method-Override': 'PUT'
+                                'X-HTTP-Method-Override': 'PUT' // This tells Laravel to treat it as a PUT request
                             },
                             success: function(response) {
                                 Swal.fire({
@@ -1198,12 +1241,28 @@
                                     location.reload();
                                 });
                             },
-                            error: function(data) {
-                                $('body').html(data.responseText);
+                            error: function(jqXHR, textStatus, errorThrown) {
+                                // Improved error handling
+                                btn.prop('disabled', false).html(
+                                    '<i class="fas fa-save"></i> Save Product Updates'
+                                    );
+                                let errorMessage = 'An unknown error occurred.';
+                                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                                    errorMessage = jqXHR.responseJSON.message;
+                                } else if (jqXHR.responseText) {
+                                    errorMessage = jqXHR.responseText;
+                                }
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: 'Failed to update product: ' +
+                                        errorMessage,
+                                });
                             },
                             complete: function() {
                                 btn.prop('disabled', false).html(
-                                    '<i class="fas fa-save"></i> Save');
+                                    '<i class="fas fa-save"></i> Save Product Updates'
+                                    );
                             }
                         });
                     }

@@ -91,7 +91,7 @@ class OrderController extends Controller
 
     public function adminOrders()
     {
-        $orders = Order::with('user')->latest()->get();
+        $orders = Order::with('user')->latest()->paginate(15);
 
         return view('Admin.admin-orders', compact('orders'));
     }

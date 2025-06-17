@@ -91,10 +91,8 @@
             }
         </style>
 
-
         <div class="col-xl-12 col-lg-6">
             <div class="row">
-                <!-- LEFT COLUMN: List of all categories -->
                 <div class="col-xl-4 col-md-12 col-lg-12">
                     <div class="card">
                         <div class="card-body">
@@ -111,18 +109,15 @@
                     </div>
                 </div>
 
-                <!-- RIGHT COLUMN: Edit Form -->
                 <div class="col-xl-8 col-md-12 col-lg-12">
                     <div class="card">
                         <div class="card-body">
-                            <!-- Name -->
                             <div class="form-group">
                                 <label class="form-label">Name</label>
                                 <input type="text" class="form-control" id="name11" value="{{ $category->name }}"
                                     placeholder="Enter category name">
                             </div>
 
-                            <!-- Parent and Status -->
                             <div class="form-row">
                                 <div class="form-group col-md-9">
                                     <label class="form-label">Parent</label>
@@ -151,36 +146,13 @@
                                 </div>
                             </div>
 
-                            <!-- Description -->
                             <div class="form-group">
                                 <label class="form-label">Description</label>
                                 <textarea id="t_description" name="description">{{ $category->description }}</textarea>
                             </div>
 
-                            <!-- CKEditor -->
                             <script src="https://cdn.ckeditor.com/ckeditor5/35.1.0/classic/ckeditor.js"></script>
-                            <script>
-                                document.addEventListener("DOMContentLoaded", function() {
-                                    ClassicEditor
-                                        .create(document.querySelector('#t_description'))
-                                        .then(editor => {
-                                            window.t_description = editor;
-                                        })
-                                        .catch(error => {
-                                            console.error('There was a problem initializing CKEditor:', error);
-                                        });
 
-                                    @if ($category->featured_image)
-                                        const preview = document.getElementById('featured_image_preview');
-                                        preview.src = "{{ $category->featured_image }}";
-                                        preview.style.display = 'block';
-                                        document.getElementById('image_placeholder').style.display = 'none';
-                                        document.querySelector('.image-box-icon_image').classList.add('has-image');
-                                    @endif
-                                });
-                            </script>
-
-                            <!-- Featured Image -->
                             <div class="form-group mt-3">
                                 <label class="form-label">Featured Image</label>
 
@@ -204,7 +176,6 @@
 
                             </div>
 
-                            <!-- Save Button -->
                             <div class="form-footer mt-2">
                                 <button id="saveCategoryBtn" class="btn btn-primary" type="button"
                                     data-id="{{ $category->id }}">
@@ -218,32 +189,48 @@
             </div>
         </div>
 
-
     </div>
 
     </div>
     </div>
     </div>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Initialize CKEditor
+            ClassicEditor
+                .create(document.querySelector('#t_description'))
+                .then(editor => {
+                    window.t_description = editor;
+                })
+                .catch(error => {
+                    console.error('There was a problem initializing CKEditor:', error);
+                });
+
+            // Image upload and preview logic
             const imageBox = document.querySelector('.image-box-icon_image');
             const imageInput = document.getElementById('featured_image_input');
             const imagePreview = document.getElementById('featured_image_preview');
             const imagePlaceholder = document.getElementById('image_placeholder');
             const removeBtn = imageBox.querySelector('.remove-btn');
 
-            // If there is an initial image, add class to container
-            if (imagePreview.src) {
+            // Check if there's an existing image on load and update UI
+            if (imagePreview.src && imagePreview.src !== window.location.href) {
                 imageBox.classList.add('has-image');
                 imagePreview.style.display = 'block';
                 imagePlaceholder.style.display = 'none';
             }
 
-            // Click triggers file select
+            // Click on image box to open file input
             imageBox.addEventListener('click', () => imageInput.click());
 
-            // Keyboard accessibility (enter/space)
+            // Keyboard accessibility for image box
             imageBox.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
                     e.preventDefault();
@@ -251,7 +238,7 @@
                 }
             });
 
-            // File input change
+            // Handle file selection
             imageInput.addEventListener('change', (e) => {
                 if (e.target.files.length) {
                     loadImage(e.target.files[0]);
@@ -275,20 +262,25 @@
                 const files = e.dataTransfer.files;
                 if (files.length && files[0].type.startsWith('image/')) {
                     loadImage(files[0]);
-                    imageInput.files = files; // update input file so form submits correct file
+                    imageInput.files = files; // Update input file so form submits correct file
                 } else {
-                    alert('Please drop an image file.');
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Invalid File',
+                        text: 'Please drop an image file.',
+                    });
                 }
             });
 
             // Remove button clears image
             removeBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
+                e.stopPropagation(); // Prevent click event from bubbling to imageBox
                 imagePreview.src = '';
                 imagePreview.style.display = 'none';
                 imagePlaceholder.style.display = 'block';
-                imageInput.value = '';
+                imageInput.value = ''; // Clear the file input
                 imageBox.classList.remove('has-image');
+                imageBox.classList.remove('image-invalid'); // Remove validation error
             });
 
             // Helper function to preview image
@@ -299,23 +291,19 @@
                     imagePreview.style.display = 'block';
                     imagePlaceholder.style.display = 'none';
                     imageBox.classList.add('has-image');
+                    imageBox.classList.remove('image-invalid'); // Remove validation error on new image
                 }
                 reader.readAsDataURL(file);
             }
         });
-    </script>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-
-    <script>
+        // jQuery document ready for the save functionality
         $(document).ready(function() {
             $('#saveCategoryBtn').on('click', function(e) {
                 e.preventDefault();
 
                 const btn = $(this);
-                const categoryId = btn.data('id'); // get category id from button data attribute
+                const categoryId = btn.data('id');
 
                 // Get form inputs
                 const name = $('#name11').val().trim();
@@ -331,6 +319,7 @@
                 let isValid = true;
                 let errorMessages = [];
 
+                // Validation checks
                 if (!name) {
                     $('#name11').addClass('is-invalid');
                     errorMessages.push('Please enter a category name.');
@@ -339,7 +328,8 @@
                     $('#name11').removeClass('is-invalid');
                 }
 
-                if (!parent) {
+                // Note: Parent can be '0' for no parent, so check for null/undefined/empty string
+                if (parent === null || parent === undefined || parent === '') {
                     $('select[name="parent"]').addClass('is-invalid');
                     errorMessages.push('Please select a parent category.');
                     isValid = false;
@@ -347,7 +337,8 @@
                     $('select[name="parent"]').removeClass('is-invalid');
                 }
 
-                if (!status) {
+                // Note: Status can be '0' or '1' or '10', so check for null/undefined/empty string
+                if (status === null || status === undefined || status === '') {
                     $('select[name="status"]').addClass('is-invalid');
                     errorMessages.push('Please select a status.');
                     isValid = false;
@@ -371,7 +362,7 @@
                 if (!isValid) {
                     Swal.fire({
                         icon: 'warning',
-                        title: 'Please fix the following : ',
+                        title: 'Please fix the following:',
                         html: '<ul style="text-align: left;">' + errorMessages.map(msg =>
                             `<li>${msg}</li>`).join('') + '</ul>'
                     });
@@ -387,23 +378,44 @@
                     cancelButtonText: 'Cancel',
                 }).then((result) => {
                     if (result.isConfirmed) {
-
                         btn.prop('disabled', true).html(
                             'Saving... <i class="fas fa-spinner fa-spin"></i>');
 
+                        // ... (inside the result.isConfirmed block)
+
                         const formData = new FormData();
+                        
                         formData.append('name', name);
-                        formData.append('parent', parent);
+                        formData.append('parent_id', parent);
                         formData.append('status', status);
                         formData.append('description', description);
+                        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+                        formData.append('_method', 'PUT');
+
+                        // --- START: Refined Image Handling ---
+
+                        // Case 1: A new image file has been selected
                         if (imageFile) {
                             formData.append('featured_image', imageFile);
                         }
-                        formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
+                        // Case 2: No new image, but the user explicitly clicked the remove button
+                        // This condition assumes your remove button successfully clears the has-image class and the input value.
+                        else if (!imageBox.classList.contains('has-image') && !imageInput.files
+                            .length) {
+                            // This implies an existing image was removed, or a new image was added and then cleared.
+                            // Send a signal to the backend to clear the existing image.
+                            formData.append('remove_featured_image', '1');
+                        }
+                        // Case 3: No new image, and no explicit removal (meaning the existing image should be kept)
+                        // You don't need to append anything for 'featured_image' if it's already there and not changing.
+                        // The backend should simply not update the 'featured_image' column if no file is received.
 
+                        // --- END: Refined Image Handling ---
+
+                        // ... (rest of your AJAX call)
                         $.ajax({
-                            url: `/update-category/${categoryId}`, // your update route
-                            type: 'POST', // or 'PUT' if you configure it
+                            url: `/update-category/${categoryId}`, // Your update route
+                            type: 'POST', // Use POST with _method=PUT/PATCH for Laravel
                             data: formData,
                             processData: false,
                             contentType: false,
@@ -414,7 +426,6 @@
                                     text: response.message ||
                                         'The category was updated successfully.',
                                 }).then(() => {
-                                    // Optionally redirect or reload page
                                     location.reload();
                                 });
                             },
@@ -422,12 +433,15 @@
                             //     let errorMsg = 'An error occurred.';
                             //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
                             //         errorMsg = Object.values(xhr.responseJSON.errors)
-                            //             .flat().join('\n');
+                            //             .flat().join(
+                            //                 '<br>'); // Use <br> for new lines in HTML
+                            //     } else if (xhr.responseJSON?.message) {
+                            //         errorMsg = xhr.responseJSON.message;
                             //     }
                             //     Swal.fire({
                             //         icon: 'error',
                             //         title: 'Error',
-                            //         text: errorMsg,
+                            //         html: errorMsg,
                             //     });
                             //     console.error(xhr);
                             // },
@@ -441,92 +455,6 @@
                         });
                     }
                 });
-            });
-        });
-    </script>
-
-    <script>
-        $(document).ready(function() {
-            const imageBox = $('.image-box-icon_image');
-            const imageInput = $('#featured_image_input');
-            const imagePreview = $('#featured_image_preview');
-            const imagePlaceholder = $('#image_placeholder');
-            const removeBtn = imageBox.find('.remove-btn');
-
-            // Show image preview if initial image src exists
-            if (imagePreview.attr('src')) {
-                imageBox.addClass('has-image');
-                imagePreview.show();
-                imagePlaceholder.hide();
-                removeBtn.show();
-            }
-
-            // Click on box triggers file input
-            imageBox.on('click', function() {
-                imageInput.click();
-            });
-
-            // Keyboard accessibility (Enter/Space opens file dialog)
-            imageBox.on('keydown', function(e) {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    imageInput.click();
-                }
-            });
-
-            // File input change -> load preview
-            imageInput.on('change', function(e) {
-                if (this.files && this.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        imagePreview.attr('src', event.target.result).show();
-                        imagePlaceholder.hide();
-                        imageBox.addClass('has-image');
-                        removeBtn.show();
-                    }
-                    reader.readAsDataURL(this.files[0]);
-                }
-            });
-
-            // Drag & drop handlers
-            imageBox.on('dragover', function(e) {
-                e.preventDefault();
-                imageBox.addClass('dragover');
-            });
-
-            imageBox.on('dragleave', function(e) {
-                e.preventDefault();
-                imageBox.removeClass('dragover');
-            });
-
-            imageBox.on('drop', function(e) {
-                e.preventDefault();
-                imageBox.removeClass('dragover');
-
-                const files = e.originalEvent.dataTransfer.files;
-                if (files.length && files[0].type.startsWith('image/')) {
-                    imageInput[0].files = files;
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        imagePreview.attr('src', event.target.result).show();
-                        imagePlaceholder.hide();
-                        imageBox.addClass('has-image');
-                        removeBtn.show();
-                    }
-                    reader.readAsDataURL(files[0]);
-                } else {
-                    alert('Please drop an image file.');
-                }
-            });
-
-            // Remove image button click
-            removeBtn.on('click', function(e) {
-                e.stopPropagation();
-                imageInput.val('');
-                imagePreview.attr('src', '').hide();
-                imagePlaceholder.show();
-                imageBox.removeClass('has-image');
-                removeBtn.hide();
             });
         });
     </script>

@@ -14,6 +14,7 @@ class Product extends Model
         'sale_price',
         'quantity',
         'sku',
+        'is_combo',
         'attributes',
         'labels',
         'taxes',
@@ -26,6 +27,7 @@ class Product extends Model
         'attributes' => 'array',
         'labels'     => 'array',
         'taxes'      => 'array',
+        'is_combo'   => 'boolean',
     ];
 
     public function reviews()

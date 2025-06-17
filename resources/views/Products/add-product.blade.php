@@ -558,6 +558,29 @@
                                 </div>
                             </div>
 
+                            <div class="card p-4 mb-4 shadow-sm border rounded">
+                                <h4 class="mb-4">Product Combo</h4>
+
+                                <div class="form-row">
+                                    <!-- Labels Section -->
+                                    <div class="col-md-12">
+                                        <div class="p-3 border rounded bg-light h-100">
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="label-yes-combo">
+                                                <label class="form-check-label" for="label-yes-combo">Yes,
+                                                    Combo</label>
+                                            </div>
+
+                                            <div class="form-check mb-2">
+                                                <input class="form-check-input" type="checkbox" id="label-no-combo">
+                                                <label class="form-check-label" for="label-no-combo">Not,
+                                                    Combo</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
                             <!-- Styled Section Container -->
                             <div class="card p-4 mb-4 shadow-sm border rounded">
                                 <h4 class="mb-4">Product Reviews</h4>
@@ -688,6 +711,13 @@
                     export: $('#tax-export').is(':checked')
                 };
 
+                // --- NEW: Collect Product Combo values ---
+                const productCombo = {
+                    yesCombo: $('#label-yes-combo').is(':checked'),
+                    noCombo: $('#label-no-combo').is(':checked')
+                };
+                // --- END NEW ---
+
                 // Collect attributes
                 let attributes = [];
                 $('#attribute-container .form-row').each(function() {
@@ -813,6 +843,17 @@
                     isValid = false;
                 }
 
+                // --- NEW: Product Combo Validation ---
+                // Ensure at least one combo option is selected, but not both
+                if (!productCombo.yesCombo && !productCombo.noCombo) {
+                    errorMessages.push('Please select whether the product is a combo or not.');
+                    isValid = false;
+                } else if (productCombo.yesCombo && productCombo.noCombo) {
+                    errorMessages.push('Please select either "Yes, Combo" or "Not, Combo", not both.');
+                    isValid = false;
+                }
+                // --- END NEW ---
+
                 if (!isValid) {
                     Swal.fire({
                         icon: 'warning',
@@ -845,7 +886,7 @@
                         formData.append('quantity', quantity);
                         formData.append('sku', sku);
                         formData.append('attributes', JSON.stringify(attributes));
-                        formData.append('reviews', JSON.stringify(reviews)); 
+                        formData.append('reviews', JSON.stringify(reviews));
 
                         if (image1) formData.append('featured_image_1', image1);
                         if (image2) formData.append('featured_image_2', image2);
@@ -853,6 +894,9 @@
 
                         formData.append('labels', JSON.stringify(labels));
                         formData.append('taxes', JSON.stringify(taxes));
+                        // --- NEW: Append Product Combo to FormData ---
+                        formData.append('product_combo', JSON.stringify(productCombo));
+                        // --- END NEW ---
 
                         formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
@@ -872,20 +916,6 @@
                                     location.reload();
                                 });
                             },
-                            //  error: function(xhr) {
-                            //     let errorMsg = 'An error occurred.';
-                            //     if (xhr.status === 422 && xhr.responseJSON?.errors) {
-                            //         errorMsg = Object.values(xhr.responseJSON.errors)
-                            //             .flat().join('<br>');
-                            //     } else if (xhr.responseJSON?.message) {
-                            //         errorMsg = xhr.responseJSON.message;
-                            //     }
-                            //     Swal.fire({
-                            //         icon: 'error',
-                            //         title: 'Error',
-                            //         html: errorMsg,
-                            //     });
-                            // },
                             error: function(data) {
                                 $('body').html(data.responseText);
                             },

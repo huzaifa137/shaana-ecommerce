@@ -1,10 +1,10 @@
 <?php
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductReview;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
@@ -69,9 +69,10 @@ class ProductsController extends Controller
 
     public function updateCategory(Request $request, $id)
     {
+
         $validated = $request->validate([
             'name'           => 'required|string|max:255',
-            'parent'         => 'nullable|integer',
+            'parent_id'      => 'nullable|integer',
             'status'         => 'required|in:10,0,1',
             'description'    => 'nullable|string',
             'featured_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg',
@@ -87,7 +88,7 @@ class ProductsController extends Controller
         }
 
         $category->name        = $validated['name'];
-        $category->parent_id   = $validated['parent'] ?: null;
+        $category->parent_id   = $request->input('parent_id') ?: null;
         $category->status      = $validated['status'];
         $category->description = $validated['description'] ?? null;
 
@@ -136,9 +137,11 @@ class ProductsController extends Controller
         $labels = $product->labels ?? [];
         $taxes  = $product->taxes ?? [];
 
+        $isCombo = $product->is_combo;
+
         $reviews = ProductReview::where('product_id', $product->id)->get();
 
-        return view('Products.edit-product', compact('product', 'categories', 'labels', 'taxes', 'reviews'));
+        return view('Products.edit-product', compact('product', 'categories', 'labels', 'taxes', 'reviews', 'isCombo'));
     }
 
     public function storeProduct(Request $request)
@@ -155,6 +158,7 @@ class ProductsController extends Controller
             'attributes'       => 'nullable|string',
             'labels'           => 'nullable|string',
             'taxes'            => 'nullable|string',
+            'product_combo'    => 'required|string', // Added validation for product_combo
             'featured_image_1' => 'nullable|image',
             'featured_image_2' => 'nullable|image',
             'featured_image_3' => 'nullable|image',
@@ -167,6 +171,10 @@ class ProductsController extends Controller
         $product->labels     = json_decode($request->input('labels'), true);
         $product->taxes      = json_decode($request->input('taxes'), true);
 
+        // Decode product_combo and set the is_combo attribute
+        $productCombo      = json_decode($request->input('product_combo'), true);
+        $product->is_combo = $productCombo['yesCombo'] ?? false; // Store true if 'yesCombo' was checked
+
         foreach ([1, 2, 3] as $index) {
             $key = "featured_image_{$index}";
             if ($request->hasFile($key)) {
@@ -177,7 +185,7 @@ class ProductsController extends Controller
 
         $product->save();
 
-        // ✅ Save reviews
+        // Save reviews
         $reviews = json_decode($request->input('reviews'), true);
         if (is_array($reviews)) {
             foreach ($reviews as $review) {
@@ -232,7 +240,7 @@ class ProductsController extends Controller
         ]);
 
         $customer = User::where('id', Session('LoggedCustomer'))->first();
-        
+
         // Check for existing review
         $existingReview = ProductReview::where('product_id', $request->product_id)
             ->where('reviewer_email', $customer->email)
@@ -284,6 +292,9 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
 
+        // Debugging: Log incoming request data to see what Laravel receives
+        // Log::info('Incoming Product Update Request:', $request->all());
+
         $request->validate([
             'product_name'     => 'required|string|max:255',
             'category'         => 'required|integer',
@@ -293,18 +304,24 @@ class ProductsController extends Controller
             'sale_price'       => 'required|numeric',
             'quantity'         => 'required|integer',
             'sku'              => 'required|string|max:255',
+
+            // ADJUST THESE BASED ON HOW YOUR FRONTEND ACTUALLY SENDS THEM:
+            // If attributes are sent as `attributes[0][attribute]`, `attributes[0][value]`, etc., then 'array' is correct.
             'attributes'       => 'nullable|array',
-            'labels'           => 'nullable|array',
-            'taxes'            => 'nullable|array',
+            // If labels are sent as a single JSON string (e.g., '{"bestSelling":true}'), then 'string' is correct.
+            'labels'           => 'nullable|string',
+            // If taxes are sent as a single JSON string, then 'string' is correct.
+            'taxes'            => 'nullable|string',
+
+            'product_combo'    => 'required|string', // Still assuming this comes as JSON string
             'featured_image_1' => 'nullable|image|max:2048',
             'featured_image_2' => 'nullable|image|max:2048',
             'featured_image_3' => 'nullable|image|max:2048',
-            'reviews'          => 'nullable|string',
-            'deleted_reviews'  => 'nullable|string',
+            'reviews'          => 'nullable|string', // Still assuming this comes as JSON string
+            'deleted_reviews'  => 'nullable|string', // Still assuming this comes as JSON string
         ]);
 
         // Update basic product fields
-
         $product->product_name = $request->product_name;
         $product->category     = $request->category;
         $product->status       = $request->status;
@@ -314,15 +331,24 @@ class ProductsController extends Controller
         $product->quantity     = $request->quantity;
         $product->sku          = $request->sku;
 
-        $product->attributes = $request->input('attributes', null);
-        $product->labels     = $request->input('labels', []);
-        $product->taxes      = $request->input('taxes', []);
+        // Process data based on their expected formats
+        // Attributes: If sent as a standard array of form fields, Laravel handles directly.
+        $product->attributes = $request->input('attributes', []);
+
+        // Labels & Taxes: If sent as JSON strings, decode them.
+        $product->labels = json_decode($request->input('labels', '[]'), true);
+        $product->taxes  = json_decode($request->input('taxes', '[]'), true);
+        // Using '[]' as default for json_decode if input is null, so it becomes an empty array.
+
+        // Handle Product Combo
+        $productComboData  = json_decode($request->input('product_combo'), true);
+        $product->is_combo = $productComboData['yesCombo'] ?? false;
 
         // Handle images
         for ($i = 1; $i <= 3; $i++) {
             $fileKey = "featured_image_{$i}";
             if ($request->hasFile($fileKey)) {
-                if ($product->$fileKey) {
+                if ($product->$fileKey && Storage::disk('public')->exists($product->$fileKey)) {
                     Storage::disk('public')->delete($product->$fileKey);
                 }
                 $path              = $request->file($fileKey)->store('products', 'public');
@@ -332,7 +358,7 @@ class ProductsController extends Controller
 
         $product->save();
 
-        // ✅ Delete reviews if needed
+        // Delete reviews if needed
         $deletedReviews = json_decode($request->input('deleted_reviews'), true);
         if (is_array($deletedReviews)) {
             ProductReview::whereIn('id', $deletedReviews)
@@ -340,26 +366,28 @@ class ProductsController extends Controller
                 ->delete();
         }
 
-        // ✅ Handle reviews (create or update)
+        // Handle reviews (create or update)
         $reviews = json_decode($request->input('reviews'), true);
         if (is_array($reviews)) {
             foreach ($reviews as $review) {
+                if (empty($review['name']) || empty($review['message'])) {
+                    continue;
+                }
+
                 if (! empty($review['id'])) {
-                    // Update existing review
                     $existing = ProductReview::where('id', $review['id'])
                         ->where('product_id', $product->id)
                         ->first();
                     if ($existing) {
                         $existing->update([
                             'reviewer_name'  => $review['name'],
-                            'reviewer_email' => $review['email'],
-                            'rating'         => $review['rating'],
+                            'reviewer_email' => $review['email'] ?? null,
+                            'rating'         => $review['rating'] ?? null,
                             'review_message' => $review['message'],
-                            'review_date'    => $review['date'],
+                            'review_date'    => $review['date'] ?? null,
                         ]);
                     }
                 } else {
-                    // Create new review
                     ProductReview::create([
                         'product_id'     => $product->id,
                         'reviewer_name'  => $review['name'],

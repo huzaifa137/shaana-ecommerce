@@ -24,6 +24,7 @@ class MasterController extends Controller
         $featuredProducts    = Product::where('labels->featured', true)->get();
         $popularProducts     = Product::where('labels->popular', true)->get();
         $newProducts         = Product::where('labels->new', true)->get();
+        $combos              = Product::where('is_combo', true)->get();
 
         $popupProducts = $featuredProducts->take(15);
 
@@ -35,6 +36,7 @@ class MasterController extends Controller
             'popularProducts',
             'newProducts',
             'categories',
+            'combos',
         ));
     }
 

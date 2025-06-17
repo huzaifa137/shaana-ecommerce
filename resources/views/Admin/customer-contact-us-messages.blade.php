@@ -48,9 +48,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @forelse($messages as $order)
+                                @forelse($messages as $key => $order)
                                     <tr>
-                                        <td style="width: 1px;">{{ $order->id }}</td>
+                                        <td style="width: 1px;">
+                                            {{ $key + 1 + ($messages->currentPage() - 1) * $messages->perPage() }}</td>
                                         <td>{{ $order->name ?? 'Customer' }}</td>
                                         <td>{{ $order->phone ?? '---' }}</td>
                                         <td>
@@ -66,7 +67,6 @@
                                             <span
                                                 class="badge {{ $badgeClass }} text-uppercase text-white px-3 py-2">{{ ucfirst($status) }}</span>
                                         </td>
-
                                         <td>
                                             <a href="{{ route('contactus.messages.details', $order->id) }}"
                                                 class="btn btn-sm btn-info text-white">
@@ -86,7 +86,13 @@
                             </tbody>
                         </table>
                     </div>
+
+                    <div class="d-flex justify-content-end align-items-center p-3">
+                        {{ $messages->links('pagination::bootstrap-5') }}
+                    </div>
+
                 </div>
+
             </div>
         </div>
     </div>

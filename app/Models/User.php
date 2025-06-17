@@ -34,4 +34,10 @@ class User extends Authenticatable
     protected $casts = [
         'default_shipping_address' => 'boolean',
     ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
+
 }

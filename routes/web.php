@@ -49,11 +49,15 @@ Route::controller(CustomerController::class)->group(function () {
         });
 
         Route::group(['middleware' => ['AdminAuth']], function () {
+            Route::get('/all-customers', 'allCustomers')->name('all.customers');
+            Route::get('/admin/customers/{id}', 'showCustomer')->name('admin.customers.show');
             Route::get('/contact-us-messages', 'customerContactUsMessage')->name('customer.contactus.messages');
             Route::get('/contact-us-message-details/{id}', 'showMessageDetails')->name('contactus.messages.details');
         });
 
         Route::post('/admin/messages/{id}/update-status', 'updateStatus')->name('admin.messages.updateStatus');
+        Route::post('/admin/customers/{id}/status', 'updateCustomerStatus')->name('admin.customers.updateStatus');
+
     });
 
     Route::post('/contact', 'store')->name('contact.store');
@@ -91,7 +95,7 @@ Route::controller(AdminController::class)->group(function () {
             Route::get('/dashboard', 'adminDashboard')->name('admin.dashboard');
         });
     });
-
+    Route::get('/admin-logout', 'adminLogout')->name('admin.logout');
     Route::get('/clear-session', 'flushSession');
 });
 
@@ -111,7 +115,8 @@ Route::controller(ProductsController::class)->group(function () {
             Route::get('/edit-categories/{id}/', 'editCategories')->name('edit.categories');
         });
 
-        Route::post('/update-category/{id}', 'updateCategory')->name('categories.update');
+        // Route::post('/update-category/{id}', 'updateCategory')->name('categories.update');
+        Route::put('/update-category/{id}', 'updateCategory')->name('categories.update');
         Route::post('/store-category', 'storeCategory')->name('store.category');
         Route::post('/store-product', 'storeProduct')->name('store.product');
         Route::post('/store-review', 'storeReview')->name('store.review');

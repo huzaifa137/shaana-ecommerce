@@ -5,6 +5,7 @@ use App\Models\Contact;
 use App\Models\Newsletter;
 use App\Models\Order;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -25,7 +26,7 @@ class CustomerController extends Controller
 
     public function customerLogout()
     {
-        if (session()->has('LoggedCustomer')) {
+        if (session()->has('LoggedAdmin')) {
             session()->flush();
             return redirect('/');
         } else {
@@ -100,7 +101,7 @@ class CustomerController extends Controller
 
     public function customerContactUsMessage()
     {
-        $messages = Contact::latest()->get();
+        $messages = Contact::latest()->paginate(10);
 
         return view('Admin.customer-contact-us-messages', compact('messages'));
     }
@@ -126,6 +127,41 @@ class CustomerController extends Controller
         $message->save();
 
         return redirect()->back()->with('success', 'Status updated successfully.');
+    }
+
+    public function allCustomers()
+    {
+        $customers = User::where('user_role', 1)
+            ->latest()
+            ->paginate(15);
+
+        return view('Admin.all-customers', compact('customers'));
+    }
+
+    public function showCustomer($id)
+    {
+        $customer = User::findOrFail($id);
+     
+        return view('Admin.customer-information', compact('customer'));
+    }
+
+    public function updateCustomerStatus(Request $request, $id)
+    {
+
+        try {
+            $customer = User::findOrFail($id);
+
+            $validated = $request->validate([
+                'is_active' => 'required|in:-1,0,1',
+            ]);
+
+            $customer->is_active = $validated['is_active'];
+            $customer->save();
+
+            return back()->with('success', 'User account status updated successfully.');
+        } catch (\Exception $e) {
+            return back()->with('error', 'Failed to update user status.');
+        }
     }
 
 }

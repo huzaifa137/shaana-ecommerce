@@ -1377,50 +1377,28 @@ use App\Http\Controllers\Helper;
     <section class="py-5" style="background-color: #fce4ec;">
         <div class="container-lg">
             <div class="row g-4">
-                <!-- Banner 1 -->
-                <div class="col-md-6">
-                    <div class="p-4 shadow-sm h-100 d-flex flex-column align-items-center text-center"
-                        style="background-color: rgba(255, 255, 255, 0.95); border-radius: 1rem;">
 
-                        <!-- Image -->
-                        <figure class="mb-4">
-                            <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
-                                <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
-                                    style="max-width: 180px; height: auto;" class="img-fluid">
-                            </a>
-                        </figure>
+                @foreach ($combos as $item)
+                    <div class="col-md-6">
+                        <div class="p-4 shadow-sm h-100 d-flex flex-column align-items-center text-center"
+                            style="background-color: rgba(255, 255, 255, 0.95); border-radius: 1rem;">
 
-                        <!-- Text Content -->
-                        <div class="content-wrapper">
-                            <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
-                            <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
-                            <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
+                            <figure class="mb-4">
+                                <a href="{{ url('/product-item/' . $item->id) }}" title="Product Title">
+                                    <img src="{{ asset('storage/' . $item->featured_image_1) }}" alt="Product Thumbnail"
+                                        style="max-width: 180px; height: auto;" class="img-fluid">
+                                </a>
+                            </figure>
+
+                            <div class="content-wrapper">
+                                <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
+                                <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
+                                <a href="{{ url('/product-item/' . $item->id) }}" class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                @endforeach
 
-                <!-- Banner 2 -->
-                <div class="col-md-6">
-                    <div class="p-4 shadow-sm h-100 d-flex flex-column align-items-center text-center"
-                        style="background-color: rgba(255, 255, 255, 0.95); border-radius: 1rem;">
-
-                        <!-- Image -->
-                        <figure class="mb-4">
-                            <a href="{{ url('/product-item/shanana111') }}" title="Product Title">
-                                <img src="/assets1/images/shanana111.png" alt="Product Thumbnail"
-                                    style="max-width: 180px; height: auto;" class="img-fluid">
-
-                            </a>
-                        </figure>
-
-                        <!-- Text Content -->
-                        <div class="content-wrapper">
-                            <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
-                            <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
-                            <a href="#" class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
