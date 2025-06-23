@@ -214,7 +214,7 @@
                                 <img src="/storage/${product.featured_image_1}" alt="${product.product_name}" width="50" height="50" style="object-fit: cover;">
                                 <div>
                                     <div class="fw-bold">${product.product_name}</div>
-                                    <div class="text-muted">₦${parseFloat(product.sale_price || product.price).toLocaleString()}</div>
+                                    <div class="text-muted">Ugx${parseFloat(product.sale_price || product.price).toLocaleString()}</div>
                                 </div>
                             </a>
                         `;
