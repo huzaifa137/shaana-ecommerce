@@ -137,15 +137,28 @@
                                 <h4 class="mb-4">Product Name</h4>
 
                                 <div class="p-3 border rounded bg-light h-100">
-                                    <div class="form-group mb-0">
-                                        <label for="product_name" class="form-label">Product Name</label>
-                                        <input type="text" id="product_name" class="form-control"
-                                            placeholder="Enter category name" value="{{ $product->product_name }}" />
+                                    <div class="row">
+                                        <div class="form-group col-md-9 mb-3">
+                                            <label for="product_name" class="form-label">Product Name</label>
+                                            <input type="text" id="product_name" class="form-control"
+                                                placeholder="Enter product name" value="{{ $product->product_name }}" />
+                                        </div>
 
+                                        <div class="form-group col-md-3 mb-3">
+                                            <label for="status_select" class="form-label">Status</label>
+                                            <select name="status" id="status_select"
+                                                class="form-control custom-select select2">
+                                                <option value="10" {{ $product->status == 10 ? 'selected' : '' }}>
+                                                    Published</option>
+                                                <option value="0" {{ $product->status == 0 ? 'selected' : '' }}>Draft
+                                                </option>
+                                                <option value="1" {{ $product->status == 1 ? 'selected' : '' }}>Pending
+                                                </option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
 
                             <!-- Styled Section Container -->
                             <div class="card p-4 mb-4 shadow-sm border rounded">
@@ -153,39 +166,35 @@
 
                                 <div class="p-3 border rounded bg-light h-100">
                                     <div class="form-row">
-                                        <div class="form-group col-md-9 mb-0">
-                                            <label class="form-label" for="category_select">Categories</label>
-                                            <select name="category" id="category_select"
-                                                class="form-control custom-select select2">
-                                                <option value="">Select Parent Category</option>
-                                                <option value="0" {{ $product->category == 0 ? 'selected' : '' }}>None
-                                                </option>
+                                        <div class="form-group col-md-12 mb-0">
+                                            <label class="form-label">Categories</label>
+                                            <div class="row">
+                                                @php
+                                                    // Get array of category IDs assigned to this product for quick lookup
+                                                    $productCategoryIds = $product->categories->pluck('id')->toArray();
+                                                @endphp
+
                                                 @foreach ($categories as $category)
-                                                    <option value="{{ $category->id }}"
-                                                        {{ $product->category == $category->id ? 'selected' : '' }}>
-                                                        {{ $category->name }}
-                                                    </option>
+                                                    <div class="col-md-4 mb-2">
+                                                        <div class="form-check">
+                                                            <input type="checkbox"
+                                                                class="form-check-input category-checkbox"
+                                                                id="cat_{{ $category->id }}" name="categories[]"
+                                                                {{-- Use an array input --}} value="{{ $category->id }}"
+                                                                {{ in_array($category->id, $productCategoryIds) ? 'checked' : '' }}>
+                                                            <label class="form-check-label" for="cat_{{ $category->id }}">
+                                                                {{ $category->name }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
                                                 @endforeach
-                                            </select>
-
+                                            </div>
                                         </div>
 
-                                        <div class="form-group col-md-3 mb-0">
-                                            <label class="form-label" for="status_select">Status</label>
-                                            <select name="status" id="status_select"
-                                                class="form-control custom-select select2">
-                                                <option value="10" {{ $product->status == 10 ? 'selected' : '' }}>
-                                                    Published</option>
-                                                <option value="0" {{ $product->status == 0 ? 'selected' : '' }}>Draft
-                                                </option>
-                                                <option value="1" {{ $product->status == 1 ? 'selected' : '' }}>
-                                                    Pending</option>
-                                            </select>
-
-                                        </div>
                                     </div>
                                 </div>
                             </div>
+
 
                             <!-- Styled Section Container -->
                             <div class="card p-4 mb-4 shadow-sm border rounded">
@@ -992,13 +1001,17 @@
                 // or directly from the URL as shown below.
                 // Assuming you have a hidden input: <input type="hidden" id="product_id" value="{{ $product->id }}">
                 const productId = $('#product_id').val() ||
-                productIdFromRoute; // Use the hidden input or route ID
+                    productIdFromRoute; // Use the hidden input or route ID
 
                 const productName = $('#product_name').val().trim();
-                const category = $('#category_select').val();
+                const category = []; // for backward compatibility if needed, but use this now:
+                $('.category-checkbox:checked').each(function() {
+                    category.push($(this).val());
+                });
+
                 const status = $('#status_select').val();
                 const description = t_description.getData()
-            .trim(); // Assuming t_description is your CKEditor instance
+                    .trim(); // Assuming t_description is your CKEditor instance
 
                 const price = $('#price').val().trim();
                 const salePrice = $('#salePrice').val().trim();
@@ -1079,6 +1092,11 @@
                 let isValid = true;
                 let errorMessages = [];
 
+                if (category.length === 0) {
+                    errorMessages.push('Please select at least one category.');
+                    isValid = false;
+                }
+
                 if (!productName) {
                     $('#product_name').addClass('is-invalid');
                     errorMessages.push('Please enter a product name.');
@@ -1087,13 +1105,13 @@
                     $('#product_name').removeClass('is-invalid');
                 }
 
-                if (!category) {
-                    $('#category_select').addClass('is-invalid');
-                    errorMessages.push('Please select a category.');
-                    isValid = false;
-                } else {
-                    $('#category_select').removeClass('is-invalid');
-                }
+                // if (!category) {
+                //     $('#category_select').addClass('is-invalid');
+                //     errorMessages.push('Please select a category.');
+                //     isValid = false;
+                // } else {
+                //     $('#category_select').removeClass('is-invalid');
+                // }
 
                 if (!status) {
                     $('#status_select').addClass('is-invalid');
@@ -1189,7 +1207,7 @@
                         const formData = new FormData();
 
                         formData.append('product_name', productName);
-                        formData.append('category', category);
+                        // formData.append('category', category);
                         formData.append('status', status);
                         formData.append('description', description);
                         formData.append('price', price);
@@ -1199,7 +1217,7 @@
 
                         // Append the product_combo data
                         formData.append('product_combo', JSON.stringify(
-                        productComboData)); // Send as JSON string
+                            productComboData)); // Send as JSON string
 
                         attributes.forEach((attr, index) => {
                             formData.append(`attributes[${index}][attribute]`, attr
@@ -1222,6 +1240,10 @@
                         formData.append('reviews', JSON.stringify(reviews));
                         formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 
+                        category.forEach((catId, index) => {
+                            formData.append(`categories[${index}]`, catId);
+                        });
+
                         $.ajax({
                             url: `/products/${productId}`, // Ensure this URL is correct for your update route
                             type: 'POST', // Use POST and then override for PUT
@@ -1241,28 +1263,31 @@
                                     location.reload();
                                 });
                             },
-                            error: function(jqXHR, textStatus, errorThrown) {
-                                // Improved error handling
-                                btn.prop('disabled', false).html(
-                                    '<i class="fas fa-save"></i> Save Product Updates'
-                                    );
-                                let errorMessage = 'An unknown error occurred.';
-                                if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
-                                    errorMessage = jqXHR.responseJSON.message;
-                                } else if (jqXHR.responseText) {
-                                    errorMessage = jqXHR.responseText;
-                                }
-                                Swal.fire({
-                                    icon: 'error',
-                                    title: 'Error!',
-                                    text: 'Failed to update product: ' +
-                                        errorMessage,
-                                });
+                            // error: function(jqXHR, textStatus, errorThrown) {
+                            //     // Improved error handling
+                            //     btn.prop('disabled', false).html(
+                            //         '<i class="fas fa-save"></i> Save Product Updates'
+                            //     );
+                            //     let errorMessage = 'An unknown error occurred.';
+                            //     if (jqXHR.responseJSON && jqXHR.responseJSON.message) {
+                            //         errorMessage = jqXHR.responseJSON.message;
+                            //     } else if (jqXHR.responseText) {
+                            //         errorMessage = jqXHR.responseText;
+                            //     }
+                            //     Swal.fire({
+                            //         icon: 'error',
+                            //         title: 'Error!',
+                            //         text: 'Failed to update product: ' +
+                            //             errorMessage,
+                            //     });
+                            // },
+                            error: function(data) {
+                                $('body').html(data.responseText);
                             },
                             complete: function() {
                                 btn.prop('disabled', false).html(
                                     '<i class="fas fa-save"></i> Save Product Updates'
-                                    );
+                                );
                             }
                         });
                     }

@@ -26,10 +26,11 @@ class CustomerController extends Controller
 
     public function customerLogout()
     {
-        if (session()->has('LoggedAdmin')) {
+        if (session()->has('LoggedCustomer')) {
             session()->flush();
             return redirect('/');
-        } else {
+        } elseif (session()->has('LoggedAdmin')) {
+            session()->flush();
             return redirect('/');
         }
         return back();
@@ -141,7 +142,7 @@ class CustomerController extends Controller
     public function showCustomer($id)
     {
         $customer = User::findOrFail($id);
-     
+
         return view('Admin.customer-information', compact('customer'));
     }
 

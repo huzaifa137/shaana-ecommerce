@@ -66,7 +66,7 @@
         <div class="container px-0">
             <nav class="navbar navbar-light bg-white navbar-expand-xl">
                 <a href="{{ url('/') }}" class="navbar-brand">
-                    <h1 class="text-primary display-6">Shanana Beauty Products</h1>
+                    <h1 class="text-primary display-6">Shanana Products</h1>
                 </a>
                 <button class="navbar-toggler py-2 px-3" type="button" data-bs-toggle="collapse"
                     data-bs-target="#navbarCollapse">
@@ -121,6 +121,11 @@
                     </div>
                     <div class="d-flex m-3 me-0">
 
+                        <button class="btn p-0 me-4 my-auto" type="button" data-bs-toggle="offcanvas"
+                            data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                            <i class="bi bi-search fs-2"></i>
+                        </button>
+
 
                         @if (Session::has('LoggedCustomer'))
                             <?php
@@ -139,6 +144,90 @@
                                 <i class="fa fa-shopping-bag fa-2x"></i>
                             </a>
                         @endif
+
+
+                        <link rel="stylesheet"
+                            href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+                        <style>
+                            #offcanvasSearch {
+                                background-color: #f8f9fa;
+                                /* Light grey background for contrast */
+                                color: #212529;
+                                /* Dark text for readability */
+                                border-right: 1px solid #dee2e6;
+                            }
+
+                            #productSearchInput {
+                                border-radius: 0.375rem;
+                                /* Rounded corners */
+                                padding: 0.75rem;
+                                font-size: 1rem;
+                            }
+
+                            #searchResults .list-group-item {
+                                transition: background-color 0.2s;
+                            }
+
+                            #searchResults .list-group-item:hover {
+                                background-color: #e9ecef;
+                                cursor: pointer;
+                            }
+
+                            .offcanvas-header {
+                                border-bottom: 1px solid #dee2e6;
+                            }
+                        </style>
+
+                        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSearch">
+                            <div class="offcanvas-header justify-content-between">
+                                <h4 class="fw-bold text-uppercase fs-6" style="color: #ff85c1;">Search Products</h4>
+                                <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="offcanvas-body">
+                                <input type="text" id="productSearchInput" class="form-control mb-3 shadow-sm"
+                                    placeholder="Search products...">
+                                <div id="searchResults" class="list-group">
+                                    <!-- Matching products will be inserted here -->
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <script>
+                            document.getElementById('productSearchInput').addEventListener('input', function() {
+                                let query = this.value;
+                                if (query.length < 2) {
+                                    document.getElementById('searchResults').innerHTML = '';
+                                    return;
+                                }
+
+                                fetch(`/search-products?query=${encodeURIComponent(query)}`)
+                                    .then(res => res.json())
+                                    .then(data => {
+                                        let resultHTML = '';
+                                        if (data.length > 0) {
+                                            data.forEach(product => {
+                                                resultHTML += `
+                            <a href="/product-item/${product.id}" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <img src="/storage/${product.featured_image_1}" alt="${product.product_name}" width="50" height="50" style="object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold">${product.product_name}</div>
+                                    <div class="text-muted">₦${parseFloat(product.sale_price || product.price).toLocaleString()}</div>
+                                </div>
+                            </a>
+                        `;
+                                            });
+                                        } else {
+                                            resultHTML = `<div class="list-group-item text-muted">No matching products found</div>`;
+                                        }
+
+                                        document.getElementById('searchResults').innerHTML = resultHTML;
+                                    });
+                            });
+                        </script>
+
 
                         @if (Session('LoggedCustomer'))
                             <div class="dropdown">

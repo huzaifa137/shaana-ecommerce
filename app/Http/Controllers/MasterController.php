@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
+use Shippo;
 
 class MasterController extends Controller
 {
@@ -42,14 +43,25 @@ class MasterController extends Controller
 
     public function itemCategories($categoryId)
     {
+        $category = Category::findOrFail($categoryId);
 
-        $products         = Product::where('category', '=', $categoryId)->get();
+        $newCategoryProducts = $category->products()->get();
+
+        $legacyProducts = Product::where('category', $categoryId)->get();
+
+        $products = $newCategoryProducts->merge($legacyProducts)->unique('id');
+
         $categories       = Category::all();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
         $popupProducts    = $featuredProducts->take(15);
-        $category         = Category::findOrFail($categoryId);
 
-        return view('Ecommerce.item-categories', compact('products', 'categories', 'featuredProducts', 'popupProducts', 'category'));
+        return view('Ecommerce.item-categories', compact(
+            'products',
+            'categories',
+            'featuredProducts',
+            'popupProducts',
+            'category'
+        ));
     }
 
     public function itemOptions($optionsId)
@@ -82,11 +94,28 @@ class MasterController extends Controller
         return view('Ecommerce.item-shop', compact('products', 'categories', 'featuredProducts', 'popupProducts'));
     }
 
+    // public function itemCart()
+    // {
+    //     $addedProducts = Session::get('cart', []);
+
+    //     return view('Ecommerce.item-cart', compact('addedProducts'));
+    // }
+
     public function itemCart()
     {
         $addedProducts = Session::get('cart', []);
 
-        return view('Ecommerce.item-cart', compact('addedProducts'));
+        $subtotal = 0;
+        if (count($addedProducts) > 0) {
+            foreach ($addedProducts as $products) {
+                $product  = DB::table('products')->where('id', $products['id'])->first();
+                $price    = (int) str_replace(',', '', $product->sale_price);
+                $quantity = $products['quantity'] ?? 1;
+                $subtotal += $price * $quantity;
+            }
+        }
+
+        return view('Ecommerce.item-cart', compact('addedProducts', 'subtotal'));
     }
 
     public function itemCheckout()
@@ -144,7 +173,6 @@ class MasterController extends Controller
 
     public function storeUserInformation(Request $request)
     {
-
         $validator = Validator::make($request->all(), [
             'firstName'            => 'required|string|max:255',
             'lastName'             => 'required|string|max:255',
@@ -478,4 +506,69 @@ class MasterController extends Controller
 
         return response()->json(['message' => 'Password has been updated successfully.']);
     }
+
+    public function calculateShippingRate(Request $request)
+    {
+        Shippo::setApiKey(config('services.shippo.key'));
+
+        try {
+            $fromAddress = [
+                "name"    => "Shanana Beauty",
+                "street1" => "Kampala Road",
+                "city"    => "Kampala",
+                "zip"     => "256",
+                "country" => "UG",
+                "phone"   => "+256000000000",
+                "email"   => "support@shanana.com",
+            ];
+
+            $toAddress = [
+                "name"    => $request->firstName . ' ' . $request->lastName,
+                "street1" => $request->address,
+                "city"    => $request->city,
+                "zip"     => $request->postcode,
+                "country" => $request->country,
+                "phone"   => $request->mobile,
+                "email"   => $request->email,
+            ];
+
+            $parcel = [
+                "length"        => "10",
+                "width"         => "5",
+                "height"        => "8",
+                "distance_unit" => "cm",
+                "weight"        => "1",
+                "mass_unit"     => "kg",
+            ];
+
+            $shipment = \Shippo_Shipment::create([
+                "address_from"     => $fromAddress,
+                "address_to"       => $toAddress,
+                "parcels"          => [$parcel],
+                "async"            => false,
+                "carrier_accounts" => ["d3d008a7fb6e4354a736e836ee5da0a2"], // ✅ Inserted working carrier
+            ]);
+
+            if (! empty($shipment["rates"])) {
+                $lowestRate = $shipment["rates"][0];
+
+                return response()->json([
+                    'success'       => true,
+                    'rate'          => $lowestRate['amount'],
+                    'currency'      => $lowestRate['currency'],
+                    'provider'      => $lowestRate['provider'],
+                    'service_level' => $lowestRate['servicelevel']['name'],
+                ]);
+            }
+
+            return response()->json(['success' => false, 'message' => 'No rates found.']);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
 }

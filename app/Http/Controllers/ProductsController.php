@@ -148,7 +148,7 @@ class ProductsController extends Controller
     {
         $validated = $request->validate([
             'product_name'     => 'required|string',
-            'category'         => 'nullable|integer',
+            'categories'       => 'nullable|string', // JSON string of category IDs
             'status'           => 'required|integer',
             'description'      => 'nullable|string',
             'price'            => 'required|string',
@@ -158,23 +158,25 @@ class ProductsController extends Controller
             'attributes'       => 'nullable|string',
             'labels'           => 'nullable|string',
             'taxes'            => 'nullable|string',
-            'product_combo'    => 'required|string', // Added validation for product_combo
+            'product_combo'    => 'required|string',
             'featured_image_1' => 'nullable|image',
             'featured_image_2' => 'nullable|image',
             'featured_image_3' => 'nullable|image',
             'reviews'          => 'nullable|string',
         ]);
 
+        // Create product
         $product = new Product($validated);
 
         $product->attributes = json_decode($request->input('attributes'), true);
         $product->labels     = json_decode($request->input('labels'), true);
         $product->taxes      = json_decode($request->input('taxes'), true);
 
-        // Decode product_combo and set the is_combo attribute
+        // Handle combo field
         $productCombo      = json_decode($request->input('product_combo'), true);
-        $product->is_combo = $productCombo['yesCombo'] ?? false; // Store true if 'yesCombo' was checked
+        $product->is_combo = $productCombo['yesCombo'] ?? false;
 
+        // Handle image uploads
         foreach ([1, 2, 3] as $index) {
             $key = "featured_image_{$index}";
             if ($request->hasFile($key)) {
@@ -185,7 +187,7 @@ class ProductsController extends Controller
 
         $product->save();
 
-        // Save reviews
+        // Save associated reviews
         $reviews = json_decode($request->input('reviews'), true);
         if (is_array($reviews)) {
             foreach ($reviews as $review) {
@@ -198,6 +200,12 @@ class ProductsController extends Controller
                     'review_date'    => $review['date'] ?? null,
                 ]);
             }
+        }
+
+        // ✅ Attach categories if any were selected
+        $categoryIds = json_decode($request->input('categories'), true);
+        if (is_array($categoryIds) && count($categoryIds) > 0) {
+            $product->categories()->sync($categoryIds);
         }
 
         return response()->json([
@@ -292,12 +300,10 @@ class ProductsController extends Controller
     {
         $product = Product::findOrFail($id);
 
-        // Debugging: Log incoming request data to see what Laravel receives
-        // Log::info('Incoming Product Update Request:', $request->all());
-
         $request->validate([
             'product_name'     => 'required|string|max:255',
-            'category'         => 'required|integer',
+                                                                  // 'category'         => 'required|integer',
+            'categories.*'     => 'integer|exists:categories,id', // validate each ID
             'status'           => 'required|integer',
             'description'      => 'required|string',
             'price'            => 'required|numeric',
@@ -305,46 +311,35 @@ class ProductsController extends Controller
             'quantity'         => 'required|integer',
             'sku'              => 'required|string|max:255',
 
-            // ADJUST THESE BASED ON HOW YOUR FRONTEND ACTUALLY SENDS THEM:
-            // If attributes are sent as `attributes[0][attribute]`, `attributes[0][value]`, etc., then 'array' is correct.
             'attributes'       => 'nullable|array',
-            // If labels are sent as a single JSON string (e.g., '{"bestSelling":true}'), then 'string' is correct.
             'labels'           => 'nullable|string',
-            // If taxes are sent as a single JSON string, then 'string' is correct.
             'taxes'            => 'nullable|string',
 
-            'product_combo'    => 'required|string', // Still assuming this comes as JSON string
+            'product_combo'    => 'required|string',
             'featured_image_1' => 'nullable|image|max:2048',
             'featured_image_2' => 'nullable|image|max:2048',
             'featured_image_3' => 'nullable|image|max:2048',
-            'reviews'          => 'nullable|string', // Still assuming this comes as JSON string
-            'deleted_reviews'  => 'nullable|string', // Still assuming this comes as JSON string
+            'reviews'          => 'nullable|string',
+            'deleted_reviews'  => 'nullable|string',
         ]);
 
-        // Update basic product fields
         $product->product_name = $request->product_name;
-        $product->category     = $request->category;
-        $product->status       = $request->status;
-        $product->description  = $request->description;
-        $product->price        = $request->price;
-        $product->sale_price   = $request->sale_price;
-        $product->quantity     = $request->quantity;
-        $product->sku          = $request->sku;
+        // $product->category     = $request->category;
+        $product->status      = $request->status;
+        $product->description = $request->description;
+        $product->price       = $request->price;
+        $product->sale_price  = $request->sale_price;
+        $product->quantity    = $request->quantity;
+        $product->sku         = $request->sku;
 
-        // Process data based on their expected formats
-        // Attributes: If sent as a standard array of form fields, Laravel handles directly.
         $product->attributes = $request->input('attributes', []);
 
-        // Labels & Taxes: If sent as JSON strings, decode them.
         $product->labels = json_decode($request->input('labels', '[]'), true);
         $product->taxes  = json_decode($request->input('taxes', '[]'), true);
-        // Using '[]' as default for json_decode if input is null, so it becomes an empty array.
 
-        // Handle Product Combo
         $productComboData  = json_decode($request->input('product_combo'), true);
         $product->is_combo = $productComboData['yesCombo'] ?? false;
 
-        // Handle images
         for ($i = 1; $i <= 3; $i++) {
             $fileKey = "featured_image_{$i}";
             if ($request->hasFile($fileKey)) {
@@ -358,7 +353,6 @@ class ProductsController extends Controller
 
         $product->save();
 
-        // Delete reviews if needed
         $deletedReviews = json_decode($request->input('deleted_reviews'), true);
         if (is_array($deletedReviews)) {
             ProductReview::whereIn('id', $deletedReviews)
@@ -366,7 +360,8 @@ class ProductsController extends Controller
                 ->delete();
         }
 
-        // Handle reviews (create or update)
+        $product->categories()->sync($request->categories);
+
         $reviews = json_decode($request->input('reviews'), true);
         if (is_array($reviews)) {
             foreach ($reviews as $review) {

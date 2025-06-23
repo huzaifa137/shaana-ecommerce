@@ -5,6 +5,7 @@ use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\MasterController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductsController;
+use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
 Route::controller(MasterController::class)->group(function () {
@@ -21,6 +22,8 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('/user-login', 'userLogin')->name('user.login');
         Route::get('/user-register', 'userRegister')->name('user.register');
         Route::get('/user-profile', 'userProfile')->name('user.profile');
+
+        Route::post('/calculate-shipping','calculateShippingRate')->name('calculate.shipping');
 
     });
 
@@ -141,4 +144,14 @@ Route::controller(ProductsController::class)->group(function () {
         Route::post('/customer-store-review', 'customerStoreReview')->name('customer.store.review');
     });
 
+});
+
+Route::get('/search-products', function (\Illuminate\Http\Request $request) {
+    $query    = $request->input('query');
+    $products = Product::where('product_name', 'like', "%{$query}%")
+        ->select('id', 'product_name', 'price', 'sale_price', 'featured_image_1')
+        ->take(10)
+        ->get();
+
+    return response()->json($products);
 });

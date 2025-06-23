@@ -541,27 +541,27 @@
                     submitBtn.prop('disabled', false);
                     submitBtn.html('Create Account');
                 },
-                error: function(xhr) {
-                    submitBtn.prop('disabled', false);
-                    submitBtn.html('Create Account');
+                // error: function(xhr) {
+                //     submitBtn.prop('disabled', false);
+                //     submitBtn.html('Create Account');
 
-                    let errorMessage = 'An error occurred. Please try again.';
+                //     let errorMessage = 'An error occurred. Please try again.';
 
-                    if (xhr.status === 422) {
-                        const errors = xhr.responseJSON.errors;
-                        errorMessage = Object.values(errors).flat().join('\n');
-                    }
+                //     if (xhr.status === 422) {
+                //         const errors = xhr.responseJSON.errors;
+                //         errorMessage = Object.values(errors).flat().join('\n');
+                //     }
 
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Validation Error',
-                        text: errorMessage,
-                    });
-                    console.error(xhr);
-                }
-                // error: function(data) {
-                //     $('body').html(data.responseText);
+                //     Swal.fire({
+                //         icon: 'error',
+                //         title: 'Validation Error',
+                //         text: errorMessage,
+                //     });
+                //     console.error(xhr);
                 // }
+                error: function(data) {
+                    $('body').html(data.responseText);
+                }
             });
             ``
         });

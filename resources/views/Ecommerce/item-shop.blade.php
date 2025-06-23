@@ -55,7 +55,7 @@ use App\Http\Controllers\Helper;
             </div>
         @endif
 
-        <h1 class="mb-4">Shanana Beauty Products</h1>
+        <h1 class="mb-4">Shanana Products</h1>
         <div class="row g-4">
             <div class="col-lg-12">
 

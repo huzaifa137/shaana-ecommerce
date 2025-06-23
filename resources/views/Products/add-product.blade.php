@@ -135,10 +135,22 @@
                                 <h4 class="mb-4">Product Name</h4>
 
                                 <div class="p-3 border rounded bg-light h-100">
-                                    <div class="form-group mb-0">
-                                        <label for="product_name" class="form-label">Product Name</label>
-                                        <input type="text" id="product_name" class="form-control"
-                                            placeholder="Enter category name" />
+                                    <div class="row">
+                                        <div class="form-group col-md-9 mb-3">
+                                            <label for="product_name" class="form-label">Product Name</label>
+                                            <input type="text" id="product_name" class="form-control"
+                                                placeholder="Enter category name" />
+                                        </div>
+
+                                        <div class="form-group col-md-3 mb-3">
+                                            <label class="form-label" for="status_select">Status</label>
+                                            <select name="status" id="status_select"
+                                                class="form-control custom-select select2">
+                                                <option value="10">Published</option>
+                                                <option value="0">Draft</option>
+                                                <option value="1">Pending</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -150,7 +162,7 @@
 
                                 <div class="p-3 border rounded bg-light h-100">
                                     <div class="form-row">
-                                        <div class="form-group col-md-9 mb-0">
+                                        {{-- <div class="form-group col-md-9 mb-0">
                                             <label class="form-label" for="category_select">Categories</label>
                                             <select name="category" id="category_select"
                                                 class="form-control custom-select select2">
@@ -161,17 +173,26 @@
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
                                             </select>
+                                        </div> --}}
+
+                                        <div class="form-group col-md-12 mb-0">
+                                            <label class="form-label">Categories</label>
+                                            <div class="row">
+                                                @foreach ($categories as $category)
+                                                    <div class="col-md-4 mb-2">
+                                                        <div class="form-check">
+                                                            <input type="checkbox"
+                                                                class="form-check-input category-checkbox"
+                                                                id="cat_{{ $category->id }}" value="{{ $category->id }}">
+                                                            <label class="form-check-label" for="cat_{{ $category->id }}">
+                                                                {{ $category->name }}
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                            </div>
                                         </div>
 
-                                        <div class="form-group col-md-3 mb-0">
-                                            <label class="form-label" for="status_select">Status</label>
-                                            <select name="status" id="status_select"
-                                                class="form-control custom-select select2">
-                                                <option value="10">Published</option>
-                                                <option value="0">Draft</option>
-                                                <option value="1">Pending</option>
-                                            </select>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -684,7 +705,6 @@
 
                 // Collect values
                 const productName = $('#product_name').val().trim();
-                const category = $('#category_select').val();
                 const status = $('#status_select').val();
                 const description = t_description.getData().trim();
 
@@ -758,6 +778,17 @@
                     }
                 });
 
+                // ✅ Validate at least one category is selected
+                let selectedCategories = [];
+                $('.category-checkbox:checked').each(function() {
+                    selectedCategories.push($(this).val());
+                });
+
+                if (selectedCategories.length === 0) {
+                    errorMessages.push('Please select at least one category.');
+                    isValid = false;
+                }
+
                 // Validation
                 let isValid = true;
                 let errorMessages = [];
@@ -768,14 +799,6 @@
                     isValid = false;
                 } else {
                     $('#product_name').removeClass('is-invalid');
-                }
-
-                if (!category) {
-                    $('#category_select').addClass('is-invalid');
-                    errorMessages.push('Please select a category.');
-                    isValid = false;
-                } else {
-                    $('#category_select').removeClass('is-invalid');
                 }
 
                 if (!status) {
@@ -878,7 +901,6 @@
 
                         const formData = new FormData();
                         formData.append('product_name', productName);
-                        formData.append('category', category);
                         formData.append('status', status);
                         formData.append('description', description);
                         formData.append('price', price);
@@ -897,6 +919,7 @@
                         // --- NEW: Append Product Combo to FormData ---
                         formData.append('product_combo', JSON.stringify(productCombo));
                         // --- END NEW ---
+                        formData.append('categories', JSON.stringify(selectedCategories));
 
                         formData.append('_token', $('meta[name="csrf-token"]').attr('content'));
 

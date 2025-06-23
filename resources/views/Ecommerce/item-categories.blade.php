@@ -346,10 +346,22 @@ use App\Http\Controllers\Helper;
                                                 class="img-fluid w-100 rounded-top" alt="{{ $product->product_name }}">
                                         </div>
 
-                                        <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
-                                            style="top: 10px; left: 10px; font-weight: 600; z-index: 2;">
-                                            {{ Helper::product_category_name($product->category) }}
-                                        </div>
+                                        @if (!empty($product->categories) && $product->categories->count() > 0)
+                                            {{-- For products with many categories --}}
+                                            @foreach ($product->categories as $category)
+                                                <div class="text-white bg-primary px-3 py-1 rounded position-absolute mb-1"
+                                                    style="top: 10px; left: 10px; font-weight: 600; z-index: 2;">
+                                                    {{ $category->name }}
+                                                </div>
+                                            @endforeach
+                                        @elseif (!empty($product->category))
+                                            {{-- For old products with single category --}}
+                                            <div class="text-white bg-primary px-3 py-1 rounded position-absolute"
+                                                style="top: 10px; left: 10px; font-weight: 600; z-index: 2;">
+                                                {{ Helper::product_category_name($product->category) }}
+                                            </div>
+                                        @endif
+
 
                                         <div class="p-4 pb-0 rounded-bottom position-relative" style="z-index: 2;">
                                             <h4 class="text-dark fw-bold">{{ $product->product_name }}</h4>

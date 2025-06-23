@@ -140,8 +140,9 @@
                         </div>
 
                         <div class="d-flex justify-content-between mb-3">
-                            <span class="fw-semibold text-secondary fs-5">Shipping:</span>
-                            <span class="fw-normal text-dark fs-5">Ugx 3,000/=</span>
+                            {{-- <span class="fw-semibold text-secondary fs-5">Shipping:</span> --}}
+                            {{-- <span class="fw-normal text-dark fs-5">Ugx 3,000/=</span> --}}
+                            <span class="shipping-amount fw-normal text-dark fs-5">Calculating Shiping Rates...</span>
                         </div>
 
                         <hr class="my-4">
@@ -149,11 +150,12 @@
                         <div class="d-flex justify-content-between mb-4">
                             <span class="fw-bold text-primary fs-4">Total:</span>
                             <span class="total-amount fw-bold text-dark fs-4">Ugx
-                                {{ number_format($subtotal + 3000) }}/=</span>
+                                {{ number_format($subtotal + 0) }}/=</span>
                         </div>
 
                         <div class="d-grid">
-                            <a href="{{ url('/item-checkout')}}" class="btn btn-primary rounded-pill py-3 fs-6 text-uppercase text-white fw-bold">
+                            <a href="{{ url('/item-checkout') }}"
+                                class="btn btn-primary rounded-pill py-3 fs-6 text-uppercase text-white fw-bold">
                                 Proceed to Checkout</a>
                         </div>
                     </div>
@@ -244,7 +246,7 @@
                         $('.subtotal-amount').html(`Ugx ${formatNumber(response.subtotal)}/=`);
 
                         // Update total (subtotal + fixed shipping fee of 3000)
-                        const total = response.subtotal + 3000;
+                        const total = response.subtotal + 0;
                         $('.total-amount').html(`Ugx ${formatNumber(total)}/=`);
                     }
                 }
@@ -258,6 +260,47 @@
     });
 </script>
 
+<script>
+    $(document).ready(function() {
+        $.ajax({
+            url: "{{ route('calculate.shipping') }}",
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}",
+                firstName: "Blake",
+                lastName: "Ryan",
+                address: "Kamuli,kireka road",
+                city: "Kampala",
+                country: "UG",
+                postcode: "58792",
+                mobile: "+1 (883) 115-6189",
+                email: "kofa@mailinator.com"
+            },
+            success: function(response) {
+                if (response.success) {
+                    let shipping = parseFloat(response.rate);
+                    $('.shipping-amount').text(`${response.currency} ${shipping}`);
+
+                    // const subtotal = {{ $subtotal }};
+                    const subtotal = {{ $subtotal ?? 0 }};
+
+                    const total = subtotal + shipping;
+                    $('.total-amount').html(`${response.currency} ${total.toLocaleString()}`);
+                } else {
+                    $('.shipping-amount').text('Shipping Rates Not Found (0) ');
+                    console.error(response.message);
+                }
+            },
+            // error: function(err) {
+            //     console.error(err);
+            //     $('.shipping-amount').text('Error');
+            // }
+            error: function(data) {
+                $('body').html(data.responseText);
+            }
+        });
+    });
+</script>
 
 
 @include('layouts.footer')

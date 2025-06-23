@@ -396,39 +396,6 @@ use App\Http\Controllers\Helper;
         </div>
     </div>
 
-
-    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar">
-
-        <div class="offcanvas-header justify-content-between">
-            <h4 class="fw-normal text-uppercase fs-6">Product Categories</h4>
-            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-
-        <div class="offcanvas-body">
-
-            <ul class="navbar-nav justify-content-end menu-list list-unstyled d-flex gap-md-3 mb-0">
-
-                @foreach ($categories as $category)
-                    <?php
-                    $countCategory = DB::table('products')->where('category', $category->id)->count();
-                    ?>
-                    <li>
-                        <a href="{{ url('/item-categories/' . $category->id) }}"
-                            class="nav-link d-flex align-items-center gap-3 text-dark p-2">
-                            <svg width="24" height="24" viewBox="0 0 24 24">
-                                <use xlink:href="#fruits"></use>
-                            </svg>
-                            <span>{{ $category->name }}</span>
-                        </a>
-                    </li>
-                @endforeach
-
-
-            </ul>
-
-        </div>
-
-    </div>
     <header>
         <div class="container-fluid">
             <div class="row py-3 border-bottom">
@@ -440,15 +407,97 @@ use App\Http\Controllers\Helper;
                             <img src="/assets1/images/logo.svg" alt="logo" class="img-fluid">
                         </a>
                     </div>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas"
-                        data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                        <svg width="24" height="24" viewBox="0 0 24 24">
-                            <use xlink:href="#menu"></use>
-                        </svg>
+
+                    <button class="btn p-0 me-4 my-auto" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasSearch" aria-controls="offcanvasSearch">
+                        <i class="bi bi-search fs-4"></i>
                     </button>
                 </div>
 
                 <div class="col-lg-8">
+
+                    <link rel="stylesheet"
+                        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+                    <style>
+                        #offcanvasSearch {
+                            background-color: #f8f9fa;
+                            /* Light grey background for contrast */
+                            color: #212529;
+                            /* Dark text for readability */
+                            border-right: 1px solid #dee2e6;
+                        }
+
+                        #productSearchInput {
+                            border-radius: 0.375rem;
+                            /* Rounded corners */
+                            padding: 0.75rem;
+                            font-size: 1rem;
+                        }
+
+                        #searchResults .list-group-item {
+                            transition: background-color 0.2s;
+                        }
+
+                        #searchResults .list-group-item:hover {
+                            background-color: #e9ecef;
+                            cursor: pointer;
+                        }
+
+                        .offcanvas-header {
+                            border-bottom: 1px solid #dee2e6;
+                        }
+                    </style>
+
+                    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSearch">
+                        <div class="offcanvas-header justify-content-between">
+                            <h4 class="fw-bold text-uppercase fs-6" style="color: #ff85c1;">Search Products</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                        </div>
+                        <div class="offcanvas-body">
+                            <input type="text" id="productSearchInput" class="form-control mb-3 shadow-sm"
+                                placeholder="Search products...">
+                            <div id="searchResults" class="list-group">
+                                <!-- Matching products will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <script>
+                        document.getElementById('productSearchInput').addEventListener('input', function() {
+                            let query = this.value;
+                            if (query.length < 2) {
+                                document.getElementById('searchResults').innerHTML = '';
+                                return;
+                            }
+
+                            fetch(`/search-products?query=${encodeURIComponent(query)}`)
+                                .then(res => res.json())
+                                .then(data => {
+                                    let resultHTML = '';
+                                    if (data.length > 0) {
+                                        data.forEach(product => {
+                                            resultHTML += `
+                            <a href="/product-item/${product.id}" class="list-group-item list-group-item-action d-flex align-items-center gap-3">
+                                <img src="/storage/${product.featured_image_1}" alt="${product.product_name}" width="50" height="50" style="object-fit: cover;">
+                                <div>
+                                    <div class="fw-bold">${product.product_name}</div>
+                                    <div class="text-muted">₦${parseFloat(product.sale_price || product.price).toLocaleString()}</div>
+                                </div>
+                            </a>
+                        `;
+                                        });
+                                    } else {
+                                        resultHTML = `<div class="list-group-item text-muted">No matching products found</div>`;
+                                    }
+
+                                    document.getElementById('searchResults').innerHTML = resultHTML;
+                                });
+                        });
+                    </script>
+
                     <ul
                         class="navbar-nav list-unstyled d-flex flex-row gap-3 gap-lg-5 justify-content-center flex-wrap align-items-center mb-0 fw-bold text-uppercase text-dark">
                         <li class="nav-item active">
@@ -1385,15 +1434,17 @@ use App\Http\Controllers\Helper;
 
                             <figure class="mb-4">
                                 <a href="{{ url('/product-item/' . $item->id) }}" title="Product Title">
-                                    <img src="{{ asset('storage/' . $item->featured_image_1) }}" alt="Product Thumbnail"
-                                        style="max-width: 180px; height: auto;" class="img-fluid">
+                                    <img src="{{ asset('storage/' . $item->featured_image_1) }}"
+                                        alt="Product Thumbnail" style="max-width: 180px; height: auto;"
+                                        class="img-fluid">
                                 </a>
                             </figure>
 
                             <div class="content-wrapper">
                                 <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
                                 <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
-                                <a href="{{ url('/product-item/' . $item->id) }}" class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
+                                <a href="{{ url('/product-item/' . $item->id) }}"
+                                    class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
                             </div>
                         </div>
                     </div>
