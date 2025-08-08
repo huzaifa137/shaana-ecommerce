@@ -1321,7 +1321,7 @@ use App\Http\Controllers\Helper;
                             </figure>
 
                             <div class="content-wrapper">
-                                <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Items on SALE</h3>
+                                <h3 class="fw-bold mb-2" style="color: #e91e63; font-size: 2rem;">Combo on SALE</h3>
                                 <p class="mb-3" style="color: #d81b60; font-size: 1.1rem;">Discounts up to 30%</p>
                                 <a href="{{ url('/product-item/' . $item->id) }}"
                                     class="btn btn-pink rounded-pill px-4 py-2 shadow-sm">Shop Now</a>
@@ -1774,7 +1774,7 @@ use App\Http\Controllers\Helper;
                 <!-- Logo & Social Media -->
                 <div class="col-lg-3 col-md-6 col-sm-6">
                     <div class="footer-menu">
-                        <img src="/assets1/images/logo.svg" width="240" height="70" alt="logo">
+                        <img src="/assets1/images/ShananaLogo.png" width="240" height="100" alt="logo">
                         <div class="social-links mt-3">
                             <ul class="d-flex list-unstyled gap-2">
                                 <li>
@@ -1975,8 +1975,6 @@ use App\Http\Controllers\Helper;
             });
         });
     </script>
-
-
 
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
