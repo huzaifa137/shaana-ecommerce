@@ -19,13 +19,14 @@ class MasterController extends Controller
 {
     public function home()
     {
-        $products            = Product::all();
-        $categories          = Category::all();
-        $bestSellingProducts = Product::where('labels->bestSelling', true)->get();
-        $featuredProducts    = Product::where('labels->featured', true)->get();
-        $popularProducts     = Product::where('labels->popular', true)->get();
-        $newProducts         = Product::where('labels->new', true)->get();
-        $combos              = Product::where('is_combo', true)->get();
+        $products = Product::all();
+        $categories = Category::all();
+
+        $bestSellingProducts = Product::where('labels->bestSelling', true)->take(3)->get();
+        $featuredProducts = Product::where('labels->featured', true)->take(3)->get();
+        $popularProducts = Product::where('labels->popular', true)->take(3)->get();
+        $newProducts = Product::where('labels->new', true)->take(3)->get();
+        $combos = Product::where('is_combo', true)->take(3)->get();
 
         $popupProducts = $featuredProducts->take(15);
 
@@ -41,6 +42,39 @@ class MasterController extends Controller
         ));
     }
 
+    public function loadMoreProducts(Request $request, $type)
+    {
+
+        $offset = $request->input('offset', 0);
+        $limit = 3;
+
+        $query = Product::query();
+
+        switch ($type) {
+            case 'bestSelling':
+                $query->where('labels->bestSelling', true);
+                break;
+            case 'featured':
+                $query->where('labels->featured', true);
+                break;
+            case 'popular':
+                $query->where('labels->popular', true);
+                break;
+            case 'new':
+                $query->where('labels->new', true);
+                break;
+            case 'combos':
+                $query->where('is_combo', true);
+                break;
+            default:
+                return response('', 400);
+        }
+
+        $products = $query->skip($offset)->take($limit)->get();
+
+        return view('Ecommerce.partials.product_cards', compact('products'))->render();
+    }
+
     public function itemCategories($categoryId)
     {
         $category = Category::findOrFail($categoryId);
@@ -51,9 +85,9 @@ class MasterController extends Controller
 
         $products = $newCategoryProducts->merge($legacyProducts)->unique('id');
 
-        $categories       = Category::all();
+        $categories = Category::all();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
-        $popupProducts    = $featuredProducts->take(15);
+        $popupProducts = $featuredProducts->take(15);
 
         return view('Ecommerce.item-categories', compact(
             'products',
@@ -77,19 +111,19 @@ class MasterController extends Controller
             $products = Product::where('labels->new', true)->get();
         }
 
-        $categories       = Category::all();
+        $categories = Category::all();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
-        $popupProducts    = $featuredProducts->take(15);
+        $popupProducts = $featuredProducts->take(15);
 
         return view('Ecommerce.item-options', compact('products', 'categories', 'featuredProducts', 'popupProducts', 'optionsId'));
     }
 
     public function itemShop()
     {
-        $products         = Product::all();
-        $categories       = Category::all();
+        $products = Product::all();
+        $categories = Category::all();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
-        $popupProducts    = $featuredProducts->take(15);
+        $popupProducts = $featuredProducts->take(15);
 
         return view('Ecommerce.item-shop', compact('products', 'categories', 'featuredProducts', 'popupProducts'));
     }
@@ -108,8 +142,8 @@ class MasterController extends Controller
         $subtotal = 0;
         if (count($addedProducts) > 0) {
             foreach ($addedProducts as $products) {
-                $product  = DB::table('products')->where('id', $products['id'])->first();
-                $price    = (int) str_replace(',', '', $product->sale_price);
+                $product = DB::table('products')->where('id', $products['id'])->first();
+                $price = (int) str_replace(',', '', $product->sale_price);
                 $quantity = $products['quantity'] ?? 1;
                 $subtotal += $price * $quantity;
             }
@@ -149,12 +183,12 @@ class MasterController extends Controller
 
     public function productItem($id)
     {
-        $product          = Product::findOrFail($id);
-        $categories       = Category::all();
-        $reviews          = ProductReview::where('product_id', $product->id)->get();
+        $product = Product::findOrFail($id);
+        $categories = Category::all();
+        $reviews = ProductReview::where('product_id', $product->id)->get();
         $featuredProducts = Product::where('labels->featured', true)->paginate(5);
-        $products         = Product::all();
-        $product_id       = $id;
+        $products = Product::all();
+        $product_id = $id;
 
         return view('Ecommerce.product-item', compact('product', 'categories', 'reviews', 'featuredProducts', 'products', 'product_id'));
     }
@@ -174,21 +208,21 @@ class MasterController extends Controller
     public function storeUserInformation(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'firstName'            => 'required|string|max:255',
-            'lastName'             => 'required|string|max:255',
-            'companyName'          => 'required|string|max:255',
-            'address'              => 'required|string|max:255',
-            'city'                 => 'required|string|max:255',
-            'country'              => 'required|string|max:255',
-            'postcode'             => 'required|string|max:20',
-            'mobile'               => 'required|string|max:20',
-            'email'                => [
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'companyName' => 'required|string|max:255',
+            'address' => 'required|string|max:255',
+            'city' => 'required|string|max:255',
+            'country' => 'required|string|max:255',
+            'postcode' => 'required|string|max:20',
+            'mobile' => 'required|string|max:20',
+            'email' => [
                 'required',
                 'email',
                 'unique:users,email',
                 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
             ],
-            'passwordInput'        => [
+            'passwordInput' => [
                 'required',
                 'string',
                 'min:8',
@@ -207,35 +241,35 @@ class MasterController extends Controller
         $password = trim($request->passwordInput);
 
         $user = User::create([
-            'first_name'               => $request->input('firstName'),
-            'last_name'                => $request->input('lastName'),
-            'email'                    => $request->input('email'),
-            'company_name'             => $request->input('companyName'),
-            'address'                  => $request->input('address'),
-            'city'                     => $request->input('city'),
-            'country'                  => $request->input('country'),
-            'postcode'                 => $request->input('postcode'),
-            'mobile'                   => $request->input('mobile'),
-            'password'                 => Hash::make($password),
+            'first_name' => $request->input('firstName'),
+            'last_name' => $request->input('lastName'),
+            'email' => $request->input('email'),
+            'company_name' => $request->input('companyName'),
+            'address' => $request->input('address'),
+            'city' => $request->input('city'),
+            'country' => $request->input('country'),
+            'postcode' => $request->input('postcode'),
+            'mobile' => $request->input('mobile'),
+            'password' => Hash::make($password),
             'default_shipping_address' => $request->isDefaultAddress,
         ]);
 
-        $user     = DB::table('users')->where('email', $request->email)->first();
+        $user = DB::table('users')->where('email', $request->email)->first();
         $userRole = $user->user_role;
-        $userId   = $user->id;
+        $userId = $user->id;
 
         $data = [
             'first_name' => $user->first_name,
-            'last_name'  => $user->last_name,
-            'email'      => $user->email,
-            'company'    => $user->company_name,
-            'address'    => $user->address,
-            'city'       => $user->city,
-            'country'    => $user->country,
-            'postcode'   => $user->postcode,
-            'mobile'     => $user->mobile,
-            'password'   => trim($request->passwordInput),
-            'title'      => 'Shanana Beauty Products - User Account has been created successfully.',
+            'last_name' => $user->last_name,
+            'email' => $user->email,
+            'company' => $user->company_name,
+            'address' => $user->address,
+            'city' => $user->city,
+            'country' => $user->country,
+            'postcode' => $user->postcode,
+            'mobile' => $user->mobile,
+            'password' => trim($request->passwordInput),
+            'title' => 'Shanana Beauty Products - User Account has been created successfully.',
         ];
 
         try {
@@ -253,7 +287,7 @@ class MasterController extends Controller
             $request->session()->put('LoggedCustomer', $userId);
         }
 
-        $url  = '/shanana/dashboard';
+        $url = '/shanana/dashboard';
         $url2 = session()->get('url.intended');
         $url3 = '/customer/dashboard';
 
@@ -261,23 +295,23 @@ class MasterController extends Controller
 
             if ($url2 != null) {
                 return response()->json([
-                    'status'       => true,
-                    'message'      => 'User Account created successfully,proceeding to dashboard',
+                    'status' => true,
+                    'message' => 'User Account created successfully,proceeding to dashboard',
                     'redirect_url' => $url2,
                 ]);
             }
 
             return response()->json([
-                'status'       => true,
-                'message'      => 'User Account created successfully,proceeding to dashboard',
+                'status' => true,
+                'message' => 'User Account created successfully,proceeding to dashboard',
                 'redirect_url' => $url,
             ]);
 
         } else {
 
             return response()->json([
-                'status'       => true,
-                'message'      => 'User Account created successfully,proceeding to dashboard',
+                'status' => true,
+                'message' => 'User Account created successfully,proceeding to dashboard',
                 'redirect_url' => $url3,
             ]);
         }
@@ -287,7 +321,7 @@ class MasterController extends Controller
     {
 
         $validator = Validator::make($request->all(), [
-            'email'    => [
+            'email' => [
                 'required',
                 'email',
                 'regex:/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/',
@@ -301,18 +335,18 @@ class MasterController extends Controller
 
         $userInfo = User::where('email', '=', $request->email)->first();
 
-        if (! $userInfo) {
+        if (!$userInfo) {
             return response()->json([
-                'status'  => false,
+                'status' => false,
                 'message' => 'Incorrect password or Email being entered',
             ], 401);
 
         } else {
             if (Hash::check($request->password, $userInfo->password)) {
 
-                $user     = DB::table('users')->where('email', $request->email)->first();
+                $user = DB::table('users')->where('email', $request->email)->first();
                 $userRole = $user->user_role;
-                $userId   = $user->id;
+                $userId = $user->id;
 
                 if ($userRole != 1) {
                     $request->session()->put('LoggedAdmin', $userId);
@@ -320,7 +354,7 @@ class MasterController extends Controller
                     $request->session()->put('LoggedCustomer', $userId);
                 }
 
-                $url  = '/';
+                $url = '/';
                 $url2 = session()->get('url.intended');
                 $url3 = '/customer/dashboard';
 
@@ -328,29 +362,29 @@ class MasterController extends Controller
 
                     if ($url2 != null) {
                         return response()->json([
-                            'status'       => true,
-                            'message'      => 'Login successfully',
+                            'status' => true,
+                            'message' => 'Login successfully',
                             'redirect_url' => $url2,
                         ]);
                     }
 
                     return response()->json([
-                        'status'       => true,
-                        'message'      => 'Login successfully',
+                        'status' => true,
+                        'message' => 'Login successfully',
                         'redirect_url' => $url,
                     ]);
 
                 } else {
 
                     return response()->json([
-                        'status'       => true,
-                        'message'      => 'Login successfully',
+                        'status' => true,
+                        'message' => 'Login successfully',
                         'redirect_url' => $url3,
                     ]);
                 }
             } else {
                 return response()->json([
-                    'status'  => false,
+                    'status' => false,
                     'message' => 'Incorrect password or Email being entered',
                 ], 401);
             }
@@ -361,29 +395,29 @@ class MasterController extends Controller
     {
 
         $request->validate([
-            'firstName'   => 'required|string|max:255',
-            'lastName'    => 'required|string|max:255',
-            'email'       => 'required|email',
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|email',
             'companyName' => 'required|string',
-            'address'     => 'required|string',
-            'city'        => 'required|string',
-            'country'     => 'required|string',
-            'postcode'    => 'required|string',
-            'mobile'      => 'required|string',
-            'password'    => 'nullable|confirmed|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[\W_]/',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'country' => 'required|string',
+            'postcode' => 'required|string',
+            'mobile' => 'required|string',
+            'password' => 'nullable|confirmed|min:8|regex:/[a-z]/|regex:/[A-Z]/|regex:/[0-9]/|regex:/[\W_]/',
         ]);
 
         $user = User::find(Session('LoggedCustomer'));
 
-        $user->first_name               = $request->firstName;
-        $user->last_name                = $request->lastName;
-        $user->email                    = $request->email;
-        $user->company_name             = $request->companyName;
-        $user->address                  = $request->address;
-        $user->city                     = $request->city;
-        $user->country                  = $request->country;
-        $user->postcode                 = $request->postcode;
-        $user->mobile                   = $request->mobile;
+        $user->first_name = $request->firstName;
+        $user->last_name = $request->lastName;
+        $user->email = $request->email;
+        $user->company_name = $request->companyName;
+        $user->address = $request->address;
+        $user->city = $request->city;
+        $user->country = $request->country;
+        $user->postcode = $request->postcode;
+        $user->mobile = $request->mobile;
         $user->default_shipping_address = $request->default_shipping_address;
 
         if ($request->filled('password')) {
@@ -398,7 +432,7 @@ class MasterController extends Controller
     public function createNewPassword($id)
     {
         $generated_id = url('password/reset/' . $id);
-        $resetEntry   = DB::table('password_reset_tables')->where('token', $generated_id)->first();
+        $resetEntry = DB::table('password_reset_tables')->where('token', $generated_id)->first();
 
         if ($resetEntry) {
             if ($resetEntry->link_status == 0) {
@@ -421,10 +455,10 @@ class MasterController extends Controller
 
         $user = User::where('email', $email)->first();
 
-        if (! $user) {
+        if (!$user) {
             if ($request->ajax()) {
                 return response()->json([
-                    'status'  => false,
+                    'status' => false,
                     'message' => 'The email provided is not registered in the system.',
                 ], 401);
             }
@@ -436,21 +470,21 @@ class MasterController extends Controller
             ->where('email', $email)
             ->value(DB::raw("CONCAT(first_name, ' ', last_name) AS fullname"));
 
-        $token    = Str::random(60);
+        $token = Str::random(60);
         $resetUrl = url('password/reset', $token);
 
         $post = new password_reset_table();
 
-        $post->email      = $email;
-        $post->token      = $resetUrl;
+        $post->email = $email;
+        $post->token = $resetUrl;
         $post->created_at = now();
         $post->save();
 
         $data = [
-            'email'    => $email,
+            'email' => $email,
             'username' => $username,
             'resetUrl' => $resetUrl,
-            'title'    => 'SHANANA BEAUTY AND BED PRODUCSTS : Reset Password Link',
+            'title' => 'SHANANA BEAUTY AND BED PRODUCSTS : Reset Password Link',
         ];
 
         Mail::send('emails.reset_email', $data, function ($message) use ($data) {
@@ -459,7 +493,7 @@ class MasterController extends Controller
 
         if ($request->ajax()) {
             return response()->json([
-                'status'  => true,
+                'status' => true,
                 'message' => 'Reset link sent successfully to: ' . $email,
             ]);
         }
@@ -475,14 +509,14 @@ class MasterController extends Controller
             ],
             [
                 'password.required' => 'The password field is required.',
-                'password.string'   => 'The password must be a string.',
-                'password.min'      => 'The password must be at least 6 characters.',
-                'password.regex'    => 'The password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.',
+                'password.string' => 'The password must be a string.',
+                'password.min' => 'The password must be at least 6 characters.',
+                'password.regex' => 'The password must include at least one uppercase letter, one lowercase letter, one digit, and one special character.',
             ],
         );
 
-        $password     = $request->password;
-        $confirm      = $request->confirmPassword;
+        $password = $request->password;
+        $confirm = $request->confirmPassword;
         $generated_id = $request->generated_id;
 
         if ($password !== $confirm) {
@@ -491,11 +525,11 @@ class MasterController extends Controller
 
         $record = DB::table('password_reset_tables')->where('token', $generated_id)->first();
 
-        if (! $record) {
+        if (!$record) {
             return response()->json(['message' => 'Invalid or expired token.'], 404);
         }
 
-        $user_email   = $record->email;
+        $user_email = $record->email;
         $new_password = Hash::make($password);
 
         DB::table('users')->where('email', $user_email)->update(['password' => $new_password]);
@@ -513,50 +547,50 @@ class MasterController extends Controller
 
         try {
             $fromAddress = [
-                "name"    => "Shanana Beauty",
+                "name" => "Shanana Beauty",
                 "street1" => "Kampala Road",
-                "city"    => "Kampala",
-                "zip"     => "256",
+                "city" => "Kampala",
+                "zip" => "256",
                 "country" => "UG",
-                "phone"   => "+256000000000",
-                "email"   => "support@shanana.com",
+                "phone" => "+256000000000",
+                "email" => "support@shanana.com",
             ];
 
             $toAddress = [
-                "name"    => $request->firstName . ' ' . $request->lastName,
+                "name" => $request->firstName . ' ' . $request->lastName,
                 "street1" => $request->address,
-                "city"    => $request->city,
-                "zip"     => $request->postcode,
+                "city" => $request->city,
+                "zip" => $request->postcode,
                 "country" => $request->country,
-                "phone"   => $request->mobile,
-                "email"   => $request->email,
+                "phone" => $request->mobile,
+                "email" => $request->email,
             ];
 
             $parcel = [
-                "length"        => "10",
-                "width"         => "5",
-                "height"        => "8",
+                "length" => "10",
+                "width" => "5",
+                "height" => "8",
                 "distance_unit" => "cm",
-                "weight"        => "1",
-                "mass_unit"     => "kg",
+                "weight" => "1",
+                "mass_unit" => "kg",
             ];
 
             $shipment = \Shippo_Shipment::create([
-                "address_from"     => $fromAddress,
-                "address_to"       => $toAddress,
-                "parcels"          => [$parcel],
-                "async"            => false,
+                "address_from" => $fromAddress,
+                "address_to" => $toAddress,
+                "parcels" => [$parcel],
+                "async" => false,
                 "carrier_accounts" => ["d3d008a7fb6e4354a736e836ee5da0a2"], // ✅ Inserted working carrier
             ]);
 
-            if (! empty($shipment["rates"])) {
+            if (!empty($shipment["rates"])) {
                 $lowestRate = $shipment["rates"][0];
 
                 return response()->json([
-                    'success'       => true,
-                    'rate'          => $lowestRate['amount'],
-                    'currency'      => $lowestRate['currency'],
-                    'provider'      => $lowestRate['provider'],
+                    'success' => true,
+                    'rate' => $lowestRate['amount'],
+                    'currency' => $lowestRate['currency'],
+                    'provider' => $lowestRate['provider'],
                     'service_level' => $lowestRate['servicelevel']['name'],
                 ]);
             }

@@ -23,7 +23,7 @@ Route::controller(MasterController::class)->group(function () {
         Route::get('/user-register', 'userRegister')->name('user.register');
         Route::get('/user-profile', 'userProfile')->name('user.profile');
 
-        Route::post('/calculate-shipping','calculateShippingRate')->name('calculate.shipping');
+        Route::post('/calculate-shipping', 'calculateShippingRate')->name('calculate.shipping');
 
     });
 
@@ -34,6 +34,7 @@ Route::controller(MasterController::class)->group(function () {
     Route::post('user-generate-forgot-password-link', 'generateForgotPasswordLink')->name('user-generate-forgot-password-link');
 
     Route::get('/', 'home')->name('home');
+    Route::get('/load-more-products/{type}', 'loadMoreProducts');
     Route::get('/item-categories/{id}', 'itemCategories')->name('item.categories');
     Route::get('/product-options/{id}', 'itemOptions')->name('product.options');
     Route::get('password/reset/{id}', 'createNewPassword')->name('password/reset');
@@ -147,7 +148,7 @@ Route::controller(ProductsController::class)->group(function () {
 });
 
 Route::get('/search-products', function (\Illuminate\Http\Request $request) {
-    $query    = $request->input('query');
+    $query = $request->input('query');
     $products = Product::where('product_name', 'like', "%{$query}%")
         ->select('id', 'product_name', 'price', 'sale_price', 'featured_image_1')
         ->take(10)

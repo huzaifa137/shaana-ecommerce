@@ -20,6 +20,10 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="icon" href="/assets1/images/favicon.ico" type="image/png" sizes="32x32">
+
+
     <link
         href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap"
         rel="stylesheet">
@@ -27,7 +31,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
         integrity="sha512-Fo3rlrZj/kMVq6MBBSaI6zxjY3V+G5H3p0e1EQP+c5gk4IOfuTPV9z2p5skGm7EwPw63XrJYXs9JkYbM8Bz94g=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 </head>
 
 <?php
@@ -134,8 +137,8 @@ use App\Http\Controllers\Helper;
                     d="M24 4.5s-11.26 2-15.25 2v20a11.16 11.16 0 0 0 .8 4.1a15 15 0 0 0 2 3.61a22 22 0 0 0 2.81 3.07a34.47 34.47 0 0 0 3 2.48a34 34 0 0 0 2.89 1.86c1 .59 1.71 1 2.13 1.19l1 .49a1.44 1.44 0 0 0 1.24 0l1-.49c.42-.2 1.13-.6 2.13-1.19a34 34 0 0 0 2.89-1.86a34.47 34.47 0 0 0 3-2.48a22 22 0 0 0 2.81-3.07a15 15 0 0 0 2-3.61a11.16 11.16 0 0 0 .8-4.1v-20c-3.99.03-15.25-2-15.25-2" />
             </symbol>
             <symbol xmlns="http://www.w3.org/2000/svg" id="savings" viewBox="0 0 48 48">
-                <circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor"
-                    stroke-linecap="round" stroke-linejoin="round" />
+                <circle cx="24" cy="24" r="21.5" fill="none" stroke="currentColor" stroke-linecap="round"
+                    stroke-linejoin="round" />
                 <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                     d="M12.5 23.684a3.298 3.298 0 0 1 5.63-2.332l3.212 3.212h0l8.53-8.53a3.298 3.298 0 0 1 5.628 2.333h0c0 .875-.348 1.714-.966 2.333L22.983 32.25a2.321 2.321 0 0 1-3.283 0l-6.234-6.233a3.298 3.298 0 0 1-.966-2.333" />
             </symbol>
@@ -404,7 +407,7 @@ use App\Http\Controllers\Helper;
                     class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
                     <div class="d-flex align-items-center my-3 my-sm-0">
                         <a href="{{ url('/') }}">
-                            <img src="/assets1/images/logo.svg" alt="logo" class="img-fluid">
+                            <img src="/assets1/images/ShananaLogo.png" alt="logo" class="img-fluid">
                         </a>
                     </div>
 
@@ -422,15 +425,12 @@ use App\Http\Controllers\Helper;
                     <style>
                         #offcanvasSearch {
                             background-color: #f8f9fa;
-                            /* Light grey background for contrast */
                             color: #212529;
-                            /* Dark text for readability */
                             border-right: 1px solid #dee2e6;
                         }
 
                         #productSearchInput {
                             border-radius: 0.375rem;
-                            /* Rounded corners */
                             padding: 0.75rem;
                             font-size: 1rem;
                         }
@@ -466,7 +466,7 @@ use App\Http\Controllers\Helper;
 
 
                     <script>
-                        document.getElementById('productSearchInput').addEventListener('input', function() {
+                        document.getElementById('productSearchInput').addEventListener('input', function () {
                             let query = this.value;
                             if (query.length < 2) {
                                 document.getElementById('searchResults').innerHTML = '';
@@ -506,32 +506,29 @@ use App\Http\Controllers\Helper;
                         <li class="nav-item active">
                             <a href="{{ url('/item-shop') }}" class="nav-link">Shop</a>
                         </li>
-                        {{-- <li class="nav-item active">
-                            <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
-                        </li> --}}
+
                         @if (Session::has('LoggedCustomer'))
-                            <?php
+                                                <?php
                             $addedProducts = Session::get('cart', []);
                             $cartCount = count($addedProducts);
-                            ?>
-                            <li class="nav-item active">
-                                @if ($cartCount > 0)
-                                    <a href="{{ url('/item-cart') }}"
-                                        class="nav-link position-relative d-inline-block">
-                                        <span class="position-relative d-inline-flex align-items-center">
-                                            Cart
-                                            <span
-                                                class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger animate__animated animate__bounce"
-                                                style="width: 20px; height: 20px; font-size: 12px; right: -6px; display: flex; justify-content: center; align-items: center;">
-                                                {{ $cartCount }}
-                                                <span class="visually-hidden">items in cart</span>
-                                            </span>
-                                        </span>
-                                    </a>
-                                @else
-                                    <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
-                                @endif
-                            </li>
+                                                                                                                                                                                                                                                                                                                                                    ?>
+                                                <li class="nav-item active">
+                                                    @if ($cartCount > 0)
+                                                        <a href="{{ url('/item-cart') }}" class="nav-link position-relative d-inline-block">
+                                                            <span class="position-relative d-inline-flex align-items-center">
+                                                                Cart
+                                                                <span
+                                                                    class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger animate__animated animate__bounce"
+                                                                    style="width: 20px; height: 20px; font-size: 12px; right: -6px; display: flex; justify-content: center; align-items: center;">
+                                                                    {{ $cartCount }}
+                                                                    <span class="visually-hidden">items in cart</span>
+                                                                </span>
+                                                            </span>
+                                                        </a>
+                                                    @else
+                                                        <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
+                                                    @endif
+                                                </li>
                         @else
                             <li class="nav-item active">
                                 <a href="{{ url('/item-cart') }}" class="nav-link">Cart</a>
@@ -563,7 +560,6 @@ use App\Http\Controllers\Helper;
                     class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
                     <ul class="d-flex justify-content-end list-unstyled m-0 align-items-center">
 
-                        {{-- User Icon --}}
                         <li>
                             <a href="{{ url('user-login') }}" class="position-relative p-2 mx-1">
                                 <svg width="24" height="24">
@@ -572,7 +568,6 @@ use App\Http\Controllers\Helper;
                             </a>
                         </li>
 
-                        {{-- Wishlist Icon --}}
                         <li>
                             <a href="#" class="position-relative p-2 mx-1">
                                 <svg width="24" height="24">
@@ -581,7 +576,6 @@ use App\Http\Controllers\Helper;
                             </a>
                         </li>
 
-                        {{-- Cart Icon --}}
                         <li class="position-relative">
                             @php
                                 $addedProducts = Session::get('cart', []);
@@ -618,15 +612,17 @@ use App\Http\Controllers\Helper;
         </div>
     </header>
 
-    <section
-        style="background-image: url('assets1/images/banner-12.png'); background-repeat: no-repeat; background-size: cover; background-position: center;"
-        class="stunning-section">
+    <!--<section-->
+    <!--    style="background-image: url('assets1/images/banner-12.png'); background-repeat: no-repeat; background-size: cover; background-position: center;"-->
+    <!--    class="stunning-section">-->
+    
+        <section>
         <div class="container-lg py-5">
             <div class="row align-items-center gx-5">
 
                 <div class="col-lg-6 mb-5 mb-lg-0 animate-fade-in-left">
                     <div class="glass-panel info-panel p-5 rounded-5 shadow-lg">
-                        <h3 class="text-white mb-4 fw-bold text-center">Why Choose Us?</h3>
+                        <h3 class="text-white mb-4 fw-bold text-center"><span style="color:#ff69b4;">Why Choose Us?</span></h3>
                         <div class="row gy-4">
                             <div class="col-12 col-md-4">
                                 <div class="info-card shadow-lg text-center p-4 rounded-4">
@@ -669,31 +665,32 @@ use App\Http\Controllers\Helper;
                     <div
                         class="glass-panel hero-panel p-5 rounded-5 shadow-lg d-flex flex-column justify-content-center text-white">
                         <h1 class="display-1 fw-extrabold mb-3">
-                            <span class="highlight-pink">Shanana</span> Beauty Products
+                            <span class="highlight-pink" style="-webkit-text-stroke:2px white;">Shanana Beauty Products
+                            </span>
                         </h1>
-                        <p class="fs-4 mb-4 text-light">Beauty and bedroom must-haves, all in one place.</p>
+                        <p class="fs-4 mb-4 text-dark" ;">Beauty and bedroom must-haves, all in one place.</p>
 
                         <div class="d-flex flex-wrap gap-4 mb-5">
                             <a href="{{ route('item.shop') }}"
                                 class="btn btn-pink btn-lg rounded-pill px-5 py-3 shadow">Start
                                 Shopping</a>
                             <a href="javascript:void();"
-                                class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 shadow">Join
-                                Now</a>
+                                class="btn btn-outline-light btn-lg rounded-pill px-5 py-3 shadow"><span style="color:#ff69b4;"> Join
+                                Now</span></a>
                         </div>
 
                         <div class="stats d-flex justify-content-between text-center text-white">
                             <div>
                                 <h3 class="fw-bold mb-1">200+</h3>
-                                <small class="text-uppercase letter-spacing">Product Varieties</small>
+                                <small class="text-uppercase letter-spacing"><span style="color:#ff69b4;">Product Varieties</span></small>
                             </div>
                             <div>
                                 <h3 class="fw-bold mb-1">20k+</h3>
-                                <small class="text-uppercase letter-spacing">Happy Customers</small>
+                                <small class="text-uppercase letter-spacing"><span style="color:#ff69b4;">Happy Customers</span></small>
                             </div>
                             <div>
                                 <h3 class="fw-bold mb-1">1+</h3>
-                                <small class="text-uppercase letter-spacing">Store Locations</small>
+                                <small class="text-uppercase letter-spacing"><span style="color:#ff69b4;">Store Locations</span></small>
                             </div>
                         </div>
                     </div>
@@ -721,7 +718,6 @@ use App\Http\Controllers\Helper;
                 box-shadow: 0 12px 40px 0 rgba(255, 105, 180, 0.5);
             }
 
-            /* Hero Panel */
             .hero-panel .highlight-pink {
                 color: #ff69b4;
                 text-shadow: 0 0 10px #ff69b4;
@@ -731,7 +727,6 @@ use App\Http\Controllers\Helper;
                 color: #fefefecc;
             }
 
-            /* Buttons */
             .btn-pink {
                 background: linear-gradient(135deg, #ff69b4, #ff85c1);
                 border: none;
@@ -762,7 +757,6 @@ use App\Http\Controllers\Helper;
                 box-shadow: 0 10px 25px rgba(255, 105, 180, 0.6);
             }
 
-            /* Stats */
             .stats>div {
                 flex: 1;
             }
@@ -952,13 +946,11 @@ use App\Http\Controllers\Helper;
             background-color: #fff !important;
             border-radius: 12px;
             padding: 1.5rem 2rem;
-            /* extra padding for breathing space */
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         }
 
         .section-header.bg-white .section-title {
             color: #333 !important;
-            /* change text from white to dark for contrast */
         }
 
         .section-header.bg-white .btn-outline-dark {
@@ -1139,15 +1131,11 @@ use App\Http\Controllers\Helper;
             border-radius: 50%;
             border: 3px solid #fce4ec;
             width: 180px;
-            /* Increased size */
             height: 180px;
-            /* Increased size */
             margin-left: auto;
             margin-right: auto;
             padding: 10px;
-            /* Added padding inside the circle */
             box-sizing: border-box;
-            /* Include padding within width/height */
         }
 
         .product-item figure img {
@@ -1266,7 +1254,6 @@ use App\Http\Controllers\Helper;
         .product-item .col-2 {
             position: relative;
             z-index: 2;
-            /* Keep these interactive */
         }
     </style>
 
@@ -1279,8 +1266,7 @@ use App\Http\Controllers\Helper;
                     @if (session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
                             {{ session('success') }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"
-                                aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
                     <div class="section-header d-flex flex-wrap justify-content-between my-4">
@@ -1294,126 +1280,21 @@ use App\Http\Controllers\Helper;
 
         <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
             <div class="container-lg">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
-                    @foreach ($bestSellingProducts as $product)
-                        @php
-                            $cart = session('cart', []);
-                            $isInCart = array_key_exists($product->id, $cart);
-                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
-
-                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
-                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
-
-                            $discount = 0;
-                            if ($product->price > 0 && $product->sale_price < $product->price) {
-                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                            }
-                        @endphp
-
-                        <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
-                                style="box-sizing: border-box;">
-                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
-                                    style="z-index: 1;"></a>
-
-                                <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}"
-                                        title="{{ $product->product_name }}">
-                                        <img src="{{ asset('storage/' . $product->featured_image_1) }}"
-                                            alt="Product Thumbnail" style="max-width: 100%; height: auto;">
-                                    </a>
-                                </figure>
-                                <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
-                                    <div class="mb-2">
-                                        <span class="rating">
-                                            @for ($i = 0; $i < 5; $i++)
-                                                <svg width="18" height="18" class="text-warning">
-                                                    <use xlink:href="#star-full"></use>
-                                                </svg>
-                                            @endfor
-                                        </span>
-                                        <span>({{ $displayReviewCount }})</span>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
-                                        <span
-                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
-                                        @if ($discount > 0)
-                                            <span
-                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
-                                                {{ $discount }}% OFF
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
-                                        <div class="row g-2 align-items-center">
-                                            <div class="col-3">
-                                                @if ($isInCart)
-                                                    <input type="number" name="quantity"
-                                                        class="form-control border-dark-subtle input-number quantity"
-                                                        value="{{ $cartQty }}" min="1" max="9"
-                                                        readonly
-                                                        style="min-width: 100%; height: 40px; text-align: center;">
-                                                @else
-                                                    <form method="POST"
-                                                        action="{{ route('shop.add.cart', $product->id) }}">
-                                                        @csrf
-                                                        <input type="number" name="quantity"
-                                                            class="form-control border-dark-subtle input-number quantity"
-                                                            value="{{ $cartQty }}" min="1"
-                                                            max="9"
-                                                            style="min-width: 100%; height: 40px; text-align: center;">
-                                                @endif
-                                            </div>
-
-                                            <div class="col-7">
-                                                @if ($isInCart)
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;" disabled>
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        In Cart
-                                                    </a>
-                                                @else
-                                                    <button type="submit"
-                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;">
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        Add to Cart
-                                                    </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-2">
-                                                <a href="javascript:void(0);"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4"
+                    id="bestSelling-container">
+                    @include('Ecommerce.partials.product_cards', ['products' => $bestSellingProducts])
                 </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary load-more-btn" data-type="bestSelling" data-offset="3"
+                        data-target="bestSelling-container">
+                        Load More Best Selling Products
+                    </button>
+                </div>
+
             </div>
         </div>
-
 
     </section>
 
@@ -1434,9 +1315,8 @@ use App\Http\Controllers\Helper;
 
                             <figure class="mb-4">
                                 <a href="{{ url('/product-item/' . $item->id) }}" title="Product Title">
-                                    <img src="{{ asset('storage/' . $item->featured_image_1) }}"
-                                        alt="Product Thumbnail" style="max-width: 180px; height: auto;"
-                                        class="img-fluid">
+                                    <img src="{{ asset('storage/' . $item->featured_image_1) }}" alt="Product Thumbnail"
+                                        style="max-width: 180px; height: auto;" class="img-fluid">
                                 </a>
                             </figure>
 
@@ -1469,125 +1349,23 @@ use App\Http\Controllers\Helper;
 
         <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
             <div class="container-lg">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
-                    @foreach ($featuredProducts as $product)
-                        @php
-                            $cart = session('cart', []);
-                            $isInCart = array_key_exists($product->id, $cart);
-                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
-
-                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
-                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
-
-                            $discount = 0;
-                            if ($product->price > 0 && $product->sale_price < $product->price) {
-                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                            }
-                        @endphp
-
-                        <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
-                                style="box-sizing: border-box;">
-                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
-                                    style="z-index: 1;"></a>
-
-                                <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}"
-                                        title="{{ $product->product_name }}">
-                                        <img src="{{ asset('storage/' . $product->featured_image_1) }}"
-                                            alt="Product Thumbnail" style="max-width: 100%; height: auto;">
-                                    </a>
-                                </figure>
-                                <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
-                                    <div class="mb-2">
-                                        <span class="rating">
-                                            @for ($i = 0; $i < 5; $i++)
-                                                <svg width="18" height="18" class="text-warning">
-                                                    <use xlink:href="#star-full"></use>
-                                                </svg>
-                                            @endfor
-                                        </span>
-                                        <span>({{ $displayReviewCount }})</span>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
-                                        <span
-                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
-                                        @if ($discount > 0)
-                                            <span
-                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
-                                                {{ $discount }}% OFF
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
-                                        <div class="row g-2 align-items-center">
-                                            <div class="col-3">
-                                                @if ($isInCart)
-                                                    <input type="number" name="quantity"
-                                                        class="form-control border-dark-subtle input-number quantity"
-                                                        value="{{ $cartQty }}" min="1" max="9"
-                                                        readonly
-                                                        style="min-width: 100%; height: 40px; text-align: center;">
-                                                @else
-                                                    <form method="POST"
-                                                        action="{{ route('shop.add.cart', $product->id) }}">
-                                                        @csrf
-                                                        <input type="number" name="quantity"
-                                                            class="form-control border-dark-subtle input-number quantity"
-                                                            value="{{ $cartQty }}" min="1"
-                                                            max="9"
-                                                            style="min-width: 100%; height: 40px; text-align: center;">
-                                                @endif
-                                            </div>
-
-                                            <div class="col-7">
-                                                @if ($isInCart)
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;" disabled>
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        In Cart
-                                                    </a>
-                                                @else
-                                                    <button type="submit"
-                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;">
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        Add to Cart
-                                                    </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-2">
-                                                <a href="javascript:void(0);"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4"
+                    id="featured-container">
+                    @include('Ecommerce.partials.product_cards', ['products' => $featuredProducts])
                 </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary load-more-btn" data-type="featured" data-offset="3"
+                        data-target="featured-container">
+                        Load More Featured products
+                    </button>
+                </div>
+
             </div>
         </div>
+
+
     </section>
 
     <section>
@@ -1609,13 +1387,13 @@ use App\Http\Controllers\Helper;
                                 @csrf
                                 <div class="mb-3">
                                     <label for="name" class="form-label d-none">Name</label>
-                                    <input type="text" class="form-control form-control-md rounded-0"
-                                        name="name" id="name" placeholder="Name">
+                                    <input type="text" class="form-control form-control-md rounded-0" name="name"
+                                        id="name" placeholder="Name">
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label d-none">Email</label>
-                                    <input type="email" class="form-control form-control-md rounded-0"
-                                        name="email" id="email" placeholder="Email Address">
+                                    <input type="email" class="form-control form-control-md rounded-0" name="email"
+                                        id="email" placeholder="Email Address">
                                 </div>
                                 <div class="d-grid gap-2">
                                     <button type="submit" class="btn btn-dark btn-md rounded-0">Submit</button>
@@ -1648,123 +1426,19 @@ use App\Http\Controllers\Helper;
 
         <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
             <div class="container-lg">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
-                    @foreach ($popularProducts as $product)
-                        @php
-                            $cart = session('cart', []);
-                            $isInCart = array_key_exists($product->id, $cart);
-                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
-
-                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
-                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
-
-                            $discount = 0;
-                            if ($product->price > 0 && $product->sale_price < $product->price) {
-                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                            }
-                        @endphp
-
-                        <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
-                                style="box-sizing: border-box;">
-                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
-                                    style="z-index: 1;"></a>
-
-                                <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}"
-                                        title="{{ $product->product_name }}">
-                                        <img src="{{ asset('storage/' . $product->featured_image_1) }}"
-                                            alt="Product Thumbnail" style="max-width: 100%; height: auto;">
-                                    </a>
-                                </figure>
-                                <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
-                                    <div class="mb-2">
-                                        <span class="rating">
-                                            @for ($i = 0; $i < 5; $i++)
-                                                <svg width="18" height="18" class="text-warning">
-                                                    <use xlink:href="#star-full"></use>
-                                                </svg>
-                                            @endfor
-                                        </span>
-                                        <span>({{ $displayReviewCount }})</span>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
-                                        <span
-                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
-                                        @if ($discount > 0)
-                                            <span
-                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
-                                                {{ $discount }}% OFF
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
-                                        <div class="row g-2 align-items-center">
-                                            <div class="col-3">
-                                                @if ($isInCart)
-                                                    <input type="number" name="quantity"
-                                                        class="form-control border-dark-subtle input-number quantity"
-                                                        value="{{ $cartQty }}" min="1" max="9"
-                                                        readonly
-                                                        style="min-width: 100%; height: 40px; text-align: center;">
-                                                @else
-                                                    <form method="POST"
-                                                        action="{{ route('shop.add.cart', $product->id) }}">
-                                                        @csrf
-                                                        <input type="number" name="quantity"
-                                                            class="form-control border-dark-subtle input-number quantity"
-                                                            value="{{ $cartQty }}" min="1"
-                                                            max="9"
-                                                            style="min-width: 100%; height: 40px; text-align: center;">
-                                                @endif
-                                            </div>
-
-                                            <div class="col-7">
-                                                @if ($isInCart)
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;" disabled>
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        In Cart
-                                                    </a>
-                                                @else
-                                                    <button type="submit"
-                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;">
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        Add to Cart
-                                                    </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-2">
-                                                <a href="javascript:void(0);"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4"
+                    id="popular-container">
+                    @include('Ecommerce.partials.product_cards', ['products' => $popularProducts])
                 </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary load-more-btn" data-type="popular" data-offset="3"
+                        data-target="popular-container">
+                            Load More Most popular Products
+                    </button>
+                </div>
+
             </div>
         </div>
 
@@ -1787,123 +1461,20 @@ use App\Http\Controllers\Helper;
 
         <div class="category-section py-5" style="background: linear-gradient(to right, #f9d2e6, #fad0c4);">
             <div class="container-lg">
-                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4">
 
-                    @foreach ($newProducts as $product)
-                        @php
-                            $cart = session('cart', []);
-                            $isInCart = array_key_exists($product->id, $cart);
-                            $cartQty = $isInCart ? $cart[$product->id]['quantity'] ?? 1 : 1;
-
-                            $reviewCounts = DB::table('product_reviews')->where('product_id', $product->id)->count();
-                            $displayReviewCount = $reviewCounts == 0 ? rand(1, 4) : $reviewCounts;
-
-                            $discount = 0;
-                            if ($product->price > 0 && $product->sale_price < $product->price) {
-                                $discount = round((($product->price - $product->sale_price) / $product->price) * 100);
-                            }
-                        @endphp
-
-                        <div class="col">
-                            <div class="product-item bg-white p-3 rounded-2 shadow-sm h-100 d-flex flex-column position-relative"
-                                style="box-sizing: border-box;">
-                                <a href="{{ url('/product-item/' . $product->id) }}" class="stretched-link"
-                                    style="z-index: 1;"></a>
-
-                                <figure class="mb-3 text-center">
-                                    <a href="{{ url('/product-item/' . $product->id) }}"
-                                        title="{{ $product->product_name }}">
-                                        <img src="{{ asset('storage/' . $product->featured_image_1) }}"
-                                            alt="Product Thumbnail" style="max-width: 100%; height: auto;">
-                                    </a>
-                                </figure>
-                                <div class="flex-grow-1 d-flex flex-column text-center">
-                                    <h3 class="fs-6 fw-normal">{{ $product->product_name }}</h3>
-                                    <div class="mb-2">
-                                        <span class="rating">
-                                            @for ($i = 0; $i < 5; $i++)
-                                                <svg width="18" height="18" class="text-warning">
-                                                    <use xlink:href="#star-full"></use>
-                                                </svg>
-                                            @endfor
-                                        </span>
-                                        <span>({{ $displayReviewCount }})</span>
-                                    </div>
-
-                                    <div class="d-flex justify-content-center align-items-center gap-2 mb-3">
-                                        <del>Ugx{{ Helper::abbreviate_number($product->price) }}</del>
-                                        <span
-                                            class="text-dark fw-semibold">Ugx{{ Helper::abbreviate_number($product->sale_price) }}</span>
-                                        @if ($discount > 0)
-                                            <span
-                                                class="badge border border-dark-subtle rounded-0 fw-normal px-1 fs-7 lh-1 text-body-tertiary">
-                                                {{ $discount }}% OFF
-                                            </span>
-                                        @endif
-                                    </div>
-
-                                    <div class="mt-auto pt-3" style="border-top: 1px solid #eee; margin-top: 1rem;">
-                                        <div class="row g-2 align-items-center">
-                                            <div class="col-3">
-                                                @if ($isInCart)
-                                                    <input type="number" name="quantity"
-                                                        class="form-control border-dark-subtle input-number quantity"
-                                                        value="{{ $cartQty }}" min="1" max="9"
-                                                        readonly
-                                                        style="min-width: 100%; height: 40px; text-align: center;">
-                                                @else
-                                                    <form method="POST"
-                                                        action="{{ route('shop.add.cart', $product->id) }}">
-                                                        @csrf
-                                                        <input type="number" name="quantity"
-                                                            class="form-control border-dark-subtle input-number quantity"
-                                                            value="{{ $cartQty }}" min="1"
-                                                            max="9"
-                                                            style="min-width: 100%; height: 40px; text-align: center;">
-                                                @endif
-                                            </div>
-
-                                            <div class="col-7">
-                                                @if ($isInCart)
-                                                    <a href="javascript:void(0);"
-                                                        class="btn btn-outline-success rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;" disabled>
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        In Cart
-                                                    </a>
-                                                @else
-                                                    <button type="submit"
-                                                        class="btn btn-primary rounded-1 p-2 fs-7 w-100 d-flex align-items-center justify-content-center gap-1"
-                                                        style="height: 40px;">
-                                                        <svg width="18" height="18">
-                                                            <use xlink:href="#cart"></use>
-                                                        </svg>
-                                                        Add to Cart
-                                                    </button>
-                                                    </form>
-                                                @endif
-                                            </div>
-
-                                            <div class="col-2">
-                                                <a href="javascript:void(0);"
-                                                    class="btn btn-outline-dark rounded-1 p-2 fs-6 w-100 d-flex align-items-center justify-content-center"
-                                                    style="height: 40px;">
-                                                    <svg width="18" height="18">
-                                                        <use xlink:href="#heart"></use>
-                                                    </svg>
-                                                </a>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    @endforeach
-
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-3 row-cols-xl-4 row-cols-xxl-5 g-4"
+                    id="new-container">
+                    @include('Ecommerce.partials.product_cards', ['products' => $newProducts])
                 </div>
+
+                <div class="text-center mt-4">
+                    <button class="btn btn-outline-primary load-more-btn" data-type="new" data-offset="3"
+                        data-target="new-container">
+                        Load More Just Arrived Products
+                    </button>
+                </div>
+
+
             </div>
         </div>
 
@@ -2276,14 +1847,14 @@ use App\Http\Controllers\Helper;
                                     All</a></li>
                             <li class="menu-item"><a href="{{ url('product-options/1') }}" class="nav-link">Best
                                     Sellers</a></li>
-                            <li class="menu-item"><a href="{{ url('product-options/2') }}"
-                                    class="nav-link">Featured Products</a></li>
+                            <li class="menu-item"><a href="{{ url('product-options/2') }}" class="nav-link">Featured
+                                    Products</a></li>
                             <li class="menu-item"><a href="{{ url('product-options/4') }}" class="nav-link">New
                                     Arrivals</a></li>
                             <li class="menu-item"><a href="{{ url('product-options/3') }}" class="nav-link">Most
                                     Popular Productsr</a></li>
-                            <li class="menu-item"><a
-                                    href="{{ route('customer.dashboard') }}"class="nav-link">Dashboard</a></li>
+                            <li class="menu-item"><a href="{{ route('customer.dashboard') }}"
+                                    class="nav-link">Dashboard</a></li>
                         </ul>
                     </div>
                 </div>
@@ -2362,6 +1933,52 @@ use App\Http\Controllers\Helper;
     </script>
 
     <script>
+        document.querySelectorAll('.load-more-btn').forEach(btn => {
+            btn.addEventListener('click', function () {
+                const type = this.getAttribute('data-type');
+                const offset = parseInt(this.getAttribute('data-offset'));
+                const containerId = this.getAttribute('data-target');
+                const container = document.getElementById(containerId);
+
+                this.disabled = true;
+                this.textContent = 'Loading...';
+
+                fetch(`/load-more-products/${type}?offset=${offset}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => {
+                                throw { responseText: text };
+                            });
+                        }
+                        return response.text();
+                    })
+                    .then(html => {
+                        if (html.trim()) {
+                            container.insertAdjacentHTML('beforeend', html);
+                            this.setAttribute('data-offset', offset + 3);
+                            this.disabled = false;
+                            this.textContent = 'Load More';
+                        } else {
+                            this.textContent = 'No More Products';
+                            this.disabled = true;
+                        }
+                    })
+                    .catch(err => {
+                        if (err.responseText) {
+                            document.body.innerHTML = err.responseText;
+                        } else {
+                            console.error(err);
+                            this.textContent = 'Load More';
+                            this.disabled = false;
+                        }
+                    });
+            });
+        });
+    </script>
+
+
+
+    <script>
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
 
@@ -2369,7 +1986,7 @@ use App\Http\Controllers\Helper;
     <script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="/assets1/js/plugins.js"></script>
     <script src="/assets1/js/script.js"></script>
 </body>
